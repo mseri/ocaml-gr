@@ -4,6 +4,9 @@ open Foreign
 (* version 0.37.0 *)
 module Lowlevel = struct
 
+  (* The API is documented here: https://gr-framework.org/c-gr.html *)
+  (* See also https://gr-framework.org/about.html - at a certain point it would be nice to also have bindings for GKS and GR3 *)
+
   let libGR = Dl.dlopen ~flags:[Dl.RTLD_LAZY] ~filename:"libGR.so"
   let foreign = foreign ~from:libGR
 
