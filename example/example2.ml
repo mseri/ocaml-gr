@@ -40,10 +40,13 @@ let () =
   let h = List.init 20 (fun i -> -0.5 +. (float_of_int i) /. 19.0) |> Ctypes.(CArray.of_list double) in
 
   surface 200 200 (captr xa) (captr ya) (captr za) 5;
-  get1char () |> ignore;
+  (* get1char () |> ignore; *)
   contour 200 200 20 (captr xa) (captr ya) (captr h) (captr za) 0;
-  get1char () |> ignore;
+  (* get1char () |> ignore; *)
   polymarker 100 (captr xd) (captr yd);
-  get1char () |> ignore;
+  (* get1char () |> ignore; *)
   axes 0.25 0.25 (-2.0) (-2.0) 2 2 0.01;
+
+  mathtex 0.5 0.91 {|\mbox{Attempt to plot tex stuff, e.g. } \int_0^1\sin(x)|};
+
   get1char () |> ignore;
