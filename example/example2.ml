@@ -11,8 +11,7 @@ let to_carray typ x = x |> Array.to_list |> Ctypes.CArray.of_list typ
 let captr = Ctypes.CArray.start
 
 let () =
-  (*let xarray = to_carray Ctypes.double [|0.0; 0.2; 0.4; 0.6; 0.8; 1.0|] in
-    let yarray = to_carray Ctypes.double [|0.3;0.5;0.4;0.2;0.6;0.7|] in*)
+  (* This could be simplified following the example of https://github.com/jheinen/GR.jl/blob/master/src/jlgr.jl *)
   let xs = List.init 100 (fun _ -> -2.0 +. 4.0 *. Random.float 1.) in
   let ys = List.init 100 (fun _ -> -2.0 +. 4.0 *. Random.float 1.) in
   let zs = List.fold_left2 (fun acc x y -> x *. exp(-.(x**2. +. y**2.)) :: acc ) [] xs ys |> List.rev in
