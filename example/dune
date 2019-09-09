@@ -1,0 +1,7 @@
+(executables
+ (names example1 example2)
+ (libraries ctypes gr unix))
+
+(alias
+ (name runtest)
+ (deps example1.exe example2.exe))
