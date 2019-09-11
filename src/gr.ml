@@ -230,26 +230,107 @@ let markertype_of_int = function
   | d -> failwith @@ "Error when inferring marker type. Got " ^ string_of_int d
 
 
+let set_linetype lt = lt |> int_of_linetype |> Lowlevel.setlinetype
+
+let current_linetype () =
+  let open Ctypes in
+  let c = allocate int 0 in
+  Lowlevel.inqlinetype c;
+  linetype_of_int !@c
+
+
+(** [set_linewidth lw] defines the line width of subsequent polyline output primitives.
+
+The line width is calculated as the nominal line width generated on the workstation multiplied by the line width scale factor.
+This value is mapped by the workstation to the nearest available line width.
+The default line width is 1.0, or 1 times the line width generated on the graphics device.
+*)
+let set_linewidth = Lowlevel.setlinewidth
+
+let current_linewidth () =
+  let open Ctypes in
+  let c = allocate double 0.0 in
+  Lowlevel.inqlinewidth c;
+  !@c
+
+
+(** [set_linecolorindex c] defines the color of subsequent polyline output primitives.
+Note: c < 1256
+*)
+let set_linecolorindex = function
+  | c when c >= 0 && c < 1256 -> Lowlevel.setlinecolorind c
+  | c -> failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int c
+
+
+let current_linecolorindex () =
+  let open Ctypes in
+  let c = allocate int 0 in
+  Lowlevel.inqlinecolorind c;
+  !@c
+
+
+let set_markertype mt = mt |> int_of_markertype |> Lowlevel.setmarkertype
+
+let current_markertype () =
+  let open Ctypes in
+  let c = allocate int 0 in
+  Lowlevel.inqmarkertype c;
+  markertype_of_int !@c
+
+
+(** [set_markersize ms] specify the marker size for polymarkers.
+
+The polymarker size is calculated as the nominal size generated on the graphics device multiplied by the marker size scale factor. 
+*)
+let set_markersize = Lowlevel.setmarkersize
+
+(** [set_markercolorindex c] define the color of subsequent markers output primitives.
+Note: c < 1256
+*)
+let set_markercolorindex = function
+  | c when c >= 0 && c < 1256 -> Lowlevel.setmarkercolorind c
+  | c -> failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int c
+
+
+let current_markercolorindex () =
+  let open Ctypes in
+  let c = allocate int 0 in
+  Lowlevel.inqmarkercolorind c;
+  !@c
+
+
+(* TODO: make sure to reset linetype linewidth coloridx to the original values *)
+
 (**
-[polyline x y] draws a polyline using the current line attributes, starting from the first data point and ending at the last data point.
+[polyline ?linetype ?linewidth ?coloridx x y] draws a polyline using the current line attributes, starting from the first data point and ending at the last data point.
 
 The values for [x] and [y] are in world coordinates.
 The attributes that control the appearance of a polyline are linetype, linewidth and color index.
 *)
-let polyline x y =
+let polyline ?linetype ?linewidth ?coloridx x y =
+  Lowlevel.savestate ();
+  Option.iter set_linetype linetype;
+  Option.iter set_linewidth linewidth;
+  Option.iter set_linecolorindex coloridx;
   let n, x', y' = Lowlevel.get_size_and_pointers x y in
-  Lowlevel.polyline n x' y'
+  Lowlevel.polyline n x' y';
+  Lowlevel.restorestate ()
 
 
 (**
-[polymarker x y] draws marker symbols centered at the given data points.
+[polymarker ?markertype ?markersize ?coloridx x y] draws marker symbols centered at the given data points.
 
 The values for [x] and [y] are in world coordinates.
-The attributes that control the appearance of a polyline are linetype, linewidth and color index.
+The attributes that control the appearance of a polyline are markertype, markersize and color index.
 *)
-let polymarker x y =
+let polymarker ?markertype ?markersize ?coloridx x y =
+  Lowlevel.savestate ();
+  Option.iter set_markertype markertype;
+  Option.iter set_markersize markersize;
+  Option.iter set_markercolorindex coloridx;
   let n, x', y' = Lowlevel.get_size_and_pointers x y in
-  Lowlevel.polymarker n x' y'
+  Lowlevel.polymarker n x' y';
+  Lowlevel.restorestate ()
 
 
 (** [text x y content] draws a text at position [x], [y] using the current text attributes.
@@ -302,7 +383,7 @@ type spline_algo =
   | InterpolatingNaturalCubic
   | CubicBSpline
 
-(** [spline x y m method_t] generates a cubic spline-fit, starting from the first data point and ending at the last data point.
+(** [spline ?linetype ?linewidth ?coloridx x y m method_t] generates a cubic spline-fit, starting from the first data point and ending at the last data point.
 
     The values for [x] and [y] are in world coordinates.
     The attributes that control the appearance of a spline-fit are linetype, linewidth and color index.
@@ -316,7 +397,11 @@ type spline_algo =
 
     If method is > 0, then a generalized cross-validated smoothing spline is calculated. If method is 0, then an interpolating natural cubic spline is calculated. If method is < -1, then a cubic B-spline is calculated.
 *)
-let spline x y m spline_algo =
+let spline ?linetype ?linewidth ?coloridx x y m spline_algo =
+  Lowlevel.savestate ();
+  Option.iter set_linetype linetype;
+  Option.iter set_linewidth linewidth;
+  Option.iter set_linecolorindex coloridx;
   let algo =
     match spline_algo with
     | GeneralizedCrossValidatedSmoothing -> 1
@@ -324,7 +409,8 @@ let spline x y m spline_algo =
     | CubicBSpline -> -1
   in
   let n, x', y' = Lowlevel.get_size_and_pointers x y in
-  Lowlevel.spline n x' y' m algo
+  Lowlevel.spline n x' y' m algo;
+  Lowlevel.restorestate ()
 
 
 (** [gridit x y z (nx, ny)] interpolates data from arbitrary points at points on a rectangular grid.
@@ -347,83 +433,7 @@ let gridit _x _y _z (_nx, _ny) = raise Unimplemented
   z: The interpolated values on the nx x ny grid points
 *)
 
-let set_linetype lt = lt |> int_of_linetype |> Lowlevel.setlinetype
-
-let current_linetype () =
-  let open Ctypes in
-  let c = allocate int 0 in
-  Lowlevel.inqlinetype c;
-  linetype_of_int !@c
-
-
-(** [set_linewidth lw] Define the line width of subsequent polyline output primitives.
-
-The line width is calculated as the nominal line width generated on the workstation multiplied by the line width scale factor.
-This value is mapped by the workstation to the nearest available line width.
-The default line width is 1.0, or 1 times the line width generated on the graphics device.
-*)
-let set_linewidth = Lowlevel.setlinewidth
-
-let current_linewidth () =
-  let open Ctypes in
-  let c = allocate double 0.0 in
-  Lowlevel.inqlinewidth c;
-  !@c
-
-
-(** [set_linecolorindex c] define the color of subsequent polyline output primitives.
-Note: c < 1256
-*)
-let set_linecolorindex = function
-  | c when c >= 0 && c < 1256 -> Lowlevel.setlinecolorind c
-  | c -> failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int c
-
-
-let current_linecolorindex () =
-  let open Ctypes in
-  let c = allocate int 0 in
-  Lowlevel.inqlinecolorind c;
-  !@c
-
-
-let set_markertype mt = mt |> int_of_markertype |> Lowlevel.setmarkertype
-
-let current_markertype () =
-  let open Ctypes in
-  let c = allocate int 0 in
-  Lowlevel.inqmarkertype c;
-  markertype_of_int !@c
-
-
-(** [set_linewidth lw] Define the line width of subsequent polyline output primitives.
-
-The line width is calculated as the nominal line width generated on the workstation multiplied by the line width scale factor.
-This value is mapped by the workstation to the nearest available line width.
-The default line width is 1.0, or 1 times the line width generated on the graphics device.
-*)
-let set_markersize = Lowlevel.setmarkersize
-
-(** [set_linecolorindex c] define the color of subsequent polyline output primitives.
-Note: c < 1256
-*)
-let set_markercolorindex = function
-  | c when c >= 0 && c < 1256 -> Lowlevel.setmarkercolorind c
-  | c -> failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int c
-
-
-let current_markercolorindex () =
-  let open Ctypes in
-  let c = allocate int 0 in
-  Lowlevel.inqmarkercolorind c;
-  !@c
-
-
 (* 
-   let setmarkertype = foreign "gr_setmarkertype" (int @-> returning void)
-   let inqmarkertype = foreign "gr_inqmarkertype" (ptr int @-> returning void)
-   let setmarkersize = foreign "gr_setmarkersize" (double @-> returning void)
-   let setmarkercolorind = foreign "gr_setmarkercolorind" (int @-> returning void)
-   let inqmarkercolorind = foreign "gr_inqmarkercolorind" (ptr int @-> returning void)
    let settextfontprec = foreign "gr_settextfontprec" (int @-> int @-> returning void)
    let setcharexpan = foreign "gr_setcharexpan" (double @-> returning void)
    let setcharspace = foreign "gr_setcharspace" (double @-> returning void)
