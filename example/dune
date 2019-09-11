@@ -1,6 +1,6 @@
 (executables
  (names example1 example2)
- (libraries ctypes gr unix))
+ (libraries ctypes gr owl unix))
 
 (alias
  (name runtest)
