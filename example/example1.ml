@@ -11,10 +11,17 @@ let get1char () =
 let () =
   let xarray = Owl.Arr.of_arrays [| [| 0.0; 0.2; 0.4; 0.6; 0.8; 1.0 |] |] in
   let yarray = Owl.Arr.of_arrays [| [| 0.3; 0.5; 0.4; 0.2; 0.6; 0.7 |] |] in
-  Gr.polyline xarray yarray;
-  Gr.Lowlevel.(axes (tick 0. 1.) (tick 0. 1.) 0. 0. 1 1 (-0.01));
+  let open Gr in
+  polyline ~linetype:DASHED_DOTTED ~linewidth:0.7 ~coloridx:3 xarray yarray;
+  Lowlevel.(axes (tick 0. 1.) (tick 0. 1.) 0. 0. 1 1 (-0.01));
   get1char () |> ignore;
-  Gr.Lowlevel.clearws ();
-  Owl.Arr.(Gr.polymarker (transpose xarray) (transpose yarray));
-  Gr.Lowlevel.(axes (tick 0. 1.) (tick 0. 1.) 0. 0. 1 1 (-0.01));
+  Lowlevel.clearws ();
+  Owl.Arr.(
+    polymarker
+      ~markertype:CIRCLE
+      ~markersize:3.0
+      ~coloridx:15
+      (transpose xarray)
+      (transpose yarray));
+  Lowlevel.(axes (tick 0. 1.) (tick 0. 1.) 0. 0. 1 1 (-0.01));
   get1char () |> ignore
