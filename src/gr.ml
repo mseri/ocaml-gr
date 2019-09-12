@@ -455,8 +455,41 @@ let gridit _x _y _z (_nx, _ny) = raise Unimplemented
   z: The interpolated values on the nx x ny grid points
 *)
 
-let tick = Lowlevel.tick
-
+(* 
+   let settextfontprec = foreign "gr_settextfontprec" (int @-> int @-> returning void)
+   let setcharexpan = foreign "gr_setcharexpan" (double @-> returning void)
+   let setcharspace = foreign "gr_setcharspace" (double @-> returning void)
+   let settextcolorind = foreign "gr_settextcolorind" (int @-> returning void)
+   let setcharheight = foreign "gr_setcharheight" (double @-> returning void)
+   let setcharup = foreign "gr_setcharup" (double @-> double @-> returning void)
+   let settextpath = foreign "gr_settextpath" (int @-> returning void)
+   let settextalign = foreign "gr_settextalign" (int @-> int @-> returning void)
+   let setfillintstyle = foreign "gr_setfillintstyle" (int @-> returning void)
+   let setfillstyle = foreign "gr_setfillstyle" (int @-> returning void)
+   let setfillcolorind = foreign "gr_setfillcolorind" (int @-> returning void)
+   let setcolorrep = foreign "gr_setcolorrep" (int @-> double @-> double @-> double @-> returning void)
+   let setwindow = foreign "gr_setwindow" (double @-> double @-> double @-> double @-> returning void)
+   let inqwindow = foreign "gr_inqwindow" (ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
+   let setviewport = foreign "gr_setviewport" (double @-> double @-> double @-> double @-> returning void)
+   let inqviewport = foreign "gr_inqviewport" (ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
+   let selntran = foreign "gr_selntran" (int @-> returning void)
+   let setclip = foreign "gr_setclip" (int @-> returning void)
+   let setwswindow = foreign "gr_setwswindow" (double @-> double @-> double @-> double @-> returning void)
+   let setwsviewport = foreign "gr_setwsviewport" (double @-> double @-> double @-> double @-> returning void)
+   let createseg = foreign "gr_createseg" (int @-> returning void)
+   let copysegws = foreign "gr_copysegws" (int @-> returning void)
+   let redrawsegws = foreign "gr_redrawsegws" (void @-> returning void)
+   let setsegtran = foreign "gr_setsegtran" (int @-> double @-> double @-> double @-> double @-> double @-> double @-> double @-> returning void)
+   let closeseg = foreign "gr_closeseg" (void @-> returning void)
+   let emergencyclosegks = foreign "gr_emergencyclosegks" (void @-> returning void)
+   let updategks = foreign "gr_updategks" (void @-> returning void)
+   let setspace = foreign "gr_setspace" (double @-> double @-> int @-> int @-> returning int)
+   let inqspace = foreign "gr_inqspace" (ptr double @-> ptr double @-> ptr int @-> ptr int @-> returning void)
+   let setscale = foreign "gr_setscale" (int @-> returning int)
+   let inqscale = foreign "gr_inqscale" (ptr int @-> returning void)
+   let textext = foreign "gr_textext" (double @-> double @-> string @-> returning int)
+   let inqtextext = foreign "gr_inqtextext" (double @-> double @-> string @-> ptr double @-> ptr double @-> returning void)
+*)
 (*
     [axes ?scale ?linetype ?linewidth ?org:(0,0) ?major:(0,0) ?size:1 x_tick y_tick] draws X and Y coordinate axes with linearly and/or logarithmically spaced tick marks.
     Tick marks are positioned along each axis so that major tick marks fall on the axes origin (whether visible or not).
@@ -494,62 +527,7 @@ let axes
   Lowlevel.restorestate ()
 
 
-(* 
-   let settextfontprec = foreign "gr_settextfontprec" (int @-> int @-> returning void)
-   let setcharexpan = foreign "gr_setcharexpan" (double @-> returning void)
-   let setcharspace = foreign "gr_setcharspace" (double @-> returning void)
-   let settextcolorind = foreign "gr_settextcolorind" (int @-> returning void)
-   let setcharheight = foreign "gr_setcharheight" (double @-> returning void)
-   let setcharup = foreign "gr_setcharup" (double @-> double @-> returning void)
-   let settextpath = foreign "gr_settextpath" (int @-> returning void)
-   let settextalign = foreign "gr_settextalign" (int @-> int @-> returning void)
-   let setfillintstyle = foreign "gr_setfillintstyle" (int @-> returning void)
-   let setfillstyle = foreign "gr_setfillstyle" (int @-> returning void)
-   let setfillcolorind = foreign "gr_setfillcolorind" (int @-> returning void)
-   let setcolorrep = foreign "gr_setcolorrep" (int @-> double @-> double @-> double @-> returning void)
-   let setwindow = foreign "gr_setwindow" (double @-> double @-> double @-> double @-> returning void)
-   let inqwindow = foreign "gr_inqwindow" (ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
-   let setviewport = foreign "gr_setviewport" (double @-> double @-> double @-> double @-> returning void)
-   let inqviewport = foreign "gr_inqviewport" (ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
-   let selntran = foreign "gr_selntran" (int @-> returning void)
-   let setclip = foreign "gr_setclip" (int @-> returning void)
-   let setwswindow = foreign "gr_setwswindow" (double @-> double @-> double @-> double @-> returning void)
-   let setwsviewport = foreign "gr_setwsviewport" (double @-> double @-> double @-> double @-> returning void)
-   let createseg = foreign "gr_createseg" (int @-> returning void)
-   let copysegws = foreign "gr_copysegws" (int @-> returning void)
-   let redrawsegws = foreign "gr_redrawsegws" (void @-> returning void)
-   let setsegtran = foreign "gr_setsegtran" (int @-> double @-> double @-> double @-> double @-> double @-> double @-> double @-> returning void)
-   let closeseg = foreign "gr_closeseg" (void @-> returning void)
-   let emergencyclosegks = foreign "gr_emergencyclosegks" (void @-> returning void)
-   let updategks = foreign "gr_updategks" (void @-> returning void)
-   let setspace = foreign "gr_setspace" (double @-> double @-> int @-> int @-> returning int)
-   let inqspace = foreign "gr_inqspace" (ptr double @-> ptr double @-> ptr int @-> ptr int @-> returning void)
-   let setscale = foreign "gr_setscale" (int @-> returning int)
-   let inqscale = foreign "gr_inqscale" (ptr int @-> returning void)
-   let textext = foreign "gr_textext" (double @-> double @-> string @-> returning int)
-   let inqtextext = foreign "gr_inqtextext" (double @-> double @-> string @-> ptr double @-> ptr double @-> returning void)
-
-   (*
-    void let axes = foreign "gr_axes" (double x_tick @-> double y_tick @-> double x_org @-> double y_org @-> int major_x @-> int major_y @-> double tick_size)
-
-    Draw X and Y coordinate axes with linearly and/or logarithmically spaced tick marks.
-    Tick marks are positioned along each axis so that major tick marks fall on the axes origin (whether visible or not).
-    Major tick marks are labeled with the corresponding data values.
-    Axes are drawn according to the scale of the window.
-    Axes and tick marks are drawn using solid lines; line color and width can be modified using the let setlinetype = foreign "gr_setlinetype"  and let setlinewidth = foreign "gr_setlinewidth"  functions.
-    Axes are drawn according to the linear or logarithmic transformation established by the let setscale = foreign "gr_setscale"  function.
-
-    Parameters
-        x_tick: The interval between minor tick marks on the X axis.
-        y_tick: The interval between minor tick marks on the Y axis.
-        x_org: The world coordinate of the origin (point of intersection) of the X axis.
-        y_org: The world coordinate of the origin (point of intersection) of the Y axis.
-        major_x: Unitless integer value specifying the number of minor tick intervals between major tick marks on the X axis. Values of 0 or 1 imply no minor ticks. Negative values specify no labels will be drawn for the associated axis.
-        major_y: Unitless integer value specifying the number of minor tick intervals between major tick marks on the Y axis. Values of 0 or 1 imply no minor ticks. Negative values specify no labels will be drawn for the associated axis.
-        tick_size: The length of minor tick marks specified in a normalized device coordinate unit. Major tick marks are twice as long as minor tick marks. A negative value reverses the tick marks on the axes from inward facing to outward facing (or vice versa)
-    *)
-   let axes = foreign "gr_axes" (double @-> double @-> double @-> double @-> int @-> int @-> double @-> returning void)
-
+(*
    (* let axeslbl = foreign "gr_axeslbl" (double @-> double @-> double @-> double @-> int @-> int @-> double @-> 
                         ptr (double @-> double @-> const char* @-> double @-> returning void) @-> 
                         ptr (double @-> double @-> const char* @-> double @-> returning void) @-> 
@@ -573,7 +551,11 @@ let axes
    let inqcolor = foreign "gr_inqcolor" (int @-> ptr int @-> returning void)
    let inqcolorfromrgb = foreign "gr_inqcolorfromrgb" (double @-> double @-> double @-> returning int)
    let hsvtorgb = foreign "gr_hsvtorgb" (double @-> double @-> double @-> ptr double@-> ptr double @-> ptr double @-> returning void)
-   let tick = foreign "gr_tick" (double @-> double @-> returning double)
+   *)
+
+let tick = Lowlevel.tick
+
+(*
    let validaterange = foreign "gr_validaterange" (double @-> double @-> returning int)
    let adjustlimits = foreign "gr_adjustlimits" (ptr double @-> ptr double @-> returning void)
    let adjustrange = foreign "gr_adjustrange" (ptr double @-> ptr double @-> returning void)
