@@ -29,16 +29,16 @@ let () =
   let xa = Ctypes.(CArray.make double 200) in
   let ya = Ctypes.(CArray.make double 200) in
   let za = Ctypes.(CArray.make double @@ (200 * 200)) in
-  let open Gr.Lowlevel in
-  setviewport 0.1 0.95 0.1 0.95;
-  setwindow (-2.0) 2.0 (-2.0) 2.0;
-  setspace (-0.5) 0.5 0 90 |> ignore;
-  setmarkersize 1.0;
-  setmarkertype (-1);
-  setcharheight 0.024;
-  settextalign 2 0;
-  settextfontprec 101 0;
-  gridit
+  let open Gr in
+  Lowlevel.setviewport 0.1 0.95 0.1 0.95;
+  Lowlevel.setwindow (-2.0) 2.0 (-2.0) 2.0;
+  Lowlevel.setspace (-0.5) 0.5 0 90 |> ignore;
+  set_markersize 1.0;
+  set_markertype SOLID_CIRCLE;
+  set_char_height 0.024;
+  set_text_align (Some CENTER) None;
+  set_text_font_prec TIMES_ROMAN STRING;
+  Lowlevel.gridit
     100
     (captr xd)
     (captr yd)
@@ -52,13 +52,16 @@ let () =
     List.init 20 (fun i -> -0.5 +. (float_of_int i /. 19.0))
     |> Ctypes.(CArray.of_list double)
   in
-  surface 200 200 (captr xa) (captr ya) (captr za) 5;
+  Lowlevel.surface 200 200 (captr xa) (captr ya) (captr za) 5;
   (* get1char () |> ignore; *)
-  contour 200 200 20 (captr xa) (captr ya) (captr h) (captr za) 0;
+  Lowlevel.contour 200 200 20 (captr xa) (captr ya) (captr h) (captr za) 0;
   (* get1char () |> ignore; *)
-  polymarker 100 (captr xd) (captr yd);
+  let xd' = Ctypes.(bigarray_of_array genarray Bigarray.Float64 xd) in
+  let yd' = Ctypes.(bigarray_of_array genarray Bigarray.Float64 yd) in
+  polymarker xd' yd';
   (* get1char () |> ignore; *)
-  axes 0.25 0.25 (-2.0) (-2.0) 2 2 0.01;
+  axes ~origin:(-2.0, -2.0) ~major:(2, 2) ~tick_size:0.01 0.25 0.25;
+  (* Lowlevel.axes 0.25 0.25 (-2.0) (-2.0) 2 2 0.01; *)
   (* get1char () |> ignore; *)
-  mathtex 0.5 0.91 {|\mbox{Attempt to plot tex stuff, e.g. } \int_0^1\sin(x)|};
+  Lowlevel.mathtex 0.5 0.91 {|\mbox{Attempt to plot tex stuff, e.g. } \int_0^1\sin(x)|};
   get1char () |> ignore

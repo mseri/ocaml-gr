@@ -1,7 +1,7 @@
 (executables
- (names example1 example2)
+ (names example1 example2 example3)
  (libraries ctypes gr owl unix))
 
 (alias
  (name runtest)
- (deps example1.exe example2.exe))
+ (deps example1.exe example2.exe example3.exe))
