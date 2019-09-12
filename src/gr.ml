@@ -94,7 +94,7 @@ let int_of_linetype = function
   | TRIPLE_DOT -> -8
 
 
-let linetype_of_int = function
+(* let linetype_of_int = function
   | 1 -> SOLID
   | 2 -> DASHED
   | 3 -> DOTTED
@@ -107,8 +107,7 @@ let linetype_of_int = function
   | -6 -> SPACED_DOT
   | -7 -> DOUBLE_DOT
   | -8 -> TRIPLE_DOT
-  | d -> failwith @@ "Error when inferring line type. Got " ^ string_of_int d
-
+  | d -> failwith @@ "Error when inferring line type. Got " ^ string_of_int d *)
 
 type markertype =
   | DOT (** Smallest displayable dot *)
@@ -189,7 +188,7 @@ let int_of_markertype = function
   | OMARK -> -32
 
 
-let markertype_of_int = function
+(* let markertype_of_int = function
   | 1 -> DOT
   | 2 -> PLUS
   | 3 -> ASTERISK
@@ -227,8 +226,7 @@ let markertype_of_int = function
   | -30 -> VLINE
   | -31 -> HLINE
   | -32 -> OMARK
-  | d -> failwith @@ "Error when inferring marker type. Got " ^ string_of_int d
-
+  | d -> failwith @@ "Error when inferring marker type. Got " ^ string_of_int d *)
 
 type scale_options =
   | OPTION_X_LOG (** Logarithmic X-axis *)
@@ -254,12 +252,11 @@ let clearws = Lowlevel.clearws
 let updatews = Lowlevel.updatews
 let set_linetype lt = lt |> int_of_linetype |> Lowlevel.setlinetype
 
-let current_linetype () =
+(* let current_linetype () =
   let open Ctypes in
   let c = allocate int 0 in
   Lowlevel.inqlinetype c;
-  linetype_of_int !@c
-
+  linetype_of_int !@c *)
 
 (** [set_linewidth lw] defines the line width of subsequent polyline output primitives.
 
@@ -269,12 +266,11 @@ The default line width is 1.0, or 1 times the line width generated on the graphi
 *)
 let set_linewidth = Lowlevel.setlinewidth
 
-let current_linewidth () =
+(* let current_linewidth () =
   let open Ctypes in
   let c = allocate double 0.0 in
   Lowlevel.inqlinewidth c;
-  !@c
-
+  !@c *)
 
 (** [set_linecolorindex c] defines the color of subsequent polyline output primitives.
 Note: c < 1256
@@ -284,21 +280,19 @@ let set_linecolorindex = function
   | c -> failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int c
 
 
-let current_linecolorindex () =
+(* let current_linecolorindex () =
   let open Ctypes in
   let c = allocate int 0 in
   Lowlevel.inqlinecolorind c;
-  !@c
-
+  !@c *)
 
 let set_markertype mt = mt |> int_of_markertype |> Lowlevel.setmarkertype
 
-let current_markertype () =
+(* let current_markertype () =
   let open Ctypes in
   let c = allocate int 0 in
   Lowlevel.inqmarkertype c;
-  markertype_of_int !@c
-
+  markertype_of_int !@c *)
 
 (** [set_markersize ms] specify the marker size for polymarkers.
 
@@ -314,12 +308,11 @@ let set_markercolorindex = function
   | c -> failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int c
 
 
-let current_markercolorindex () =
+(* let current_markercolorindex () =
   let open Ctypes in
   let c = allocate int 0 in
   Lowlevel.inqmarkercolorind c;
-  !@c
-
+  !@c *)
 
 (* TODO: make sure to reset linetype linewidth coloridx to the original values *)
 

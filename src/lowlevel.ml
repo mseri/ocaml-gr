@@ -117,16 +117,21 @@ let gridit =
 
 
 let setlinetype = foreign "gr_setlinetype" (int @-> returning void)
-let inqlinetype = foreign "gr_inqlinetype" (ptr int @-> returning void)
+
+(* let inqlinetype = foreign "gr_inqlinetype" (ptr int @-> returning void) *)
 let setlinewidth = foreign "gr_setlinewidth" (double @-> returning void)
-let inqlinewidth = foreign "gr_inqlinewidth" (ptr double @-> returning void)
+
+(* let inqlinewidth = foreign "gr_inqlinewidth" (ptr double @-> returning void) *)
 let setlinecolorind = foreign "gr_setlinecolorind" (int @-> returning void)
-let inqlinecolorind = foreign "gr_inqlinecolorind" (ptr int @-> returning void)
+
+(* let inqlinecolorind = foreign "gr_inqlinecolorind" (ptr int @-> returning void) *)
 let setmarkertype = foreign "gr_setmarkertype" (int @-> returning void)
-let inqmarkertype = foreign "gr_inqmarkertype" (ptr int @-> returning void)
+
+(* let inqmarkertype = foreign "gr_inqmarkertype" (ptr int @-> returning void) *)
 let setmarkersize = foreign "gr_setmarkersize" (double @-> returning void)
 let setmarkercolorind = foreign "gr_setmarkercolorind" (int @-> returning void)
-let inqmarkercolorind = foreign "gr_inqmarkercolorind" (ptr int @-> returning void)
+
+(* let inqmarkercolorind = foreign "gr_inqmarkercolorind" (ptr int @-> returning void) *)
 let settextfontprec = foreign "gr_settextfontprec" (int @-> int @-> returning void)
 let setcharexpan = foreign "gr_setcharexpan" (double @-> returning void)
 let setcharspace = foreign "gr_setcharspace" (double @-> returning void)
