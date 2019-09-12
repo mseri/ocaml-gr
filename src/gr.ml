@@ -248,6 +248,11 @@ let int_of_scale_options opts =
   List.fold_left (fun acc s -> acc + int_of s) 0 opts
 
 
+type spline_algo =
+  | GeneralizedCrossValidatedSmoothing
+  | InterpolatingNaturalCubic
+  | CubicBSpline
+
 let clearws = Lowlevel.clearws
 let updatews = Lowlevel.updatews
 let set_linetype lt = lt |> int_of_linetype |> Lowlevel.setlinetype
@@ -392,11 +397,6 @@ let cellarray (xmin, xmax) (ymin, ymax) (dimx, dimy) (scol, srow) (ncol, nrow) c
 
 
 (* let gdp = ... (* No idea what this does... *) *)
-
-type spline_algo =
-  | GeneralizedCrossValidatedSmoothing
-  | InterpolatingNaturalCubic
-  | CubicBSpline
 
 (** [spline ?linetype ?linewidth ?coloridx x y m method_t] generates a cubic spline-fit, starting from the first data point and ending at the last data point.
 
