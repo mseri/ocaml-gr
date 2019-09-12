@@ -230,6 +230,28 @@ let markertype_of_int = function
   | d -> failwith @@ "Error when inferring marker type. Got " ^ string_of_int d
 
 
+type scale_options =
+  | OPTION_X_LOG (** Logarithmic X-axis *)
+  | OPTION_Y_LOG (** Logarithmic Y-axis *)
+  | OPTION_Z_LOG (** Logarithmic Z-axis *)
+  | OPTION_FLIP_X (** Flip X-axis *)
+  | OPTION_FLIP_Y (** Flip Y-axis *)
+  | OPTION_FLIP_Z (** Flip Z-axis *)
+
+let int_of_scale_options opts =
+  let int_of = function
+    | OPTION_X_LOG -> 1
+    | OPTION_Y_LOG -> 2
+    | OPTION_Z_LOG -> 4
+    | OPTION_FLIP_X -> 8
+    | OPTION_FLIP_Y -> 16
+    | OPTION_FLIP_Z -> 32
+  in
+  List.fold_left (fun acc s -> acc + int_of s) 0 opts
+
+
+let clearws = Lowlevel.clearws
+let updatews = Lowlevel.updatews
 let set_linetype lt = lt |> int_of_linetype |> Lowlevel.setlinetype
 
 let current_linetype () =
@@ -432,6 +454,47 @@ let gridit _x _y _z (_nx, _ny) = raise Unimplemented
   y: The points in Y direction for the output grid
   z: The interpolated values on the nx x ny grid points
 *)
+
+type tick = float
+
+let tick : float -> float -> tick = Lowlevel.tick
+
+(*
+    [axes ?scale ?linetype ?linewidth ?org:(0,0) ?major:(0,0) ?size:1 x_tick y_tick] draws X and Y coordinate axes with linearly and/or logarithmically spaced tick marks.
+    Tick marks are positioned along each axis so that major tick marks fall on the axes origin (whether visible or not).
+    Major tick marks are labeled with the corresponding data values.
+    Axes are drawn according to the scale of the window.
+
+    Parameters
+        x_tick: The interval between minor tick marks on the X axis.
+        y_tick: The interval between minor tick marks on the Y axis.
+        x_org: The world coordinate of the origin (point of intersection) of the X axis.
+        y_org: The world coordinate of the origin (point of intersection) of the Y axis.
+        major_x: Unitless integer value specifying the number of minor tick intervals between major tick marks on the X axis. Values of 0 or 1 imply no minor ticks. Negative values specify no labels will be drawn for the associated axis.
+        major_y: Unitless integer value specifying the number of minor tick intervals between major tick marks on the Y axis. Values of 0 or 1 imply no minor ticks. Negative values specify no labels will be drawn for the associated axis.
+        tick_size: The length of minor tick marks specified in a normalized device coordinate unit. Major tick marks are twice as long as minor tick marks. A negative value reverses the tick marks on the axes from inward facing to outward facing (or vice versa)
+    *)
+let axes
+    ?scale
+    ?linetype
+    ?linewidth
+    ?coloridx
+    ?(org = 0.0, 0.0)
+    ?(minor = 0, 0)
+    ?(tick_size = -0.01)
+    (x_tick : tick)
+    (y_tick : tick)
+  =
+  Lowlevel.savestate ();
+  Option.iter (fun s -> Lowlevel.setscale (int_of_scale_options s) |> ignore) scale;
+  Option.iter set_linetype linetype;
+  Option.iter set_linewidth linewidth;
+  Option.iter set_linecolorindex coloridx;
+  let x_org, y_org = org in
+  let major_x, major_y = minor in
+  Lowlevel.axes x_tick y_tick x_org y_org major_x major_y tick_size;
+  Lowlevel.restorestate ()
+
 
 (* 
    let settextfontprec = foreign "gr_settextfontprec" (int @-> int @-> returning void)
