@@ -589,7 +589,7 @@ The appearance of a font depends on the text precision value specified.
 STRING, CHARACTER or STROKE precision allows for a greater or lesser realization of the text primitives, for efficiency.
 STRING is the default precision for GR and produces the highest quality output.
 
-XXX: CHARACTER and STROKE precision seem to be not working
+XXX: CHARACTER and STROKE precision seem to be broken (and to break the [axes] command with it...)!
 *)
 let set_text_font_prec ?(precision=STRING) font =
   Lowlevel.settextfontprec (int_of_font font) (int_of_text_precision precision)
