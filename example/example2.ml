@@ -38,16 +38,7 @@ let () =
   setcharheight 0.024;
   settextalign 2 0;
   settextfontprec 101 0;
-  gridit
-    100
-    (captr xd)
-    (captr yd)
-    (captr zd)
-    200
-    200
-    (captr xa)
-    (captr ya)
-    (captr za);
+  gridit 100 (captr xd) (captr yd) (captr zd) 200 200 (captr xa) (captr ya) (captr za);
   let h =
     List.init 20 (fun i -> -0.5 +. (float_of_int i /. 19.0))
     |> Ctypes.(CArray.of_list double)
