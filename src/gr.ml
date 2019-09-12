@@ -583,13 +583,15 @@ let set_markercolorindex = function
   Lowlevel.inqmarkercolorind c;
   !@c *)
 
-(** [set_text_font_prec font precision] specifies the text font and precision for subsequent text output primitives.
+(** [set_text_font_prec ?precision font] specifies the text font and precision for subsequent text output primitives.
 
 The appearance of a font depends on the text precision value specified.
 STRING, CHARACTER or STROKE precision allows for a greater or lesser realization of the text primitives, for efficiency.
 STRING is the default precision for GR and produces the highest quality output.
+
+XXX: CHARACTER and STROKE precision seem to be not working
 *)
-let set_text_font_prec font precision =
+let set_text_font_prec ?(precision=STRING) font =
   Lowlevel.settextfontprec (int_of_font font) (int_of_text_precision precision)
 
 

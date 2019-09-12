@@ -37,7 +37,7 @@ let () =
   set_markertype SOLID_CIRCLE;
   set_char_height 0.024;
   set_text_align (Some CENTER) None;
-  set_text_font_prec TIMES_ROMAN STRING;
+  set_text_font_prec TIMES_ROMAN;
   Lowlevel.gridit
     100
     (captr xd)
