@@ -455,9 +455,7 @@ let gridit _x _y _z (_nx, _ny) = raise Unimplemented
   z: The interpolated values on the nx x ny grid points
 *)
 
-type tick = float
-
-let tick : float -> float -> tick = Lowlevel.tick
+let tick = Lowlevel.tick
 
 (*
     [axes ?scale ?linetype ?linewidth ?org:(0,0) ?major:(0,0) ?size:1 x_tick y_tick] draws X and Y coordinate axes with linearly and/or logarithmically spaced tick marks.
@@ -482,8 +480,8 @@ let axes
     ?(org = 0.0, 0.0)
     ?(minor = 0, 0)
     ?(tick_size = -0.01)
-    (x_tick : tick)
-    (y_tick : tick)
+    x_tick
+    y_tick
   =
   Lowlevel.savestate ();
   Option.iter (fun s -> Lowlevel.setscale (int_of_scale_options s) |> ignore) scale;
