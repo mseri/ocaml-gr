@@ -415,6 +415,7 @@ let int_of_fill_style = function
   | HATCH _ -> 3
 
 
+(** Color Maps, see also {{: https://gr-framework.org/colormaps.html} GR Color Maps} *)
 type color_map =
   | Uniform
   | Temperature
@@ -850,7 +851,7 @@ let gridit _x _y _z (_nx, _ny) = raise Unimplemented
    let inqtextext = foreign "gr_inqtextext" (double @-> double @-> string @-> ptr double @-> ptr double @-> returning void)
 *)
 (*
-    [axes ?scale ?linetype ?linewidth ?org:(0,0) ?major:(0,0) ?size:1 x_tick y_tick] draws X and Y coordinate axes with linearly and/or logarithmically spaced tick marks.
+    [axes ?scale ?linetype ?linewidth ?origin:(0,0) ?major:(0,0) ?size:1 x_tick y_tick] draws X and Y coordinate axes with linearly and/or logarithmically spaced tick marks.
     Tick marks are positioned along each axis so that major tick marks fall on the axes origin (whether visible or not).
     Major tick marks are labeled with the corresponding data values.
     Axes are drawn according to the scale of the window.
@@ -865,23 +866,23 @@ let gridit _x _y _z (_nx, _ny) = raise Unimplemented
         tick_size: The length of minor tick marks specified in a normalized device coordinate unit. Major tick marks are twice as long as minor tick marks. A negative value reverses the tick marks on the axes from inward facing to outward facing (or vice versa)
     *)
 let axes
-    ?scale
+    ?(scale=[])
     ?linetype
     ?linewidth
     ?coloridx
-    ?(org = 0.0, 0.0)
-    ?(minor = 0, 0)
+    ?(origin = 0.0, 0.0)
+    ?(major = 0, 0)
     ?(tick_size = -0.01)
     x_tick
     y_tick
   =
   Lowlevel.savestate ();
-  Option.iter (fun s -> Lowlevel.setscale (int_of_scale_options s) |> ignore) scale;
+  if scale <> [] then Lowlevel.setscale (int_of_scale_options scale) |> ignore;
   Option.iter set_linetype linetype;
   Option.iter set_linewidth linewidth;
   Option.iter set_linecolorindex coloridx;
-  let x_org, y_org = org in
-  let major_x, major_y = minor in
+  let x_org, y_org = origin in
+  let major_x, major_y = major in
   Lowlevel.axes x_tick y_tick x_org y_org major_x major_y tick_size;
   Lowlevel.restorestate ()
 
