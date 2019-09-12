@@ -13,7 +13,9 @@
  (synopsis "OCaml bindings to the GR plotting library")
  (description "OCaml bindings to the GR plotting library")
  (depends
+  (ocaml (>= 4.06))
   (dune (> 1.11))
   (ctypes (>= 0.15))
   (ctypes-foreign (>= 0.15))
-  (base-unix :with-test)))
+  (base-unix :with-test)
+  (stdcompat (>= 9))))

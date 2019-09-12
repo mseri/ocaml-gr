@@ -1,3 +1,4 @@
+open Stdcompat
 module Lowlevel = Lowlevel
 
 exception Unimplemented
