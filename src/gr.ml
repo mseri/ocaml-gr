@@ -395,10 +395,16 @@ let int_of_text_valign = function
 
 
 (** Pattern style, see also {{: https://gr-framework.org/patterns.html} GR Fill Patterns and Hatches}  *)
-type pattern_style
+type pattern_style = int
+
+let pattern_style n =
+  if n > 0 && n < 109 then n else failwith "pattern_style out of range"
+
 
 (** Hatch style, see also {{: https://gr-framework.org/patterns.html} GR Fill Patterns and Hatches}  *)
-type hatch_style
+type hatch_style = int
+
+let hatch_style n = if n > 1 && n < 11 then n else failwith "hatch_style out of range"
 
 type fill_style =
   | HOLLOW (** No filling. Just draw the bounding polyline *)
@@ -678,10 +684,8 @@ The default interior style is HOLLOW.
 let set_fill_interior_style style =
   Lowlevel.setfillintstyle (int_of_fill_style style);
   match style with
-  | PATTERN _pat ->
-    raise Unimplemented (* Lowlevel.setfillstyle (int_of_pattern_style pat) *)
-  | HATCH _hat ->
-    raise Unimplemented (* Lowlevel.setfillstyle (int_of_hatch_style hat) *)
+  | PATTERN pat -> Lowlevel.setfillstyle pat
+  | HATCH hat -> Lowlevel.setfillstyle hat
   | _ -> ()
 
 
@@ -1001,6 +1005,7 @@ let surface ?(options = LINES) x y z =
     Ctypes.(bigarray_start genarray z)
     (int_of_surface_options options)
 
+
 (** [contour ?major_h x y h z] sraw contours of a three-dimensional data set whose values are specified over a rectangular mesh.
 Contour lines may optionally be labeled.
 
@@ -1016,18 +1021,13 @@ Parameters
         major_h: Directs GR to label contour lines. For example, a value of 3 would label every third line. A value of 1 will label every line. A value of 0 produces no labels. To produce colored contour lines, add an offset of 1000 to major_h
 
  *)
-let contour ?(major_h=0) x y h z = 
+let contour ?(major_h = 0) x y h z =
   (* TODO: validate z *)
   let nx, x = Lowlevel.get_size_and_pointer x in
   let ny, y = Lowlevel.get_size_and_pointer y in
   let nh, h = Lowlevel.get_size_and_pointer h in
-    Lowlevel.contour
-    nx
-    ny
-    nh
-    x y h
-    Ctypes.(bigarray_start genarray z)
-    major_h
+  Lowlevel.contour nx ny nh x y h Ctypes.(bigarray_start genarray z) major_h
+
 
 (*
    let grid = foreign "gr_grid" (double @-> double @-> double @-> double @-> int @-> int @-> returning void)
