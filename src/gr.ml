@@ -517,6 +517,25 @@ let int_of_color_map = function
   | Magma -> 47
 
 
+type surface_options =
+  | LINES (** Use X Y polylines to denote the surface *)
+  | MESH (** Use a wire grid to denote the surface *)
+  | FILLED_MESH (** Applies an opaque grid to the surface *)
+  | Z_SHADED_MESH (** Applies Z-value shading to the surface *)
+  | COLORED_MESH (** Applies a colored grid to the surface *)
+  | CELL_ARRAY (** Applies a grid of individually-colored cells to the surface *)
+  | SHADED_MESH (** Applies light source shading to the 3-D surface *)
+
+let int_of_surface_options = function
+  | LINES -> 0
+  | MESH -> 1
+  | FILLED_MESH -> 2
+  | Z_SHADED_MESH -> 3
+  | COLORED_MESH -> 4
+  | CELL_ARRAY -> 5
+  | SHADED_MESH -> 6
+
+
 let clearws = Lowlevel.clearws
 let updatews = Lowlevel.updatews
 let set_linetype lt = lt |> int_of_linetype |> Lowlevel.setlinetype
@@ -591,7 +610,7 @@ STRING is the default precision for GR and produces the highest quality output.
 
 XXX: CHARACTER and STROKE precision seem to be broken (and to break the [axes] command with it...)!
 *)
-let set_text_font_prec ?(precision=STRING) font =
+let set_text_font_prec ?(precision = STRING) font =
   Lowlevel.settextfontprec (int_of_font font) (int_of_text_precision precision)
 
 
@@ -821,14 +840,31 @@ Parameters
         nx: The number of points in X direction for the output grid
         ny: The number of points in Y direction for the output grid
 
- *)
-let gridit _x _y _z (_nx, _ny) = raise Unimplemented
-
-(* Will return 
+Returns the tuple (x, y, z) with
+ 
   x: The points in X direction for the output grid
   y: The points in Y direction for the output grid
   z: The interpolated values on the nx x ny grid points
-*)
+ *)
+let gridit x y z (nx, ny) =
+  let x' = Bigarray.(Genarray.create float64 c_layout [| nx |]) in
+  let y' = Bigarray.(Genarray.create float64 c_layout [| ny |]) in
+  let z' = Bigarray.(Genarray.create float64 c_layout [| nx * ny |]) in
+  let n, x, y = Lowlevel.get_size_and_pointers x y in
+  let z = Ctypes.(bigarray_start genarray z) in
+  (* TODO: Check size of z... *)
+  Lowlevel.gridit
+    n
+    x
+    y
+    z
+    nx
+    ny
+    Ctypes.(bigarray_start genarray x')
+    Ctypes.(bigarray_start genarray y')
+    Ctypes.(bigarray_start genarray z');
+  x', y', z'
+
 
 (*
    let setwindow = foreign "gr_setwindow" (double @-> double @-> double @-> double @-> returning void)
@@ -852,8 +888,8 @@ let gridit _x _y _z (_nx, _ny) = raise Unimplemented
    let textext = foreign "gr_textext" (double @-> double @-> string @-> returning int)
    let inqtextext = foreign "gr_inqtextext" (double @-> double @-> string @-> ptr double @-> ptr double @-> returning void)
 *)
-(*
-    [axes ?scale ?linetype ?linewidth ?origin:(0,0) ?major:(0,0) ?size:1 x_tick y_tick] draws X and Y coordinate axes with linearly and/or logarithmically spaced tick marks.
+
+(** [axes ?scale ?linetype ?linewidth ?origin:(0,0) ?major:(0,0) ?size:1 x_tick y_tick] draws X and Y coordinate axes with linearly and/or logarithmically spaced tick marks.
     Tick marks are positioned along each axis so that major tick marks fall on the axes origin (whether visible or not).
     Major tick marks are labeled with the corresponding data values.
     Axes are drawn according to the scale of the window.
@@ -868,7 +904,7 @@ let gridit _x _y _z (_nx, _ny) = raise Unimplemented
         tick_size: The length of minor tick marks specified in a normalized device coordinate unit. Major tick marks are twice as long as minor tick marks. A negative value reverses the tick marks on the axes from inward facing to outward facing (or vice versa)
     *)
 let axes
-    ?(scale=[])
+    ?(scale = [])
     ?linetype
     ?linewidth
     ?coloridx
@@ -889,11 +925,111 @@ let axes
   Lowlevel.restorestate ()
 
 
+(** [axeslabels] Create axes in the current workspace and supply a custom function for changing the behaviour of the tick labels.
+
+Similar to [axes] but allows more fine-grained control over tick labels and text positioning by supplying callback functions.
+Within the callback function you can use normal GR text primitives for performing any manipulations on the label text.
+
+See [axes] for more details on drawing axes.
+
+Parameters
+
+        x_tick: The interval between minor tick marks on the X axis.
+        y_tick: The interval between minor tick marks on the Y axis.
+        x_org: The world coordinate of the origin (point of intersection) of the X axis.
+        y_org: The world coordinate of the origin (point of intersection) of the Y axis.
+        major_x: Unitless integer value specifying the number of minor tick intervals between major tick marks on the X axis. Values of 0 or 1 imply no minor ticks. Negative values specify no labels will be drawn for the associated axis.
+        major_y: Unitless integer value specifying the number of minor tick intervals between major tick marks on the Y axis. Values of 0 or 1 imply no minor ticks. Negative values specify no labels will be drawn for the associated axis.
+        tick_size: The length of minor tick marks specified in a normalized device coordinate unit. Major tick marks are twice as long as minor tick marks. A negative value reverses the tick marks on the axes from inward facing to outward facing (or vice versa).
+        fpx: Function pointer to a function that returns a label for a given tick on the X axis. The callback function should have the following arguments:
+          x: NDC of the label in X direction.
+          y: NDC of the label in Y direction.
+          svalue: Internal string representation of the text drawn by GR at (x,y).
+          value: Floating point representation of the label drawn at (x,y).
+        fpy: Exactly same as the fpx above, but for the the Y axis.
+
+ *)
+let axes_labels
+    ?(scale = [])
+    ?linetype
+    ?linewidth
+    ?coloridx
+    ?(origin = 0.0, 0.0)
+    ?(major = 0, 0)
+    ?(tick_size = -0.01)
+    (fpx : float -> float -> string -> float -> unit)
+    (fpy : float -> float -> string -> float -> unit)
+    x_tick
+    y_tick
+  =
+  Lowlevel.savestate ();
+  if scale <> [] then Lowlevel.setscale (int_of_scale_options scale) |> ignore;
+  Option.iter set_linetype linetype;
+  Option.iter set_linewidth linewidth;
+  Option.iter set_linecolorindex coloridx;
+  let x_org, y_org = origin in
+  let major_x, major_y = major in
+  Lowlevel.axeslbl x_tick y_tick x_org y_org major_x major_y tick_size fpx fpy;
+  Lowlevel.restorestate ()
+
+
+(** [surface x y z ?option] draws a three-dimensional surface plot for the given data points.
+
+x and y define a grid.
+z is a singly dimensioned array containing at least nx * ny data points.
+z describes the surface height at each point on the grid.
+Data is ordered as shown in the following table:
+
+Parameters
+
+        nx: The number of points along the X axis
+        ny: The number of points along the Y axis
+        px: A pointer to the X coordinates
+        py: A pointer to the Y coordinates
+        pz: A pointer to the Z coordinates
+        option: Surface display option (see table)
+*)
+let surface ?(options = LINES) x y z =
+  let nx, x = Lowlevel.get_size_and_pointer x in
+  let ny, y = Lowlevel.get_size_and_pointer y in
+  (* TODO: check size of z *)
+  Lowlevel.surface
+    nx
+    ny
+    x
+    y
+    Ctypes.(bigarray_start genarray z)
+    (int_of_surface_options options)
+
+(** [contour ?major_h x y h z] sraw contours of a three-dimensional data set whose values are specified over a rectangular mesh.
+Contour lines may optionally be labeled.
+
+Parameters
+
+        nx: The number of points along the X axis
+        ny: The number of points along the Y axis
+        nh: The number of height values
+        px: A pointer to the X coordinates
+        py: A pointer to the Y coordinates
+        h: A pointer to the height values
+        pz: A pointer to the Z coordinates
+        major_h: Directs GR to label contour lines. For example, a value of 3 would label every third line. A value of 1 will label every line. A value of 0 produces no labels. To produce colored contour lines, add an offset of 1000 to major_h
+
+ *)
+let contour ?(major_h=0) x y h z = 
+  (* TODO: validate z *)
+  let nx, x = Lowlevel.get_size_and_pointer x in
+  let ny, y = Lowlevel.get_size_and_pointer y in
+  let nh, h = Lowlevel.get_size_and_pointer h in
+    Lowlevel.contour
+    nx
+    ny
+    nh
+    x y h
+    Ctypes.(bigarray_start genarray z)
+    major_h
+
 (*
-   (* let axeslbl = foreign "gr_axeslbl" (double @-> double @-> double @-> double @-> int @-> int @-> double @-> 
-                        ptr (double @-> double @-> const char* @-> double @-> returning void) @-> 
-                        ptr (double @-> double @-> const char* @-> double @-> returning void) @-> 
-                        returning void) *)
    let grid = foreign "gr_grid" (double @-> double @-> double @-> double @-> int @-> int @-> returning void)
    let grid3d = foreign "gr_grid3d" (double @-> double @-> double @-> double @-> double @-> double @-> int @-> int @-> int @-> returning void)
    let verrorbars = foreign "gr_verrorbars" (int @-> ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
@@ -902,8 +1038,6 @@ let axes
    let polymarker3d = foreign "gr_polymarker3d" (int @-> ptr double @-> ptr double @-> ptr double @-> returning void)
    let axes3d = foreign "gr_axes3d" (double @-> double @-> double @-> double @-> double @-> double @-> int @-> int @-> int @-> double @-> returning void)
    let titles3d = foreign "gr_titles3d" (string @-> string @-> string @-> returning void)
-   let surface = foreign "gr_surface" (int @-> int @-> ptr double @-> ptr double @-> ptr double @-> int @-> returning void)
-   let contour = foreign "gr_contour" (int @-> int @-> int @-> ptr double @-> ptr double @-> ptr double @-> ptr double @-> int @-> returning void)
    let contourf = foreign "gr_contourf" (int @-> int @-> int @-> ptr double @-> ptr double @-> ptr double @-> ptr double @-> int @-> returning void)
    let tricontour = foreign "gr_tricontour" (int @-> ptr double @-> ptr double @-> ptr double @-> int @-> ptr double @-> returning void)
    let hexbin = foreign "gr_hexbin" (int @-> ptr double @-> ptr double @-> int @-> returning int)

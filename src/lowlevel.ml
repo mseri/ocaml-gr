@@ -250,10 +250,21 @@ let axes =
     @-> returning void)
 
 
-(* let axeslbl = foreign "gr_axeslbl" (double @-> double @-> double @-> double @-> int @-> int @-> double @-> 
-                        ptr (double @-> double @-> const char* @-> double @-> returning void) @-> 
-                        ptr (double @-> double @-> const char* @-> double @-> returning void) @-> 
-                        returning void) *)
+let axeslbl =
+  foreign
+    "gr_axeslbl"
+    (double
+    @-> double
+    @-> double
+    @-> double
+    @-> int
+    @-> int
+    @-> double
+    @-> funptr (double @-> double @-> string @-> double @-> returning void)
+    @-> funptr (double @-> double @-> string @-> double @-> returning void)
+    @-> returning void)
+
+
 let grid =
   foreign
     "gr_grid"
@@ -663,3 +674,16 @@ let get_size_and_pointers x y =
   let x' = Ctypes.(bigarray_start genarray x) in
   let y' = Ctypes.(bigarray_start genarray y) in
   n, x', y'
+
+
+let get_size_and_pointer x =
+  let xd = Bigarray.Genarray.dims x in
+  let n =
+    match xd with
+    | [| lx |] -> lx
+    | [| 1; lx |] -> lx
+    | [| lx; 1 |] -> lx
+    | _ -> raise @@ Invalid_argument "Array of invalid dimension"
+  in
+  let x' = Ctypes.(bigarray_start genarray x) in
+  n, x'
