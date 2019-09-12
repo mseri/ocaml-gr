@@ -1,8 +1,18 @@
+(** {0: OCaml Bindings for the GR Framework} 
+
+GR is essentially based on an implementation of a Graphical Kernel System (GKS) and OpenGL. As a self-contained system it can quickly and easily be integrated into existing applications.
+
+The GR framework can be used in imperative programming systems or integrated into modern object-oriented systems, in particular those based on GUI toolkits.
+GR is characterized by its high interoperability and can be used with modern web technologies and mobile devices.
+The GR framework is especially suitable for real-time environments.
+*)
+
 open Stdcompat
 module Lowlevel = Lowlevel
 
 exception Unimplemented
 
+(** Available workstation types, see also {{: (** Available line types, see also {{: https://gr-framework.org/workstations.html} GR Workstation Types} *)} GR Line Types} *)
 type workstation_type =
   | WISS (** Workstation Independent Segment ptr Storage *)
   | WinGDI (** Windows ptr GDI *)
@@ -66,6 +76,7 @@ let int_of_workstation_type = function
   | OGL -> 420
 
 
+(** Available line types, see also {{: https://gr-framework.org/linetypes.html} GR Line Types} *)
 type linetype =
   | SOLID (** Solid line *)
   | DASHED (** Dashed line *)
@@ -110,6 +121,7 @@ let int_of_linetype = function
   | -8 -> TRIPLE_DOT
   | d -> failwith @@ "Error when inferring line type. Got " ^ string_of_int d *)
 
+(** Available marker types, see also {{: https://gr-framework.org/markertypes.html} GR Marker Types} *)
 type markertype =
   | DOT (** Smallest displayable dot *)
   | PLUS (** Plus sign *)
@@ -254,6 +266,256 @@ type spline_algo =
   | InterpolatingNaturalCubic
   | CubicBSpline
 
+let int_of_spline_algo = function
+  | GeneralizedCrossValidatedSmoothing -> 1
+  | InterpolatingNaturalCubic -> 0
+  | CubicBSpline -> -1
+
+
+(** Available fonts, see also {{: https://gr-framework.org/fonts.html} GR Font list} *)
+type font =
+  | TIMES_ROMAN
+  | TIMES_ITALIC
+  | TIMES_BOLD
+  | TIMES_BOLDITALIC
+  | HELVETICA
+  | HELVETICA_OBLIQUE
+  | HELVETICA_BOLD
+  | HELVETICA_BOLDOBLIQUE
+  | COURIER
+  | COURIER_OBLIQUE
+  | COURIER_BOLD
+  | COURIER_BOLDOBLIQUE
+  | SYMBOL
+  | BOOKMAN_LIGHT
+  | BOOKMAN_LIGHTITALIC
+  | BOOKMAN_DEMI
+  | BOOKMAN_DEMIITALIC
+  | NEWCENTURYSCHLBK_ROMAN
+  | NEWCENTURYSCHLBK_ITALIC
+  | NEWCENTURYSCHLBK_BOLD
+  | NEWCENTURYSCHLBK_BOLDITALIC
+  | AVANTGARDE_BOOK
+  | AVANTGARDE_BOOKOBLIQUE
+  | AVANTGARDE_DEMI
+  | AVANTGARDE_DEMIOBLIQUE
+  | PALATINO_ROMAN
+  | PALATINO_ITALIC
+  | PALATINO_BOLD
+  | PALATINO_BOLDITALIC
+  | ZAPFCHANCERY_MEDIUMITALIC
+  | ZAPFDINGBATS
+
+let int_of_font = function
+  | TIMES_ROMAN -> 101
+  | TIMES_ITALIC -> 102
+  | TIMES_BOLD -> 103
+  | TIMES_BOLDITALIC -> 104
+  | HELVETICA -> 105
+  | HELVETICA_OBLIQUE -> 106
+  | HELVETICA_BOLD -> 107
+  | HELVETICA_BOLDOBLIQUE -> 108
+  | COURIER -> 109
+  | COURIER_OBLIQUE -> 110
+  | COURIER_BOLD -> 111
+  | COURIER_BOLDOBLIQUE -> 112
+  | SYMBOL -> 113
+  | BOOKMAN_LIGHT -> 114
+  | BOOKMAN_LIGHTITALIC -> 115
+  | BOOKMAN_DEMI -> 116
+  | BOOKMAN_DEMIITALIC -> 117
+  | NEWCENTURYSCHLBK_ROMAN -> 118
+  | NEWCENTURYSCHLBK_ITALIC -> 119
+  | NEWCENTURYSCHLBK_BOLD -> 120
+  | NEWCENTURYSCHLBK_BOLDITALIC -> 121
+  | AVANTGARDE_BOOK -> 122
+  | AVANTGARDE_BOOKOBLIQUE -> 123
+  | AVANTGARDE_DEMI -> 124
+  | AVANTGARDE_DEMIOBLIQUE -> 125
+  | PALATINO_ROMAN -> 126
+  | PALATINO_ITALIC -> 127
+  | PALATINO_BOLD -> 128
+  | PALATINO_BOLDITALIC -> 129
+  | ZAPFCHANCERY_MEDIUMITALIC -> 130
+  | ZAPFDINGBATS -> 131
+
+
+type text_precision =
+  | STRING (** String precision (higher quality) *)
+  | CHAR (** Character precision (medium quality) *)
+  | STROKE (** Stroke precision (lower quality) *)
+
+let int_of_text_precision = function
+  | STRING -> 0
+  | CHAR -> 1
+  | STROKE -> 2
+
+
+type text_path_direction =
+  | RIGHT (** left-to-right *)
+  | LEFT (** right-to-left *)
+  | UP (** downside-up *)
+  | DOWN (** upside-down *)
+
+let int_of_text_path_direction = function
+  | RIGHT -> 0
+  | LEFT -> 1
+  | UP -> 2
+  | DOWN -> 3
+
+
+type text_halign =
+  | NORMAL
+  | LEFT (** Left justify *)
+  | CENTER (** Center justify *)
+  | RIGHT (** Right justify *)
+
+let int_of_text_halign = function
+  | NORMAL -> 0
+  | LEFT -> 1
+  | CENTER -> 2
+  | RIGHT -> 3
+
+
+type text_valign =
+  | NORMAL
+  | TOP (** Align with the top of the characters *)
+  | CAP (** Aligned with the cap of the characters *)
+  | HALF (** Aligned with the half line of the characters *)
+  | BASE (** Aligned with the base line of the characters *)
+  | BOTTOM (** Aligned with the bottom line of the characters *)
+
+let int_of_text_valign = function
+  | NORMAL -> 0
+  | TOP -> 1
+  | CAP -> 2
+  | HALF -> 3
+  | BASE -> 4
+  | BOTTOM -> 5
+
+
+(** Pattern style, see also {{: https://gr-framework.org/patterns.html} GR Fill Patterns and Hatches}  *)
+type pattern_style
+
+(** Hatch style, see also {{: https://gr-framework.org/patterns.html} GR Fill Patterns and Hatches}  *)
+type hatch_style
+
+type fill_style =
+  | HOLLOW (** No filling. Just draw the bounding polyline *)
+  | SOLID (** Fill the interior of the polygon using the fill color index *)
+  | PATTERN of pattern_style
+      (** Fill the interior of the polygon using the style index as a pattern index *)
+  | HATCH of hatch_style
+      (** Fill the interior of the polygon using the style index as a cross-hatched style *)
+
+let int_of_fill_style = function
+  | HOLLOW -> 0
+  | SOLID -> 1
+  | PATTERN _ -> 2
+  | HATCH _ -> 3
+
+
+type color_map =
+  | Uniform
+  | Temperature
+  | Grayscale
+  | Glowing
+  | Rainbowlike
+  | Geologic
+  | Greenscale
+  | Cyanscale
+  | Bluescale
+  | Magentascale
+  | Redscale
+  | Flame
+  | Brownscale
+  | Pilatus
+  | Autumn
+  | Bone
+  | Cool
+  | Copper
+  | Gray
+  | Hot
+  | Hsv
+  | Jet
+  | Pink
+  | Spectral
+  | Spring
+  | Summer
+  | Winter
+  | Gist_Earth
+  | Gist_Heat
+  | Gist_Ncar
+  | Gist_Rainbow
+  | Gist_Stern
+  | Afmhot
+  | Brg
+  | Bwr
+  | Coolwarm
+  | Cmrmap
+  | Cubehelix
+  | Gnuplot
+  | Gnuplot2
+  | Ocean
+  | Rainbow
+  | Seismic
+  | Terrain
+  | Viridis
+  | Inferno
+  | Plasma
+  | Magma
+
+let int_of_color_map = function
+  | Uniform -> 0
+  | Temperature -> 1
+  | Grayscale -> 2
+  | Glowing -> 3
+  | Rainbowlike -> 4
+  | Geologic -> 5
+  | Greenscale -> 6
+  | Cyanscale -> 7
+  | Bluescale -> 8
+  | Magentascale -> 9
+  | Redscale -> 10
+  | Flame -> 11
+  | Brownscale -> 12
+  | Pilatus -> 13
+  | Autumn -> 14
+  | Bone -> 15
+  | Cool -> 16
+  | Copper -> 17
+  | Gray -> 18
+  | Hot -> 19
+  | Hsv -> 20
+  | Jet -> 21
+  | Pink -> 22
+  | Spectral -> 23
+  | Spring -> 24
+  | Summer -> 25
+  | Winter -> 26
+  | Gist_Earth -> 27
+  | Gist_Heat -> 28
+  | Gist_Ncar -> 29
+  | Gist_Rainbow -> 30
+  | Gist_Stern -> 31
+  | Afmhot -> 32
+  | Brg -> 33
+  | Bwr -> 34
+  | Coolwarm -> 35
+  | Cmrmap -> 36
+  | Cubehelix -> 37
+  | Gnuplot -> 38
+  | Gnuplot2 -> 39
+  | Ocean -> 40
+  | Rainbow -> 41
+  | Seismic -> 42
+  | Terrain -> 43
+  | Viridis -> 44
+  | Inferno -> 45
+  | Plasma -> 46
+  | Magma -> 47
+
+
 let clearws = Lowlevel.clearws
 let updatews = Lowlevel.updatews
 let set_linetype lt = lt |> int_of_linetype |> Lowlevel.setlinetype
@@ -320,7 +582,129 @@ let set_markercolorindex = function
   Lowlevel.inqmarkercolorind c;
   !@c *)
 
-(* TODO: make sure to reset linetype linewidth coloridx to the original values *)
+(** [set_text_font_prec font precision] specifies the text font and precision for subsequent text output primitives.
+
+The appearance of a font depends on the text precision value specified.
+STRING, CHARACTER or STROKE precision allows for a greater or lesser realization of the text primitives, for efficiency.
+STRING is the default precision for GR and produces the highest quality output.
+*)
+let set_text_font_prec font precision =
+  Lowlevel.settextfontprec (int_of_font font) (int_of_text_precision precision)
+
+
+(** [set_char_expand_factor factor] sets the current character expansion factor (width to height ratio).
+
+    This function defines the width of subsequent text output primitives.
+    The expansion factor alters the width of the generated characters, but not their height. The default text expansion factor is 1, or one times the normal width-to-height ratio of the text.
+
+    Parameters
+        factor: Text expansion factor applied to the nominal text width-to-height ratio
+ *)
+let set_char_expand_factor = Lowlevel.setcharexpan
+
+(** [set_text_colorindex color] sets the current text color index.
+
+    This function defines the color of subsequent text output primitives.
+    GR uses the default foreground color (black=1) for the default text color index.
+
+    Parameters
+            color: The text color index (COLOR < 1256)
+*)
+let set_text_colorindex = function
+  | c when c >= 0 && c < 1256 -> Lowlevel.settextcolorind c
+  | c -> failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int c
+
+
+(** [set_char_height height] sets the current character height.
+
+    This function defines the height of subsequent text output primitives.
+    Text height is defined as a percentage of the default window.
+    GR uses the default text height of 0.027 (2.7% of the height of the default window).
+*)
+let set_char_height = Lowlevel.setcharheight
+
+(** [set_char_up (x, y)
+    Set the current character text angle up vector.
+    This function defines the vertical rotation of subsequent text output primitives. The text up vector is initially set to (0, 1), horizontal to the baseline.
+
+    Parameters
+            x: X coordinate of the text up vector
+            y: Y coordinate of the text up vector
+ *)
+let set_char_up (x, y) = Lowlevel.setcharup x y
+
+let set_char_space = Lowlevel.setcharspace
+
+(** [set_text_path direction] defines the current direction in which subsequent text will be drawn. *)
+let set_text_path direction = Lowlevel.settextpath (int_of_text_path_direction direction)
+
+(** [set_text_align horizontal vertical] specifies how the characters in a text primitive will be aligned in horizontal and vertical space.
+The default text alignment indicates horizontal left alignment and vertical baseline alignment.
+*)
+let set_text_align : text_halign option -> text_valign option -> unit =
+ fun horizontal vertical ->
+  let horizontal = Option.value ~default:NORMAL horizontal in
+  let vertical = Option.value ~default:NORMAL vertical in
+  Lowlevel.settextalign (int_of_text_halign horizontal) (int_of_text_valign vertical)
+
+
+(** [set_fill_interior_style style] sets the fill area interior style to be used for fill areas.
+
+This function defines the interior style for subsequent fill area output primitives.
+The default interior style is HOLLOW. 
+*)
+let set_fill_interior_style style =
+  Lowlevel.setfillintstyle (int_of_fill_style style);
+  match style with
+  | PATTERN _pat ->
+    raise Unimplemented (* Lowlevel.setfillstyle (int_of_pattern_style pat) *)
+  | HATCH _hat ->
+    raise Unimplemented (* Lowlevel.setfillstyle (int_of_hatch_style hat) *)
+  | _ -> ()
+
+
+(** [set_fill_colorindex color] sets the current fill area color index.
+
+This function defines the color of subsequent fill area output primitives.
+GR uses the default foreground color (black=1) for the default fill area color index.
+
+Parameters
+            color: The fill area color index (COLOR < 1256)
+*)
+let set_fill_colorindex = function
+  | c when c >= 0 && c < 1256 -> Lowlevel.setfillcolorind c
+  | c -> failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int c
+
+
+(** [set_color_representation index (red, green, blue)] redefines an existing color index representation by specifying an RGB color triplet.
+
+Parameters
+        index: Color index in the range 0 to 1256
+        red: Red intensity in the range 0.0 to 1.0
+        green: Green intensity in the range 0.0 to 1.0
+        blue: Blue intensity in the range 0.0 to 1.0
+
+ *)
+let set_color_representation index (red, green, blue) =
+  if index < 0 || index >= 1256
+  then
+    failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int index;
+  if (red < 0.0 || red > 1.0) || (green < 0.0 || green > 1.0) || blue < 0.0 || blue > 1.0
+  then
+    failwith
+    @@ Printf.sprintf
+         "Color values must be in the range [0.0, 1.0]. Got: (%f, %f, %f)"
+         red
+         green
+         blue;
+  Lowlevel.setcolorrep index red green blue
+
+
+(** [set_colormap cmap] sets the currently used colormap.
+
+    A list of colormaps can be found at: {{: https://gr-framework.org/colormaps.html} GR Colormaps}.
+*)
+let set_colormap cmap = Lowlevel.setcolormap (int_of_color_map cmap)
 
 (**
 [polyline ?linetype ?linewidth ?coloridx x y] draws a polyline using the current line attributes, starting from the first data point and ending at the last data point.
@@ -413,19 +797,13 @@ let cellarray (xmin, xmax) (ymin, ymax) (dimx, dimy) (scol, srow) (ncol, nrow) c
 
     If method is > 0, then a generalized cross-validated smoothing spline is calculated. If method is 0, then an interpolating natural cubic spline is calculated. If method is < -1, then a cubic B-spline is calculated.
 *)
-let spline ?linetype ?linewidth ?coloridx x y m spline_algo =
+let spline ?linetype ?linewidth ?coloridx x y m algo =
   Lowlevel.savestate ();
   Option.iter set_linetype linetype;
   Option.iter set_linewidth linewidth;
   Option.iter set_linecolorindex coloridx;
-  let algo =
-    match spline_algo with
-    | GeneralizedCrossValidatedSmoothing -> 1
-    | InterpolatingNaturalCubic -> 0
-    | CubicBSpline -> -1
-  in
   let n, x', y' = Lowlevel.get_size_and_pointers x y in
-  Lowlevel.spline n x' y' m algo;
+  Lowlevel.spline n x' y' m (int_of_spline_algo algo);
   Lowlevel.restorestate ()
 
 
@@ -449,19 +827,7 @@ let gridit _x _y _z (_nx, _ny) = raise Unimplemented
   z: The interpolated values on the nx x ny grid points
 *)
 
-(* 
-   let settextfontprec = foreign "gr_settextfontprec" (int @-> int @-> returning void)
-   let setcharexpan = foreign "gr_setcharexpan" (double @-> returning void)
-   let setcharspace = foreign "gr_setcharspace" (double @-> returning void)
-   let settextcolorind = foreign "gr_settextcolorind" (int @-> returning void)
-   let setcharheight = foreign "gr_setcharheight" (double @-> returning void)
-   let setcharup = foreign "gr_setcharup" (double @-> double @-> returning void)
-   let settextpath = foreign "gr_settextpath" (int @-> returning void)
-   let settextalign = foreign "gr_settextalign" (int @-> int @-> returning void)
-   let setfillintstyle = foreign "gr_setfillintstyle" (int @-> returning void)
-   let setfillstyle = foreign "gr_setfillstyle" (int @-> returning void)
-   let setfillcolorind = foreign "gr_setfillcolorind" (int @-> returning void)
-   let setcolorrep = foreign "gr_setcolorrep" (int @-> double @-> double @-> double @-> returning void)
+(*
    let setwindow = foreign "gr_setwindow" (double @-> double @-> double @-> double @-> returning void)
    let inqwindow = foreign "gr_inqwindow" (ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
    let setviewport = foreign "gr_setviewport" (double @-> double @-> double @-> double @-> returning void)
@@ -480,7 +846,6 @@ let gridit _x _y _z (_nx, _ny) = raise Unimplemented
    let setspace = foreign "gr_setspace" (double @-> double @-> int @-> int @-> returning int)
    let inqspace = foreign "gr_inqspace" (ptr double @-> ptr double @-> ptr int @-> ptr int @-> returning void)
    let setscale = foreign "gr_setscale" (int @-> returning int)
-   let inqscale = foreign "gr_inqscale" (ptr int @-> returning void)
    let textext = foreign "gr_textext" (double @-> double @-> string @-> returning int)
    let inqtextext = foreign "gr_inqtextext" (double @-> double @-> string @-> ptr double @-> ptr double @-> returning void)
 *)
@@ -539,11 +904,7 @@ let axes
    let contourf = foreign "gr_contourf" (int @-> int @-> int @-> ptr double @-> ptr double @-> ptr double @-> ptr double @-> int @-> returning void)
    let tricontour = foreign "gr_tricontour" (int @-> ptr double @-> ptr double @-> ptr double @-> int @-> ptr double @-> returning void)
    let hexbin = foreign "gr_hexbin" (int @-> ptr double @-> ptr double @-> int @-> returning int)
-   let setcolormap = foreign "gr_setcolormap" (int @-> returning void)
-   let inqcolormap = foreign "gr_inqcolormap" (ptr int @-> returning void)
    let colorbar = foreign "gr_colorbar" (void @-> returning void)
-   let inqcolor = foreign "gr_inqcolor" (int @-> ptr int @-> returning void)
-   let inqcolorfromrgb = foreign "gr_inqcolorfromrgb" (double @-> double @-> double @-> returning int)
    let hsvtorgb = foreign "gr_hsvtorgb" (double @-> double @-> double @-> ptr double@-> ptr double @-> ptr double @-> returning void)
    *)
 
