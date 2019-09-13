@@ -1321,7 +1321,7 @@ Parameters
         major_z: Unitless integer value specifying the number of minor grid lines between major grid lines on the Z axis. Values of 0 or 1 imply no grid lines.
 
 *)
-let grid
+let grid3d
     ?(scale = [])
     ?linetype
     ?linewidth
@@ -1405,25 +1405,174 @@ let tricontour x y z levels =
    let hexbin = foreign "gr_hexbin" (int @-> ptr double @-> ptr double @-> int @-> returning int)
 *)
 
-let show_colorbar () = Lowlevel.colorbar ()
+(** [colorbar ()]  plots a colorbar. *)
+let colorbar () = Lowlevel.colorbar ()
 
 (*
-(* TODO: operates on double pointers - postponed *)
+(* TODO: postponed *)
 let hsvtorgb = foreign "gr_hsvtorgb" (double @-> double @-> double @-> ptr double@-> ptr double @-> ptr double @-> returning void)
 *)
 
 let tick = Lowlevel.tick
 
 (*
+(* TODO: postponed *)
    let validaterange = foreign "gr_validaterange" (double @-> double @-> returning int)
    let adjustlimits = foreign "gr_adjustlimits" (ptr double @-> ptr double @-> returning void)
    let adjustrange = foreign "gr_adjustrange" (ptr double @-> ptr double @-> returning void)
-   let beginprint = foreign "gr_beginprint" (string @-> returning void)
-   let beginprintext = foreign "gr_beginprintext" (string @-> string @-> string @-> string @-> returning void)
-   let endprint = foreign "gr_endprint" (void @-> returning void)
+*)
+
+module Print = struct
+  let validate path =
+    if not
+       @@ List.fold_left
+            (fun acc suffix -> acc || Filename.check_suffix path suffix)
+            false
+            [ ".ps"
+            ; ".eps"
+            ; ".pdf"
+            ; ".bmp"
+            ; ".jpeg"
+            ; ".jpg"
+            ; ".png"
+            ; ".tiff"
+            ; ".tif"
+            ; ".svg"
+            ; ".wmf"
+            ; ".mp4"
+            ; ".webm"
+            ; ".ogg"
+            ]
+    then failwith @@ Printf.sprintf "Unsupported file type: %s" path
+
+
+  (** [beginp path] opens and activates a print device.
+
+This function opens an additional graphics output device.
+The device type is obtained from the given file extension.
+
+Parameters
+
+        pathname: Filename for the print device.
+
+The following file types are supported:
+.ps, .eps 	PostScript
+.pdf 	Portable Document Format
+.bmp 	Windows Bitmap (BMP)
+.jpeg, .jpg 	JPEG image file
+.png 	Portable Network Graphics file (PNG)
+.tiff, .tif 	Tagged Image File Format (TIFF)
+.svg 	Scalable Vector Graphics
+.wmf 	Windows Metafile
+.mp4 	MPEG-4 video file
+.webm 	WebM video file
+.ogg 	Ogg video file
+*)
+  let beginp path =
+    validate path;
+    Lowlevel.beginprint path
+
+
+  let endp = Lowlevel.endprint
+
+  (**
+[beginprint_ext path mode format orientation] opens and activates a print device with the given layout attributes.
+
+The available formats are:
+    A4 	0.210 x 0.297
+    B5 	0.176 x 0.250
+    Letter 	0.216 x 0.279
+    Legal 	0.216 x 0.356
+    Executive 	0.191 x 0.254
+    A0 	0.841 x 1.189
+    A1 	0.594 x 0.841
+    A2 	0.420 x 0.594
+    A3 	0.297 x 0.420
+    A5 	0.148 x 0.210
+    A6 	0.105 x 0.148
+    A7 	0.074 x 0.105
+    A8 	0.052 x 0.074
+    A9 	0.037 x 0.052
+    B0 	1.000 x 1.414
+    B1 	0.500 x 0.707
+    B10 	0.031 x 0.044
+    B2 	0.500 x 0.707
+    B3 	0.353 x 0.500
+    B4 	0.250 x 0.353
+    B6 	0.125 x 0.176
+    B7 	0.088 x 0.125
+    B8 	0.062 x 0.088
+    B9 	0.044 x 0.062
+    C5E 	0.163 x 0.229
+    Comm10E 	0.105 x 0.241
+    DLE 	0.110 x 0.220
+    Folio 	0.210 x 0.330
+    Ledger 	0.432 x 0.279
+    Tabloid 	0.279 x 0.432
+
+Parameters
+
+        pathname: Filename for the print device.
+        mode: Output mode (Color, GrayScale)
+        format: Output format (see table)
+        orientation: Page orientation (Landscape, Portait)
+*)
+  let beginp_extended path mode format orientation =
+    validate path;
+    let mode =
+      match mode with
+      | `Color -> "Color"
+      | `GreyScale -> "GreyScale"
+    in
+    let orientation =
+      match orientation with
+      | `Landscape -> "Landscape"
+      | `Portrait -> "Portrait"
+    in
+    let format =
+      match format with
+      | `A4 -> "A4"
+      | `B5 -> "B5"
+      | `Letter -> "Letter"
+      | `Legal -> "Legal"
+      | `Executive -> "Executive"
+      | `A0 -> "A0"
+      | `A1 -> "A1"
+      | `A2 -> "A2"
+      | `A3 -> "A3"
+      | `A5 -> "A5"
+      | `A6 -> "A6"
+      | `A7 -> "A7"
+      | `A8 -> "A8"
+      | `A9 -> "A9"
+      | `B0 -> "B0"
+      | `B1 -> "B1"
+      | `B10 -> "B10"
+      | `B2 -> "B2"
+      | `B3 -> "B3"
+      | `B4 -> "B4"
+      | `B6 -> "B6"
+      | `B7 -> "B7"
+      | `B8 -> "B8"
+      | `B9 -> "B9"
+      | `C5E -> "C5E"
+      | `Comm10E -> "Comm10E"
+      | `DLE -> "DLE"
+      | `Folio -> "Folio"
+      | `Ledger -> "Ledger"
+      | `Tabloid -> "Tabloid"
+    in
+    Lowlevel.beginprintext path mode format orientation
+end
+
+(*
+   (* TODO: operates on double pointers - postponed *)
    let ndctowc = foreign "gr_ndctowc" (ptr double @-> ptr double @-> returning void)
    let wctondc = foreign "gr_wctondc" (ptr double @-> ptr double @-> returning void)
    let wc3towc = foreign "gr_wc3towc" (ptr double @-> ptr double @-> ptr double @-> returning void)
+*)
+
+(*
    let drawrect = foreign "gr_drawrect" (double @-> double @-> double @-> double @-> returning void)
    let fillrect = foreign "gr_fillrect" (double @-> double @-> double @-> double @-> returning void)
    let drawarc = foreign "gr_drawarc" (double @-> double @-> double @-> double @-> int @-> int @-> returning void)
