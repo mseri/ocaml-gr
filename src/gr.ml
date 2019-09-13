@@ -561,6 +561,41 @@ module Workstation = struct
   let deactivate (W id) = Lowlevel.deactivatews id
   let clear = Lowlevel.clearws
   let update = Lowlevel.updatews
+
+  (** [set_window xmin xmax ymin ymax] sets the area of the NDC viewport that is to be drawn in the workstation window.
+
+  This function defines the rectangular area of the Normalized Device Coordinate space to be output to the device.
+  By default, the workstation transformation will map the range [0,1] x [0,1] in NDC onto the largest square on the workstation’s display surface.
+  The aspect ratio of the workstation window is maintained at 1 to 1.
+
+  Parameters
+        xmin: The left horizontal coordinate of the workstation window (0 <= xmin < xmax).
+        xmax: The right horizontal coordinate of the workstation window (xmin < xmax <= 1).
+        ymin: The bottom vertical coordinate of the workstation window (0 <= ymin < ymax).
+        ymax: The top vertical coordinate of the workstation window (ymin < ymax <= 1).
+  *)
+  let set_window = Lowlevel.setwswindow
+
+  (** [set_viewport xmin xmax ymin ymax] defines the size of the workstation graphics window in meters.
+
+  This function places a workstation window on the display of the specified size in meters.
+  This command allows the workstation window to be accurately sized for a display or hardcopy device, and is often useful for sizing graphs for desktop publishing applications.
+
+  Parameters
+        xmin: The left horizontal coordinate of the workstation window.
+        xmax: The right horizontal coordinate of the workstation window.
+        ymin: The bottom vertical coordinate of the workstation window.
+        ymax: The top vertical coordinate of the workstation window.
+  *)
+  let set_viewport = Lowlevel.setwsviewport
+
+  let copy_segment = Lowlevel.copysegws
+  let redraw_segment = Lowlevel.redrawsegws
+end
+
+module Gks = struct
+  let emergency_close = Lowlevel.emergencyclosegks
+  let update = Lowlevel.updategks
 end
 
 module State = struct
@@ -572,25 +607,80 @@ module State = struct
     Fun.protect ~finally:restore f
 end
 
-(*
-   let setwindow = foreign "gr_setwindow" (double @-> double @-> double @-> double @-> returning void)
-   let inqwindow = foreign "gr_inqwindow" (ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
-   let setviewport = foreign "gr_setviewport" (double @-> double @-> double @-> double @-> returning void)
-   let inqviewport = foreign "gr_inqviewport" (ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
-   let selntran = foreign "gr_selntran" (int @-> returning void)
-   let setclip = foreign "gr_setclip" (int @-> returning void)
-   let setwswindow = foreign "gr_setwswindow" (double @-> double @-> double @-> double @-> returning void)
-   let setwsviewport = foreign "gr_setwsviewport" (double @-> double @-> double @-> double @-> returning void)
-   let createseg = foreign "gr_createseg" (int @-> returning void)
-   let copysegws = foreign "gr_copysegws" (int @-> returning void)
-   let redrawsegws = foreign "gr_redrawsegws" (void @-> returning void)
-   let setsegtran = foreign "gr_setsegtran" (int @-> double @-> double @-> double @-> double @-> double @-> double @-> double @-> returning void)
-   let closeseg = foreign "gr_closeseg" (void @-> returning void)
-   let emergencyclosegks = foreign "gr_emergencyclosegks" (void @-> returning void)
-   let updategks = foreign "gr_updategks" (void @-> returning void)
-   let setspace = foreign "gr_setspace" (double @-> double @-> int @-> int @-> returning int)
-   let inqspace = foreign "gr_inqspace" (ptr double @-> ptr double @-> ptr int @-> ptr int @-> returning void)
+(** [set_window xmin xmax ymin ymax] establishes a window, or rectangular subspace, of world coordinates to be plotted. If you desire log scaling or mirror-imaging of axes, use the gr_setscale function.
+
+This function defines the rectangular portion of the World Coordinate space (WC) to be associated with the specified normalization transformation.
+The WC window and the Normalized Device Coordinates (NDC) viewport define the normalization transformation through which all output primitives are mapped.
+The WC window is mapped onto the rectangular NDC viewport which is, in turn, mapped onto the display surface of the open and active workstation, in device coordinates.
+By default, GR uses the range [0,1] x [0,1], in world coordinates, as the normalization transformation window.
+
+Parameters
+
+        xmin: The left horizontal coordinate of the window (xmin < xmax).
+        xmax: The right horizontal coordinate of the window (xmin < xmax).
+        ymin: The bottom vertical coordinate of the window (ymin < ymax).
+        ymax: The top vertical coordinate of the window (ymin < ymax).
+
 *)
+let set_window = Lowlevel.setwindow
+
+(** [set_viewport xmin xmax ymin ymax] establishes a rectangular subspace of normalized device coordinates.
+
+This function defines the rectangular portion of the Normalized Device Coordinate (NDC) space to be associated with the specified normalization transformation.
+The NDC viewport and World Coordinate (WC) window define the normalization transformation through which all output primitives pass.
+The WC window is mapped onto the rectangular NDC viewport which is, in turn, mapped onto the display surface of the open and active workstation, in device coordinates.
+
+Parameters
+
+        xmin: The left horizontal coordinate of the viewport (0 <= xmin < xmax).
+        xmax: The right horizontal coordinate of the viewport (xmin < xmax <= 1).
+        ymin: The bottom vertical coordinate of the viewport (0 <= ymin < ymax).
+        ymax: The top vertical coordinate of the viewport (ymin < ymax <= 1).
+
+ *)
+let set_viewport = Lowlevel.setviewport
+
+(** [select_transformation transform] selects a predefined transformation from world coordinates to normalized device coordinates.
+
+0 	Selects the identity transformation in which both the window and viewport have the range of 0 to 1
+>= 1 	Selects a normalization transformation as defined by [set_window] and [set_viewport]
+
+Parameters
+        transform: A normalization transformation number.
+*)
+let select_transformation = Lowlevel.selntran
+
+(** [clip indicator] sets the clipping indicator.
+
+    false 	Clipping is off. Data outside of the window will be drawn.
+    true 	Clipping is on. Data outside of the window will not be drawn.
+
+    Parameters
+            indicator: An indicator specifying whether clipping is on or off.
+
+    This function enables or disables clipping of the image drawn in the current window.
+    Clipping is defined as the removal of those portions of the graph that lie outside of the defined viewport. If clipping is on, GR does not draw generated output primitives past the viewport boundaries. If clipping is off, primitives may exceed the viewport boundaries, and they will be drawn to the edge of the workstation window.
+    By default, clipping is on.
+*)
+let clip c = Lowlevel.setclip (if c then 1 else 2)
+
+let create_segment = Lowlevel.createseg
+let set_segment_transform = Lowlevel.setsegtran
+let close_segment = Lowlevel.closeseg
+
+(** [set_space zmin zmax rotation tilt] sets the abstract Z-space used for mapping three-dimensional output primitives into the current world coordinate space.
+
+This function establishes the limits of an abstract Z-axis and defines the angles for rotation and for the viewing angle (tilt) of a simulated three-dimensional graph, used for mapping corresponding output primitives into the current window.
+These settings are used for all subsequent three-dimensional output primitives until other values are specified.
+Angles of rotation and viewing angle must be specified between 0 and 90 degrees.
+
+Parameters
+        zmin: Minimum value for the Z-axis.
+        zmax: Maximum value for the Z-axis.
+        rotation: Angle for the rotation of the X axis, in degrees.
+        tilt: Viewing angle of the Z axis, in degrees.
+*)
+let set_space = Lowlevel.setspace
 
 let set_linetype lt = lt |> int_of_linetype |> Lowlevel.setlinetype
 
