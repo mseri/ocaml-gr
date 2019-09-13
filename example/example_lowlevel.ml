@@ -3,16 +3,13 @@ let get1char () =
   let () =
     Unix.tcsetattr Unix.stdin Unix.TCSADRAIN { termio with Unix.c_icanon = false }
   in
-  let res = input_char stdin in
-  Unix.tcsetattr Unix.stdin Unix.TCSADRAIN termio;
-  res
+  let _ = input_char stdin in
+  Unix.tcsetattr Unix.stdin Unix.TCSADRAIN termio
 
-
-let to_carray typ x = x |> Array.to_list |> Ctypes.CArray.of_list typ
-let captr = Ctypes.CArray.start
 
 let () =
-  (* This could be simplified following the example of https://github.com/jheinen/GR.jl/blob/master/src/jlgr.jl *)
+  let to_carray = Ctypes.(CArray.of_list double) in
+  let captr = Ctypes.CArray.start in
   let xs = List.init 100 (fun _ -> -2.0 +. (4.0 *. Random.float 1.)) in
   let ys = List.init 100 (fun _ -> -2.0 +. (4.0 *. Random.float 1.)) in
   let zs =
@@ -22,15 +19,15 @@ let () =
       xs
       ys
     |> List.rev
+    |> to_carray
   in
-  let xd = Ctypes.(CArray.of_list double xs) in
-  let yd = Ctypes.(CArray.of_list double ys) in
-  let zd = Ctypes.(CArray.of_list double zs) in
+  let xs = to_carray xs in
+  let ys = to_carray ys in
   let xa = Ctypes.(CArray.make double 200) in
   let ya = Ctypes.(CArray.make double 200) in
   let za = Ctypes.(CArray.make double @@ (200 * 200)) in
   let open Gr.Lowlevel in
-  setviewport 0.1 0.95 0.1 0.95;
+  setviewport 0.1 0.95 0.1 0.9;
   setwindow (-2.0) 2.0 (-2.0) 2.0;
   setspace (-0.5) 0.5 0 90 |> ignore;
   setmarkersize 1.0;
@@ -38,18 +35,11 @@ let () =
   setcharheight 0.024;
   settextalign 2 0;
   settextfontprec 101 0;
-  gridit 100 (captr xd) (captr yd) (captr zd) 200 200 (captr xa) (captr ya) (captr za);
-  let h =
-    List.init 20 (fun i -> -0.5 +. (float_of_int i /. 19.0))
-    |> Ctypes.(CArray.of_list double)
-  in
+  gridit 100 (captr xs) (captr ys) (captr zs) 200 200 (captr xa) (captr ya) (captr za);
+  let h = List.init 20 (fun i -> -0.5 +. (float_of_int i /. 19.0)) |> to_carray in
   surface 200 200 (captr xa) (captr ya) (captr za) 5;
-  (* get1char () |> ignore; *)
   contour 200 200 20 (captr xa) (captr ya) (captr h) (captr za) 0;
-  (* get1char () |> ignore; *)
-  polymarker 100 (captr xd) (captr yd);
-  (* get1char () |> ignore; *)
+  polymarker 100 (captr xs) (captr ys);
   axes 0.25 0.25 (-2.0) (-2.0) 2 2 0.01;
-  (* get1char () |> ignore; *)
-  mathtex 0.5 0.91 {|\mbox{Attempt to plot tex stuff, e.g. } \int_0^1\sin(x)|};
-  get1char () |> ignore
+  mathtex 0.5 0.9 {|\mbox{Attempt to plot tex stuff, e.g. } \int_0^1\sin(x)|};
+  get1char ()
