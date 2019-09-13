@@ -1066,6 +1066,16 @@ See the full documentation at {{: https://gr-framework.org/c-gr.html#_CPPv410gr_
 *)
 let tex_text (x, y) text = Lowlevel.textext x y text
 
+(** [math_tex (x, y) tex] generates a character string starting at the given location.
+Strings can be defined to create mathematical symbols and Greek letters using LaTeX syntax.
+
+Parameters
+        x: The X coordinate of the starting position of the text string
+        y: The Y coordinate of the starting position of the text string
+        tex: The TeX text string to be drawn
+ *)
+let math_tex (x, y) tex = Lowlevel.mathtex x y tex
+
 (** [axes ?scale ?linetype ?linewidth ?origin:(0,0) ?major:(0,0) ?size:1 x_tick y_tick] draws X and Y coordinate axes with linearly and/or logarithmically spaced tick marks.
     Tick marks are positioned along each axis so that major tick marks fall on the axes origin (whether visible or not).
     Major tick marks are labeled with the corresponding data values.
@@ -1602,8 +1612,6 @@ end
    let precision = foreign "gr_precision" (void @-> returning double)
    let setregenflags = foreign "gr_setregenflags" (int @-> returning void)
    let inqregenflags = foreign "gr_inqregenflags" (void @-> returning int)
-   let savestate = foreign "gr_savestate" (void @-> returning void)
-   let restorestate = foreign "gr_restorestate" (void @-> returning void)
    let selectcontext = foreign "gr_selectcontext" (int @-> returning void)
    let destroycontext = foreign "gr_destroycontext" (int @-> returning void)
    let uselinespec = foreign "gr_uselinespec" (string @-> returning int)
@@ -1613,33 +1621,6 @@ end
    let gradient = foreign "gr_gradient" (int @-> int @-> ptr double @-> ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
    let quiver = foreign "gr_quiver" (int @-> int @-> ptr double @-> ptr double @-> ptr double @-> ptr double @-> int @-> returning void)
    let interp2 = foreign "gr_interp2" (int @-> int @-> ptr double @-> ptr double @-> ptr double @-> int @-> int @-> ptr double @-> ptr double @-> ptr double @-> int @-> double @-> returning void)
-   (* 
-    (* omitting meta_args_t for now *)
-    DLLEXPORT gr_meta_args_t *gr_newmeta(void);
-    DLLEXPORT void gr_deletemeta(gr_meta_args_t * );
-   DLLEXPORT void gr_meta_args_push_arg(gr_meta_args_t *, const char *, ..);
-   DLLEXPORT void gr_meta_args_push_arg_buf(
-    gr_meta_args_t *, const char *, const void *, int);
-   DLLEXPORT void gr_meta_args_push_kwarg(
-    gr_meta_args_t *, const char *, const char *, .. );
-   DLLEXPORT void gr_meta_args_push_kwarg_buf(
-    gr_meta_args_t *, const char *, const char *, const void *, int);
-   DLLEXPORT void *gr_openmeta(
-    int, const char *, unsigned int, const char *( * )(const char *, unsigned int),
-    int ( * )(const char *, unsigned int, const char * ));
-   DLLEXPORT gr_meta_args_t *gr_recvmeta(const void *p, gr_meta_args_t * );
-   DLLEXPORT int gr_sendmeta(const void *, const char *, .. );
-   DLLEXPORT int gr_sendmeta_buf(const void *, const char *, const void *, int);
-   DLLEXPORT int gr_sendmeta_ref(const void *, const char *, char, const void *, int);
-   DLLEXPORT int gr_sendmeta_args(const void *p, const gr_meta_args_t * );
-   DLLEXPORT void gr_closemeta(const void * );
-   DLLEXPORT int gr_plotmeta(const gr_meta_args_t * );
-   DLLEXPORT int gr_readmeta(gr_meta_args_t *, const char * );
-   #ifndef NDEBUG
-    DLLEXPORT void gr_dumpmeta(const gr_meta_args_t *, FILE * );
-   DLLEXPORT void gr_dumpmeta_json(const gr_meta_args_t *, FILE * );
-   #endif
-  *)
    let version = foreign "gr_version" (void @-> returning (string))
    let shade = foreign "gr_shade" (int @-> ptr double @-> ptr double @-> int @-> int @-> ptr double @-> int @-> int @-> ptr int @-> returning void)
    let shadepoints = foreign "gr_shadepoints" (int @-> ptr double @-> ptr double @-> int @-> int @-> int @-> returning void)
