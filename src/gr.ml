@@ -883,8 +883,25 @@ let polyline ?linetype ?linewidth ?coloridx x y =
       Option.iter set_linetype linetype;
       Option.iter set_linewidth linewidth;
       Option.iter set_linecolorindex coloridx;
-      let n, x', y' = Lowlevel.get_size_and_pointers x y in
-      Lowlevel.polyline n x' y')
+      let n, x, y = Lowlevel.get_size_and_pointers x y in
+      Lowlevel.polyline n x y)
+
+
+(**
+   [polyline3d ?linetype ?linewidth ?coloridx x y z] draws a polyline using the current line attributes, starting from the first data point and ending at the last data point.
+
+   The values for [x], [y] and [z] are in world coordinates.
+   The attributes that control the appearance of a polyline are linetype, linewidth and color index.
+*)
+let polyline3d ?linetype ?linewidth ?coloridx x y z =
+  State.with_sandbox (fun () ->
+      Option.iter set_linetype linetype;
+      Option.iter set_linewidth linewidth;
+      Option.iter set_linecolorindex coloridx;
+      let n, x, y = Lowlevel.get_size_and_pointers x y in
+      let _nz, z = Lowlevel.get_size_and_pointer z in
+      (* TODO: Check z dimension *)
+      Lowlevel.polyline3d n x y z)
 
 
 (**
@@ -898,8 +915,25 @@ let polymarker ?markertype ?markersize ?coloridx x y =
       Option.iter set_markertype markertype;
       Option.iter set_markersize markersize;
       Option.iter set_markercolorindex coloridx;
-      let n, x', y' = Lowlevel.get_size_and_pointers x y in
-      Lowlevel.polymarker n x' y')
+      let n, x, y = Lowlevel.get_size_and_pointers x y in
+      Lowlevel.polymarker n x y)
+
+
+(**
+     [polymarker3d ?markertype ?markersize ?coloridx x y z] draws marker symbols centered at the given data points.
+
+     The values for [x], [y] and [z] are in world coordinates.
+     The attributes that control the appearance of a polyline are markertype, markersize and color index.
+  *)
+let polymarker3d ?markertype ?markersize ?coloridx x y z =
+  State.with_sandbox (fun () ->
+      Option.iter set_markertype markertype;
+      Option.iter set_markersize markersize;
+      Option.iter set_markercolorindex coloridx;
+      let n, x, y = Lowlevel.get_size_and_pointers x y in
+      let _nz, z = Lowlevel.get_size_and_pointer z in
+      (* TODO: Check z dimension *)
+      Lowlevel.polymarker3d n x y z)
 
 
 (** [text x y content] draws a text at position [x], [y] using the current text attributes.
@@ -953,9 +987,8 @@ let cellarray (xmin, xmax) (ymin, ymax) (dimx, dimy) (scol, srow) (ncol, nrow) c
     The attributes that control the appearance of a spline-fit are linetype, linewidth and color index.
 
     Parameters
-            n: The number of points
-            px: The X coordinates
-            py: The Y coordinates
+            x: The X coordinates
+            y: The Y coordinates
             m: The number of points in the polygon to be drawn (m > n)
             method: The smoothing method
 
@@ -974,18 +1007,17 @@ let spline ?linetype ?linewidth ?coloridx x y m algo =
 
       Parameters
 
-          nd: The number of input points
-          xd: The X coordinates of the input points
-          yd: The Y coordinates of the input points
-          zd: The values of the points
+          x: The X coordinates of the input points
+          y: The Y coordinates of the input points
+          z: The values of the points
           nx: The number of points in X direction for the output grid
           ny: The number of points in Y direction for the output grid
 
-      Returns the tuple (x, y, z) with
+      Returns the tuple (x', y', z') with
 
-      x: The points in X direction for the output grid
-      y: The points in Y direction for the output grid
-      z: The interpolated values on the nx x ny grid points
+      x': The points in X direction for the output grid
+      y': The points in Y direction for the output grid
+      z': The interpolated values on the nx x ny grid points
   *)
 let gridit x y z (nx, ny) =
   let x' = Bigarray.(Genarray.create float64 c_layout [| nx |]) in
@@ -1010,10 +1042,29 @@ let gridit x y z (nx, ny) =
   x', y', z'
 
 
-(*
-   let textext = foreign "gr_textext" (double @-> double @-> string @-> returning int)
-   let inqtextext = foreign "gr_inqtextext" (double @-> double @-> string @-> ptr double @-> ptr double @-> returning void)
+(** [tex_text (x, y) text] draws a text at position x, y using the current text attributes.
+Strings can be defined to create basic mathematical expressions and Greek letters.
+
+The values for X and Y are in normalized device coordinates.
+The attributes that control the appearance of text are text font and precision, character expansion factor, character spacing, text color index, character height, character up vector, text path and text alignment.
+
+Parameters
+        x: The X coordinate of starting position of the text string
+        y: The Y coordinate of starting position of the text string
+        text: The text to be drawn
+
+The character string is interpreted to be a simple mathematical formula.
+The following notations apply:
+
+- Subscripts and superscripts: These are indicated by carets (‘^’) and underscores (‘_’). If the sub/superscript contains more than one character, it must be enclosed in curly braces (‘{}’).
+- Fractions are typeset with A ‘/’ B, where A stands for the numerator and B for the denominator.
+
+To include a Greek letter you must specify the corresponding keyword after a backslash (‘') character. The text translator produces uppercase or lowercase Greek letters depending on the case of the keyword. 
+For more sophisticated mathematical formulas, you should use the gr_mathtex function.
+
+See the full documentation at {{: https://gr-framework.org/c-gr.html#_CPPv410gr_textextddPc} GR Documentation for gr_textext}.
 *)
+let tex_text (x, y) text = Lowlevel.textext x y text
 
 (** [axes ?scale ?linetype ?linewidth ?origin:(0,0) ?major:(0,0) ?size:1 x_tick y_tick] draws X and Y coordinate axes with linearly and/or logarithmically spaced tick marks.
     Tick marks are positioned along each axis so that major tick marks fall on the axes origin (whether visible or not).
@@ -1050,7 +1101,7 @@ let axes
       Lowlevel.axes x_tick y_tick x_org y_org major_x major_y tick_size)
 
 
-(** [axeslabels] Create axes in the current workspace and supply a custom function for changing the behaviour of the tick labels.
+(** [axes_labels ?(scale = []) ?linetype ?linewidth ?coloridx ?(origin = 0.0, 0.0) ?(major = 0, 0) ?(tick_size = -0.01) (fpx : float -> float -> string -> float -> unit) (fpy : float -> float -> string -> float -> unit) x_tick y_tick] creates axes in the current workspace and supply a custom function for changing the behaviour of the tick labels.
 
       Similar to [axes] but allows more fine-grained control over tick labels and text positioning by supplying callback functions.
       Within the callback function you can use normal GR text primitives for performing any manipulations on the label text.
@@ -1095,6 +1146,55 @@ let axes_labels
       let x_org, y_org = origin in
       let major_x, major_y = major in
       Lowlevel.axeslbl x_tick y_tick x_org y_org major_x major_y tick_size fpx fpy)
+
+
+(** [axes3d ?scale ?linetype ?linewidth ?origin:(0,0) ?major:(0,0) ?size:1 x_tick y_tick] draws X, Y and Z coordinate axes with linearly and/or logarithmically spaced tick marks.
+    Tick marks are positioned along each axis so that major tick marks fall on the axes origin (whether visible or not).
+    Major tick marks are labeled with the corresponding data values.
+    Axes are drawn according to the scale of the window.
+
+    Parameters
+        x_tick: The interval between minor tick marks on the X axis.
+        y_tick: The interval between minor tick marks on the Y axis.
+        z_tick: The length in world coordinates of the interval between minor grid lines in Z direction. 
+        x_org: The world coordinate of the origin (point of intersection) of the X axis.
+        y_org: The world coordinate of the origin (point of intersection) of the Y axis.
+        z_org: The world coordinate of the origin (point of intersection) of the Z axis. 
+        major_x: Unitless integer value specifying the number of minor tick intervals between major tick marks on the X axis. Values of 0 or 1 imply no minor ticks. Negative values specify no labels will be drawn for the associated axis.
+        major_y: Unitless integer value specifying the number of minor tick intervals between major tick marks on the Y axis. Values of 0 or 1 imply no minor ticks. Negative values specify no labels will be drawn for the associated axis.
+        major_z: Unitless integer value specifying the number of minor grid lines between major grid lines on the Z axis. Values of 0 or 1 imply no grid lines. 
+        tick_size: The length of minor tick marks specified in a normalized device coordinate unit. Major tick marks are twice as long as minor tick marks. A negative value reverses the tick marks on the axes from inward facing to outward facing (or vice versa)
+*)
+let axes3d
+    ?(scale = [])
+    ?linetype
+    ?linewidth
+    ?coloridx
+    ?(origin = 0.0, 0.0, 0.0)
+    ?(major = 0, 0, 0)
+    ?(tick_size = -0.01)
+    x_tick
+    y_tick
+    z_tick
+  =
+  State.with_sandbox (fun () ->
+      if scale <> [] then set_scale scale |> ignore;
+      Option.iter set_linetype linetype;
+      Option.iter set_linewidth linewidth;
+      Option.iter set_linecolorindex coloridx;
+      let x_org, y_org, z_org = origin in
+      let major_x, major_y, major_z = major in
+      Lowlevel.axes3d
+        x_tick
+        y_tick
+        z_tick
+        x_org
+        y_org
+        z_org
+        major_x
+        major_y
+        major_z
+        tick_size)
 
 
 (** [surface x y z ?option] draws a three-dimensional surface plot for the given data points.
@@ -1148,24 +1248,169 @@ let contour ?(major_h = 0) x y h z =
   let nx, x = Lowlevel.get_size_and_pointer x in
   let ny, y = Lowlevel.get_size_and_pointer y in
   let nh, h = Lowlevel.get_size_and_pointer h in
-  Lowlevel.contour nx ny nh x y h Ctypes.(bigarray_start genarray z) major_h
+  let _nz, z = Lowlevel.get_size_and_pointer z in
+  Lowlevel.contour nx ny nh x y h z major_h
 
+
+(** [contourf ?(major_h = 0) x y h z] draws filled contour plot of a three-dimensional data set whose values are specified over a rectangular mesh.
+
+Parameters
+        px: A pointer to the X coordinates
+        py: A pointer to the Y coordinates
+        h: A pointer to the height values. If NULL, use nh evenly distributed height values between minimum and maximum Z value.
+        major_h: Directs GR to label contour lines. For example, a value of 3 would label every third line. A value of 1 will label every line. A value of 0 produces no labels. To produce colored contour lines, add an offset of 1000 to major_h
+
+ *)
+let contourf ?(major_h = 0) x y h z =
+  (* TODO: validate z *)
+  let nx, x = Lowlevel.get_size_and_pointer x in
+  let ny, y = Lowlevel.get_size_and_pointer y in
+  let nh, h = Lowlevel.get_size_and_pointer h in
+  let _nz, z = Lowlevel.get_size_and_pointer z in
+  Lowlevel.contourf nx ny nh x y h z major_h
+
+
+(** [grid ?scale ?linetype ?linewidth ?origin:(0,0) ?major:(0,0) x_tick y_tick] draws a linear and/or logarithmic grid.
+
+Major grid lines correspond to the axes origin and major tick marks whether visible or not. Minor grid lines are drawn at points equal to minor tick marks. Major grid lines are drawn using black lines and minor grid lines are drawn using gray lines.
+
+Parameters
+
+        x_tick: The length in world coordinates of the interval between minor grid lines in X direction.
+        y_tick: The length in world coordinates of the interval between minor grid lines in Y direction.
+        x_org: The world coordinate of the origin (point of intersection) of the X axis.
+        y_org: The world coordinate of the origin (point of intersection) of the Y axis.
+        major_x: Unitless integer value specifying the number of minor grid lines between major grid lines on the X axis. Values of 0 or 1 imply no grid lines.
+        major_y: Unitless integer value specifying the number of minor grid lines between major grid lines on the Y axis. Values of 0 or 1 imply no grid lines.
+
+*)
+let grid
+    ?(scale = [])
+    ?linetype
+    ?linewidth
+    ?coloridx
+    ?(origin = 0.0, 0.0)
+    ?(major = 0, 0)
+    x_tick
+    y_tick
+  =
+  State.with_sandbox (fun () ->
+      if scale <> [] then set_scale scale |> ignore;
+      Option.iter set_linetype linetype;
+      Option.iter set_linewidth linewidth;
+      Option.iter set_linecolorindex coloridx;
+      let x_org, y_org = origin in
+      let major_x, major_y = major in
+      Lowlevel.grid x_tick y_tick x_org y_org major_x major_y)
+
+
+(** [grid ?scale ?linetype ?linewidth ?origin:(0,0,0) ?major:(0,0,0) x_tick y_tick z_tick] draws a linear and/or logarithmic grid.
+
+Major grid lines correspond to the axes origin and major tick marks whether visible or not. Minor grid lines are drawn at points equal to minor tick marks. Major grid lines are drawn using black lines and minor grid lines are drawn using gray lines.
+
+Parameters
+
+        x_tick: The length in world coordinates of the interval between minor grid lines in X direction.
+        y_tick: The length in world coordinates of the interval between minor grid lines in Y direction.
+        z_tick: The length in world coordinates of the interval between minor grid lines in Z direction. 
+        x_org: The world coordinate of the origin (point of intersection) of the X axis.
+        y_org: The world coordinate of the origin (point of intersection) of the Y axis.
+        z_org: The world coordinate of the origin (point of intersection) of the Z axis. 
+        major_x: Unitless integer value specifying the number of minor grid lines between major grid lines on the X axis. Values of 0 or 1 imply no grid lines.
+        major_y: Unitless integer value specifying the number of minor grid lines between major grid lines on the Y axis. Values of 0 or 1 imply no grid lines.
+        major_z: Unitless integer value specifying the number of minor grid lines between major grid lines on the Z axis. Values of 0 or 1 imply no grid lines.
+
+*)
+let grid
+    ?(scale = [])
+    ?linetype
+    ?linewidth
+    ?coloridx
+    ?(origin = 0.0, 0.0, 0.0)
+    ?(major = 0, 0, 0)
+    x_tick
+    y_tick
+    z_tick
+  =
+  State.with_sandbox (fun () ->
+      if scale <> [] then set_scale scale |> ignore;
+      Option.iter set_linetype linetype;
+      Option.iter set_linewidth linewidth;
+      Option.iter set_linecolorindex coloridx;
+      let x_org, y_org, z_org = origin in
+      let major_x, major_y, major_z = major in
+      Lowlevel.grid3d x_tick y_tick z_tick x_org y_org z_org major_x major_y major_z)
+
+
+(** [vertical_errorbars x y el eu] draws a standard vertical error bar graph.
+
+Parameters
+        px: A pointer to the X coordinates
+        py: A pointer to the Y coordinates
+        el: A pointer to the absolute values of the lower error bar data
+        eu: A pointer to the absolute values of the upper error bar data
+*)
+let vertical_errorbars x y el eu =
+  let n, x, y = Lowlevel.get_size_and_pointers x y in
+  let ne, el, eu = Lowlevel.get_size_and_pointers el eu in
+  if n <> ne
+  then
+    failwith @@ Printf.sprintf "Expected arrays of the same dimensions. Got: %d, %d" n ne;
+  Lowlevel.verrorbars n x y el eu
+
+
+(** [horizontal_errorbars x y el eu] draws a standard horizontal error bar graph.
+
+Parameters
+        px: A pointer to the X coordinates
+        py: A pointer to the Y coordinates
+        el: A pointer to the absolute values of the lower error bar data
+        eu: A pointer to the absolute values of the upper error bar data
+*)
+let horizontal_errorbars x y el eu =
+  let n, x, y = Lowlevel.get_size_and_pointers x y in
+  let ne, el, eu = Lowlevel.get_size_and_pointers el eu in
+  if n <> ne
+  then
+    failwith @@ Printf.sprintf "Expected arrays of the same dimensions. Got: %d, %d" n ne;
+  Lowlevel.herrorbars n x y el eu
+
+
+(** [titles3d x_title y_title z_title] displays axis titles just outside of their respective axes.
+
+    Parameters
+            x_title: The text to be displayed on the X axis
+            y_title: The text to be displayed on the Y axis
+            z_title: The text to be displayed on the Z axis
+*)
+let titles3d = Lowlevel.titles3d
+
+(** [tricontour x y z levels] draws a contour plot for the given triangle mesh.
+
+Parameters
+        x: A pointer to the X coordinates
+        y: A pointer to the Y coordinates
+        z: A pointer to the Z coordinates
+        levels: A pointer to the contour levels
+ *)
+let tricontour x y z levels =
+  let nx, x = Lowlevel.get_size_and_pointer x in
+  let _ny, y = Lowlevel.get_size_and_pointer y in
+  let _nz, z = Lowlevel.get_size_and_pointer z in
+  let nlevels, levels = Lowlevel.get_size_and_pointer levels in
+  Lowlevel.tricontour nx x y z nlevels levels
+
+
+(* (* TODO: I don't know what this function does... *)
+   let hexbin = foreign "gr_hexbin" (int @-> ptr double @-> ptr double @-> int @-> returning int)
+*)
+
+let show_colorbar () = Lowlevel.colorbar ()
 
 (*
-   let grid = foreign "gr_grid" (double @-> double @-> double @-> double @-> int @-> int @-> returning void)
-   let grid3d = foreign "gr_grid3d" (double @-> double @-> double @-> double @-> double @-> double @-> int @-> int @-> int @-> returning void)
-   let verrorbars = foreign "gr_verrorbars" (int @-> ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
-   let herrorbars = foreign "gr_herrorbars" (int @-> ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
-   let polyline3d = foreign "gr_polyline3d" (int @-> ptr double @-> ptr double @-> ptr double @-> returning void)
-   let polymarker3d = foreign "gr_polymarker3d" (int @-> ptr double @-> ptr double @-> ptr double @-> returning void)
-   let axes3d = foreign "gr_axes3d" (double @-> double @-> double @-> double @-> double @-> double @-> int @-> int @-> int @-> double @-> returning void)
-   let titles3d = foreign "gr_titles3d" (string @-> string @-> string @-> returning void)
-   let contourf = foreign "gr_contourf" (int @-> int @-> int @-> ptr double @-> ptr double @-> ptr double @-> ptr double @-> int @-> returning void)
-   let tricontour = foreign "gr_tricontour" (int @-> ptr double @-> ptr double @-> ptr double @-> int @-> ptr double @-> returning void)
-   let hexbin = foreign "gr_hexbin" (int @-> ptr double @-> ptr double @-> int @-> returning int)
-   let colorbar = foreign "gr_colorbar" (void @-> returning void)
-   let hsvtorgb = foreign "gr_hsvtorgb" (double @-> double @-> double @-> ptr double@-> ptr double @-> ptr double @-> returning void)
-   *)
+(* TODO: operates on double pointers - postponed *)
+let hsvtorgb = foreign "gr_hsvtorgb" (double @-> double @-> double @-> ptr double@-> ptr double @-> ptr double @-> returning void)
+*)
 
 let tick = Lowlevel.tick
 

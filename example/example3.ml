@@ -54,6 +54,7 @@ let () =
   surface ~options:CELL_ARRAY xa ya za;
   (* get1char () |> ignore; *)
   contour xa ya h za;
+  show_colorbar ();
   (* get1char () |> ignore; *)
   polymarker xd yd;
   (* get1char () |> ignore; *)
