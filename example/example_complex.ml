@@ -31,8 +31,10 @@ let () =
   contour xa ya h za;
   polymarker xs ys;
   (* Plot the axes *)
+  set_char_height 0.02;
   axes ~origin:(-2.0, -2.0) ~major:(2, 2) ~tick_size:0.01 0.25 0.25;
   (* Add the title *)
+  set_char_height 0.025;
   math_tex (0.5, 0.9) {|\mbox{Attempt to plot tex stuff, e.g. } \int_0^1\sin(x)|};
   (* Wait until keypressed... *)
   wait_until_keypressed ()
