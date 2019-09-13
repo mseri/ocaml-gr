@@ -1,10 +1,10 @@
 (** {0: OCaml Bindings for the GR Framework} 
 
-GR is essentially based on an implementation of a Graphical Kernel System (GKS) and OpenGL. As a self-contained system it can quickly and easily be integrated into existing applications.
+    GR is essentially based on an implementation of a Graphical Kernel System (GKS) and OpenGL. As a self-contained system it can quickly and easily be integrated into existing applications.
 
-The GR framework can be used in imperative programming systems or integrated into modern object-oriented systems, in particular those based on GUI toolkits.
-GR is characterized by its high interoperability and can be used with modern web technologies and mobile devices.
-The GR framework is especially suitable for real-time environments.
+    The GR framework can be used in imperative programming systems or integrated into modern object-oriented systems, in particular those based on GUI toolkits.
+    GR is characterized by its high interoperability and can be used with modern web technologies and mobile devices.
+    The GR framework is especially suitable for real-time environments.
 *)
 
 open Stdcompat
@@ -107,19 +107,19 @@ let int_of_linetype = function
 
 
 (* let linetype_of_int = function
-  | 1 -> SOLID
-  | 2 -> DASHED
-  | 3 -> DOTTED
-  | 4 -> DASHED_DOTTED
-  | -1 -> DASH_2_DOT
-  | -2 -> DASH_3_DOT
-  | -3 -> LONG_DASH
-  | -4 -> LONG_SHORT_DASH
-  | -5 -> SPACED_DASH
-  | -6 -> SPACED_DOT
-  | -7 -> DOUBLE_DOT
-  | -8 -> TRIPLE_DOT
-  | d -> failwith @@ "Error when inferring line type. Got " ^ string_of_int d *)
+   | 1 -> SOLID
+   | 2 -> DASHED
+   | 3 -> DOTTED
+   | 4 -> DASHED_DOTTED
+   | -1 -> DASH_2_DOT
+   | -2 -> DASH_3_DOT
+   | -3 -> LONG_DASH
+   | -4 -> LONG_SHORT_DASH
+   | -5 -> SPACED_DASH
+   | -6 -> SPACED_DOT
+   | -7 -> DOUBLE_DOT
+   | -8 -> TRIPLE_DOT
+   | d -> failwith @@ "Error when inferring line type. Got " ^ string_of_int d *)
 
 (** Available marker types, see also {{: https://gr-framework.org/markertypes.html} GR Marker Types} *)
 type markertype =
@@ -202,44 +202,44 @@ let int_of_markertype = function
 
 
 (* let markertype_of_int = function
-  | 1 -> DOT
-  | 2 -> PLUS
-  | 3 -> ASTERISK
-  | 4 -> CIRCLE
-  | 5 -> DIAGONAL_CROSS
-  | -1 -> SOLID_CIRCLE
-  | -2 -> TRIANGLE_UP
-  | -3 -> SOLID_TRI_UP
-  | -4 -> TRIANGLE_DOWN
-  | -5 -> SOLID_TRI_DOWN
-  | -6 -> SQUARE
-  | -7 -> SOLID_SQUARE
-  | -8 -> BOWTIE
-  | -9 -> SOLID_BOWTIE
-  | -10 -> HGLASS
-  | -11 -> SOLID_HGLASS
-  | -12 -> DIAMOND
-  | -13 -> SOLID_DIAMOND
-  | -14 -> STAR
-  | -15 -> SOLID_STAR
-  | -16 -> TRI_UP_DOWN
-  | -17 -> SOLID_TRI_RIGHT
-  | -18 -> SOLID_TRI_LEFT
-  | -19 -> HOLLOW_PLUS
-  | -20 -> SOLID_PLUS
-  | -21 -> PENTAGON
-  | -22 -> HEXAGON
-  | -23 -> HEPTAGON
-  | -24 -> OCTAGON
-  | -25 -> STAR_4
-  | -26 -> STAR_5
-  | -27 -> STAR_6
-  | -28 -> STAR_7
-  | -29 -> STAR_8
-  | -30 -> VLINE
-  | -31 -> HLINE
-  | -32 -> OMARK
-  | d -> failwith @@ "Error when inferring marker type. Got " ^ string_of_int d *)
+   | 1 -> DOT
+   | 2 -> PLUS
+   | 3 -> ASTERISK
+   | 4 -> CIRCLE
+   | 5 -> DIAGONAL_CROSS
+   | -1 -> SOLID_CIRCLE
+   | -2 -> TRIANGLE_UP
+   | -3 -> SOLID_TRI_UP
+   | -4 -> TRIANGLE_DOWN
+   | -5 -> SOLID_TRI_DOWN
+   | -6 -> SQUARE
+   | -7 -> SOLID_SQUARE
+   | -8 -> BOWTIE
+   | -9 -> SOLID_BOWTIE
+   | -10 -> HGLASS
+   | -11 -> SOLID_HGLASS
+   | -12 -> DIAMOND
+   | -13 -> SOLID_DIAMOND
+   | -14 -> STAR
+   | -15 -> SOLID_STAR
+   | -16 -> TRI_UP_DOWN
+   | -17 -> SOLID_TRI_RIGHT
+   | -18 -> SOLID_TRI_LEFT
+   | -19 -> HOLLOW_PLUS
+   | -20 -> SOLID_PLUS
+   | -21 -> PENTAGON
+   | -22 -> HEXAGON
+   | -23 -> HEPTAGON
+   | -24 -> OCTAGON
+   | -25 -> STAR_4
+   | -26 -> STAR_5
+   | -27 -> STAR_6
+   | -28 -> STAR_7
+   | -29 -> STAR_8
+   | -30 -> VLINE
+   | -31 -> HLINE
+   | -32 -> OMARK
+   | d -> failwith @@ "Error when inferring marker type. Got " ^ string_of_int d *)
 
 type scale_options =
   | OPTION_X_LOG (** Logarithmic X-axis *)
@@ -542,32 +542,80 @@ let int_of_surface_options = function
   | SHADED_MESH -> 6
 
 
-let clearws = Lowlevel.clearws
-let updatews = Lowlevel.updatews
+(*
+
+let openws = foreign "gr_openws" (int @-> string @-> int @-> returning void)
+let closews = foreign "gr_closews" (int @-> returning void)
+let activatews = foreign "gr_activatews" (int @-> returning void)
+let deactivatews = foreign "gr_deactivatews" (int @-> returning void)
+
+*)
+
+module Workstation = struct
+  type id = W of int
+
+  let wid id = W id
+  let open_ (W id) conn typ = Lowlevel.openws id conn (int_of_workstation_type typ)
+  let close (W id) = Lowlevel.closews id
+  let activate (W id) = Lowlevel.activatews id
+  let deactivate (W id) = Lowlevel.deactivatews id
+  let clear = Lowlevel.clearws
+  let update = Lowlevel.updatews
+end
+
+module State = struct
+  let save () = Lowlevel.savestate ()
+  let restore () = Lowlevel.restorestate ()
+
+  let with_sandbox f =
+    save ();
+    Fun.protect ~finally:restore f
+end
+
+(*
+   let setwindow = foreign "gr_setwindow" (double @-> double @-> double @-> double @-> returning void)
+   let inqwindow = foreign "gr_inqwindow" (ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
+   let setviewport = foreign "gr_setviewport" (double @-> double @-> double @-> double @-> returning void)
+   let inqviewport = foreign "gr_inqviewport" (ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
+   let selntran = foreign "gr_selntran" (int @-> returning void)
+   let setclip = foreign "gr_setclip" (int @-> returning void)
+   let setwswindow = foreign "gr_setwswindow" (double @-> double @-> double @-> double @-> returning void)
+   let setwsviewport = foreign "gr_setwsviewport" (double @-> double @-> double @-> double @-> returning void)
+   let createseg = foreign "gr_createseg" (int @-> returning void)
+   let copysegws = foreign "gr_copysegws" (int @-> returning void)
+   let redrawsegws = foreign "gr_redrawsegws" (void @-> returning void)
+   let setsegtran = foreign "gr_setsegtran" (int @-> double @-> double @-> double @-> double @-> double @-> double @-> double @-> returning void)
+   let closeseg = foreign "gr_closeseg" (void @-> returning void)
+   let emergencyclosegks = foreign "gr_emergencyclosegks" (void @-> returning void)
+   let updategks = foreign "gr_updategks" (void @-> returning void)
+   let setspace = foreign "gr_setspace" (double @-> double @-> int @-> int @-> returning int)
+   let inqspace = foreign "gr_inqspace" (ptr double @-> ptr double @-> ptr int @-> ptr int @-> returning void)
+*)
+
 let set_linetype lt = lt |> int_of_linetype |> Lowlevel.setlinetype
 
 (* let current_linetype () =
-  let open Ctypes in
-  let c = allocate int 0 in
-  Lowlevel.inqlinetype c;
-  linetype_of_int !@c *)
+   let open Ctypes in
+   let c = allocate int 0 in
+   Lowlevel.inqlinetype c;
+   linetype_of_int !@c *)
 
 (** [set_linewidth lw] defines the line width of subsequent polyline output primitives.
 
-The line width is calculated as the nominal line width generated on the workstation multiplied by the line width scale factor.
-This value is mapped by the workstation to the nearest available line width.
-The default line width is 1.0, or 1 times the line width generated on the graphics device.
+    The line width is calculated as the nominal line width generated on the workstation multiplied by the line width scale factor.
+    This value is mapped by the workstation to the nearest available line width.
+    The default line width is 1.0, or 1 times the line width generated on the graphics device.
 *)
 let set_linewidth = Lowlevel.setlinewidth
 
 (* let current_linewidth () =
-  let open Ctypes in
-  let c = allocate double 0.0 in
-  Lowlevel.inqlinewidth c;
-  !@c *)
+   let open Ctypes in
+   let c = allocate double 0.0 in
+   Lowlevel.inqlinewidth c;
+   !@c *)
 
 (** [set_linecolorindex c] defines the color of subsequent polyline output primitives.
-Note: c < 1256
+    Note: c < 1256
 *)
 let set_linecolorindex = function
   | c when c >= 0 && c < 1256 -> Lowlevel.setlinecolorind c
@@ -575,27 +623,27 @@ let set_linecolorindex = function
 
 
 (* let current_linecolorindex () =
-  let open Ctypes in
-  let c = allocate int 0 in
-  Lowlevel.inqlinecolorind c;
-  !@c *)
+   let open Ctypes in
+   let c = allocate int 0 in
+   Lowlevel.inqlinecolorind c;
+   !@c *)
 
 let set_markertype mt = mt |> int_of_markertype |> Lowlevel.setmarkertype
 
 (* let current_markertype () =
-  let open Ctypes in
-  let c = allocate int 0 in
-  Lowlevel.inqmarkertype c;
-  markertype_of_int !@c *)
+   let open Ctypes in
+   let c = allocate int 0 in
+   Lowlevel.inqmarkertype c;
+   markertype_of_int !@c *)
 
 (** [set_markersize ms] specify the marker size for polymarkers.
 
-The polymarker size is calculated as the nominal size generated on the graphics device multiplied by the marker size scale factor. 
+    The polymarker size is calculated as the nominal size generated on the graphics device multiplied by the marker size scale factor. 
 *)
 let set_markersize = Lowlevel.setmarkersize
 
 (** [set_markercolorindex c] define the color of subsequent markers output primitives.
-Note: c < 1256
+    Note: c < 1256
 *)
 let set_markercolorindex = function
   | c when c >= 0 && c < 1256 -> Lowlevel.setmarkercolorind c
@@ -603,18 +651,18 @@ let set_markercolorindex = function
 
 
 (* let current_markercolorindex () =
-  let open Ctypes in
-  let c = allocate int 0 in
-  Lowlevel.inqmarkercolorind c;
-  !@c *)
+   let open Ctypes in
+   let c = allocate int 0 in
+   Lowlevel.inqmarkercolorind c;
+   !@c *)
 
 (** [set_text_font_prec ?precision font] specifies the text font and precision for subsequent text output primitives.
 
-The appearance of a font depends on the text precision value specified.
-STRING, CHARACTER or STROKE precision allows for a greater or lesser realization of the text primitives, for efficiency.
-STRING is the default precision for GR and produces the highest quality output.
+    The appearance of a font depends on the text precision value specified.
+    STRING, CHARACTER or STROKE precision allows for a greater or lesser realization of the text primitives, for efficiency.
+    STRING is the default precision for GR and produces the highest quality output.
 
-XXX: CHARACTER and STROKE precision seem to be broken (and to break the [axes] command with it...)!
+    XXX: CHARACTER and STROKE precision seem to be broken (and to break the [axes] command with it...)!
 *)
 let set_text_font_prec ?(precision = STRING) font =
   Lowlevel.settextfontprec (int_of_font font) (int_of_text_precision precision)
@@ -627,7 +675,7 @@ let set_text_font_prec ?(precision = STRING) font =
 
     Parameters
         factor: Text expansion factor applied to the nominal text width-to-height ratio
- *)
+*)
 let set_char_expand_factor = Lowlevel.setcharexpan
 
 (** [set_text_colorindex color] sets the current text color index.
@@ -658,7 +706,7 @@ let set_char_height = Lowlevel.setcharheight
     Parameters
             x: X coordinate of the text up vector
             y: Y coordinate of the text up vector
- *)
+*)
 let set_char_up (x, y) = Lowlevel.setcharup x y
 
 let set_char_space = Lowlevel.setcharspace
@@ -667,7 +715,7 @@ let set_char_space = Lowlevel.setcharspace
 let set_text_path direction = Lowlevel.settextpath (int_of_text_path_direction direction)
 
 (** [set_text_align horizontal vertical] specifies how the characters in a text primitive will be aligned in horizontal and vertical space.
-The default text alignment indicates horizontal left alignment and vertical baseline alignment.
+    The default text alignment indicates horizontal left alignment and vertical baseline alignment.
 *)
 let set_text_align : text_halign option -> text_valign option -> unit =
  fun horizontal vertical ->
@@ -678,8 +726,8 @@ let set_text_align : text_halign option -> text_valign option -> unit =
 
 (** [set_fill_interior_style style] sets the fill area interior style to be used for fill areas.
 
-This function defines the interior style for subsequent fill area output primitives.
-The default interior style is HOLLOW. 
+    This function defines the interior style for subsequent fill area output primitives.
+    The default interior style is HOLLOW. 
 *)
 let set_fill_interior_style style =
   Lowlevel.setfillintstyle (int_of_fill_style style);
@@ -691,10 +739,10 @@ let set_fill_interior_style style =
 
 (** [set_fill_colorindex color] sets the current fill area color index.
 
-This function defines the color of subsequent fill area output primitives.
-GR uses the default foreground color (black=1) for the default fill area color index.
+    This function defines the color of subsequent fill area output primitives.
+    GR uses the default foreground color (black=1) for the default fill area color index.
 
-Parameters
+    Parameters
             color: The fill area color index (COLOR < 1256)
 *)
 let set_fill_colorindex = function
@@ -704,13 +752,13 @@ let set_fill_colorindex = function
 
 (** [set_color_representation index (red, green, blue)] redefines an existing color index representation by specifying an RGB color triplet.
 
-Parameters
+    Parameters
         index: Color index in the range 0 to 1256
         red: Red intensity in the range 0.0 to 1.0
         green: Green intensity in the range 0.0 to 1.0
         blue: Blue intensity in the range 0.0 to 1.0
 
- *)
+*)
 let set_color_representation index (red, green, blue) =
   if index < 0 || index >= 1256
   then
@@ -732,50 +780,50 @@ let set_color_representation index (red, green, blue) =
 *)
 let set_colormap cmap = Lowlevel.setcolormap (int_of_color_map cmap)
 
-(**
-[polyline ?linetype ?linewidth ?coloridx x y] draws a polyline using the current line attributes, starting from the first data point and ending at the last data point.
+let set_scale scale = Lowlevel.setscale (int_of_scale_options scale)
 
-The values for [x] and [y] are in world coordinates.
-The attributes that control the appearance of a polyline are linetype, linewidth and color index.
+(**
+   [polyline ?linetype ?linewidth ?coloridx x y] draws a polyline using the current line attributes, starting from the first data point and ending at the last data point.
+
+   The values for [x] and [y] are in world coordinates.
+   The attributes that control the appearance of a polyline are linetype, linewidth and color index.
 *)
 let polyline ?linetype ?linewidth ?coloridx x y =
-  Lowlevel.savestate ();
-  Option.iter set_linetype linetype;
-  Option.iter set_linewidth linewidth;
-  Option.iter set_linecolorindex coloridx;
-  let n, x', y' = Lowlevel.get_size_and_pointers x y in
-  Lowlevel.polyline n x' y';
-  Lowlevel.restorestate ()
+  State.with_sandbox (fun () ->
+      Option.iter set_linetype linetype;
+      Option.iter set_linewidth linewidth;
+      Option.iter set_linecolorindex coloridx;
+      let n, x', y' = Lowlevel.get_size_and_pointers x y in
+      Lowlevel.polyline n x' y')
 
 
 (**
-[polymarker ?markertype ?markersize ?coloridx x y] draws marker symbols centered at the given data points.
+     [polymarker ?markertype ?markersize ?coloridx x y] draws marker symbols centered at the given data points.
 
-The values for [x] and [y] are in world coordinates.
-The attributes that control the appearance of a polyline are markertype, markersize and color index.
-*)
+     The values for [x] and [y] are in world coordinates.
+     The attributes that control the appearance of a polyline are markertype, markersize and color index.
+  *)
 let polymarker ?markertype ?markersize ?coloridx x y =
-  Lowlevel.savestate ();
-  Option.iter set_markertype markertype;
-  Option.iter set_markersize markersize;
-  Option.iter set_markercolorindex coloridx;
-  let n, x', y' = Lowlevel.get_size_and_pointers x y in
-  Lowlevel.polymarker n x' y';
-  Lowlevel.restorestate ()
+  State.with_sandbox (fun () ->
+      Option.iter set_markertype markertype;
+      Option.iter set_markersize markersize;
+      Option.iter set_markercolorindex coloridx;
+      let n, x', y' = Lowlevel.get_size_and_pointers x y in
+      Lowlevel.polymarker n x' y')
 
 
 (** [text x y content] draws a text at position [x], [y] using the current text attributes.
 
-The values for [x] and [y] are in normalized device coordinates.
-The attributes that control the appearance of text are text font and precision, character expansion factor, character spacing, text color index, character height, character up vector, text path and text alignment. 
-*)
+        The values for [x] and [y] are in normalized device coordinates.
+        The attributes that control the appearance of text are text font and precision, character expansion factor, character spacing, text color index, character height, character up vector, text path and text alignment. 
+    *)
 let text = Lowlevel.text
 
 (** 
-[fillarea x y] allows you to specify a polygonal shape of an area to be filled.
-The vectors [x] and [y] specify the coordinates of the polygonal shape corners.
+   [fillarea x y] allows you to specify a polygonal shape of an area to be filled.
+   The vectors [x] and [y] specify the coordinates of the polygonal shape corners.
 
-The attributes that control the appearance of fill areas are fill area interior style, fill area style index and fill area color index. 
+   The attributes that control the appearance of fill areas are fill area interior style, fill area style index and fill area color index. 
 *)
 let fillarea x y =
   let n, x', y' = Lowlevel.get_size_and_pointers x y in
@@ -783,11 +831,11 @@ let fillarea x y =
 
 
 (** [cellarray (xmin, xmax) (ymin, ymax) (dimx, dimy) (scol, srow) (ncol, nrow) color] displays rasterlike images in a device-independent manner.
-The cell array function partitions a rectangle given by two corner points into DIMX X DIMY cells, each of them colored individually by the corresponding color index of the given cell array.
+    The cell array function partitions a rectangle given by two corner points into DIMX X DIMY cells, each of them colored individually by the corresponding color index of the given cell array.
 
-The values for xmin, xmax, ymin and ymax are in world coordinates.
+    The values for xmin, xmax, ymin and ymax are in world coordinates.
 
-Parameters:
+    Parameters:
         xmin: X coordinate of the lower left point of the rectangle
         ymin: Y coordinate of the lower left point of the rectangle
         xmax: X coordinate of the upper right point of the rectangle
@@ -799,8 +847,8 @@ Parameters:
         ncol: total number of columns in the color index array
         nrow: total number of rows in the color index array
         color: color index array
-  
-Note: gr_nonuniformcellarray and gr_polycellarray have been introduced in newer versions of gr.
+
+    Note: gr_nonuniformcellarray and gr_polycellarray have been introduced in newer versions of gr.
 *)
 let cellarray (xmin, xmax) (ymin, ymax) (dimx, dimy) (scol, srow) (ncol, nrow) colors =
   let color' = Ctypes.(bigarray_start genarray colors) in
@@ -824,39 +872,41 @@ let cellarray (xmin, xmax) (ymin, ymax) (dimx, dimy) (scol, srow) (ncol, nrow) c
     If method is > 0, then a generalized cross-validated smoothing spline is calculated. If method is 0, then an interpolating natural cubic spline is calculated. If method is < -1, then a cubic B-spline is calculated.
 *)
 let spline ?linetype ?linewidth ?coloridx x y m algo =
-  Lowlevel.savestate ();
-  Option.iter set_linetype linetype;
-  Option.iter set_linewidth linewidth;
-  Option.iter set_linecolorindex coloridx;
-  let n, x', y' = Lowlevel.get_size_and_pointers x y in
-  Lowlevel.spline n x' y' m (int_of_spline_algo algo);
-  Lowlevel.restorestate ()
+  State.with_sandbox (fun () ->
+      Option.iter set_linetype linetype;
+      Option.iter set_linewidth linewidth;
+      Option.iter set_linecolorindex coloridx;
+      let n, x', y' = Lowlevel.get_size_and_pointers x y in
+      Lowlevel.spline n x' y' m (int_of_spline_algo algo))
 
 
 (** [gridit x y z (nx, ny)] interpolates data from arbitrary points at points on a rectangular grid.
 
-Parameters
+      Parameters
 
-        nd: The number of input points
-        xd: The X coordinates of the input points
-        yd: The Y coordinates of the input points
-        zd: The values of the points
-        nx: The number of points in X direction for the output grid
-        ny: The number of points in Y direction for the output grid
+          nd: The number of input points
+          xd: The X coordinates of the input points
+          yd: The Y coordinates of the input points
+          zd: The values of the points
+          nx: The number of points in X direction for the output grid
+          ny: The number of points in Y direction for the output grid
 
-Returns the tuple (x, y, z) with
- 
-  x: The points in X direction for the output grid
-  y: The points in Y direction for the output grid
-  z: The interpolated values on the nx x ny grid points
- *)
+      Returns the tuple (x, y, z) with
+
+      x: The points in X direction for the output grid
+      y: The points in Y direction for the output grid
+      z: The interpolated values on the nx x ny grid points
+  *)
 let gridit x y z (nx, ny) =
   let x' = Bigarray.(Genarray.create float64 c_layout [| nx |]) in
   let y' = Bigarray.(Genarray.create float64 c_layout [| ny |]) in
   let z' = Bigarray.(Genarray.create float64 c_layout [| nx * ny |]) in
   let n, x, y = Lowlevel.get_size_and_pointers x y in
-  let z = Ctypes.(bigarray_start genarray z) in
-  (* TODO: Check size of z... *)
+  let nz, z = Lowlevel.get_size_and_pointer z in
+  if nz <> n
+  then
+    failwith
+    @@ Printf.sprintf "Expected arrays with dimensions n, n, n. Got %d, %d, %d" n n nz;
   Lowlevel.gridit
     n
     x
@@ -871,24 +921,6 @@ let gridit x y z (nx, ny) =
 
 
 (*
-   let setwindow = foreign "gr_setwindow" (double @-> double @-> double @-> double @-> returning void)
-   let inqwindow = foreign "gr_inqwindow" (ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
-   let setviewport = foreign "gr_setviewport" (double @-> double @-> double @-> double @-> returning void)
-   let inqviewport = foreign "gr_inqviewport" (ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
-   let selntran = foreign "gr_selntran" (int @-> returning void)
-   let setclip = foreign "gr_setclip" (int @-> returning void)
-   let setwswindow = foreign "gr_setwswindow" (double @-> double @-> double @-> double @-> returning void)
-   let setwsviewport = foreign "gr_setwsviewport" (double @-> double @-> double @-> double @-> returning void)
-   let createseg = foreign "gr_createseg" (int @-> returning void)
-   let copysegws = foreign "gr_copysegws" (int @-> returning void)
-   let redrawsegws = foreign "gr_redrawsegws" (void @-> returning void)
-   let setsegtran = foreign "gr_setsegtran" (int @-> double @-> double @-> double @-> double @-> double @-> double @-> double @-> returning void)
-   let closeseg = foreign "gr_closeseg" (void @-> returning void)
-   let emergencyclosegks = foreign "gr_emergencyclosegks" (void @-> returning void)
-   let updategks = foreign "gr_updategks" (void @-> returning void)
-   let setspace = foreign "gr_setspace" (double @-> double @-> int @-> int @-> returning int)
-   let inqspace = foreign "gr_inqspace" (ptr double @-> ptr double @-> ptr int @-> ptr int @-> returning void)
-   let setscale = foreign "gr_setscale" (int @-> returning int)
    let textext = foreign "gr_textext" (double @-> double @-> string @-> returning int)
    let inqtextext = foreign "gr_inqtextext" (double @-> double @-> string @-> ptr double @-> ptr double @-> returning void)
 *)
@@ -906,7 +938,7 @@ let gridit x y z (nx, ny) =
         major_x: Unitless integer value specifying the number of minor tick intervals between major tick marks on the X axis. Values of 0 or 1 imply no minor ticks. Negative values specify no labels will be drawn for the associated axis.
         major_y: Unitless integer value specifying the number of minor tick intervals between major tick marks on the Y axis. Values of 0 or 1 imply no minor ticks. Negative values specify no labels will be drawn for the associated axis.
         tick_size: The length of minor tick marks specified in a normalized device coordinate unit. Major tick marks are twice as long as minor tick marks. A negative value reverses the tick marks on the axes from inward facing to outward facing (or vice versa)
-    *)
+*)
 let axes
     ?(scale = [])
     ?linetype
@@ -918,41 +950,40 @@ let axes
     x_tick
     y_tick
   =
-  Lowlevel.savestate ();
-  if scale <> [] then Lowlevel.setscale (int_of_scale_options scale) |> ignore;
-  Option.iter set_linetype linetype;
-  Option.iter set_linewidth linewidth;
-  Option.iter set_linecolorindex coloridx;
-  let x_org, y_org = origin in
-  let major_x, major_y = major in
-  Lowlevel.axes x_tick y_tick x_org y_org major_x major_y tick_size;
-  Lowlevel.restorestate ()
+  State.with_sandbox (fun () ->
+      if scale <> [] then set_scale scale |> ignore;
+      Option.iter set_linetype linetype;
+      Option.iter set_linewidth linewidth;
+      Option.iter set_linecolorindex coloridx;
+      let x_org, y_org = origin in
+      let major_x, major_y = major in
+      Lowlevel.axes x_tick y_tick x_org y_org major_x major_y tick_size)
 
 
 (** [axeslabels] Create axes in the current workspace and supply a custom function for changing the behaviour of the tick labels.
 
-Similar to [axes] but allows more fine-grained control over tick labels and text positioning by supplying callback functions.
-Within the callback function you can use normal GR text primitives for performing any manipulations on the label text.
+      Similar to [axes] but allows more fine-grained control over tick labels and text positioning by supplying callback functions.
+      Within the callback function you can use normal GR text primitives for performing any manipulations on the label text.
 
-See [axes] for more details on drawing axes.
+      See [axes] for more details on drawing axes.
 
-Parameters
+      Parameters
 
-        x_tick: The interval between minor tick marks on the X axis.
-        y_tick: The interval between minor tick marks on the Y axis.
-        x_org: The world coordinate of the origin (point of intersection) of the X axis.
-        y_org: The world coordinate of the origin (point of intersection) of the Y axis.
-        major_x: Unitless integer value specifying the number of minor tick intervals between major tick marks on the X axis. Values of 0 or 1 imply no minor ticks. Negative values specify no labels will be drawn for the associated axis.
-        major_y: Unitless integer value specifying the number of minor tick intervals between major tick marks on the Y axis. Values of 0 or 1 imply no minor ticks. Negative values specify no labels will be drawn for the associated axis.
-        tick_size: The length of minor tick marks specified in a normalized device coordinate unit. Major tick marks are twice as long as minor tick marks. A negative value reverses the tick marks on the axes from inward facing to outward facing (or vice versa).
-        fpx: Function pointer to a function that returns a label for a given tick on the X axis. The callback function should have the following arguments:
-          x: NDC of the label in X direction.
-          y: NDC of the label in Y direction.
-          svalue: Internal string representation of the text drawn by GR at (x,y).
-          value: Floating point representation of the label drawn at (x,y).
-        fpy: Exactly same as the fpx above, but for the the Y axis.
+          x_tick: The interval between minor tick marks on the X axis.
+          y_tick: The interval between minor tick marks on the Y axis.
+          x_org: The world coordinate of the origin (point of intersection) of the X axis.
+          y_org: The world coordinate of the origin (point of intersection) of the Y axis.
+          major_x: Unitless integer value specifying the number of minor tick intervals between major tick marks on the X axis. Values of 0 or 1 imply no minor ticks. Negative values specify no labels will be drawn for the associated axis.
+          major_y: Unitless integer value specifying the number of minor tick intervals between major tick marks on the Y axis. Values of 0 or 1 imply no minor ticks. Negative values specify no labels will be drawn for the associated axis.
+          tick_size: The length of minor tick marks specified in a normalized device coordinate unit. Major tick marks are twice as long as minor tick marks. A negative value reverses the tick marks on the axes from inward facing to outward facing (or vice versa).
+          fpx: Function pointer to a function that returns a label for a given tick on the X axis. The callback function should have the following arguments:
+            x: NDC of the label in X direction.
+            y: NDC of the label in Y direction.
+            svalue: Internal string representation of the text drawn by GR at (x,y).
+            value: Floating point representation of the label drawn at (x,y).
+          fpy: Exactly same as the fpx above, but for the the Y axis.
 
- *)
+  *)
 let axes_labels
     ?(scale = [])
     ?linetype
@@ -966,50 +997,51 @@ let axes_labels
     x_tick
     y_tick
   =
-  Lowlevel.savestate ();
-  if scale <> [] then Lowlevel.setscale (int_of_scale_options scale) |> ignore;
-  Option.iter set_linetype linetype;
-  Option.iter set_linewidth linewidth;
-  Option.iter set_linecolorindex coloridx;
-  let x_org, y_org = origin in
-  let major_x, major_y = major in
-  Lowlevel.axeslbl x_tick y_tick x_org y_org major_x major_y tick_size fpx fpy;
-  Lowlevel.restorestate ()
+  State.with_sandbox (fun () ->
+      if scale <> [] then Lowlevel.setscale (int_of_scale_options scale) |> ignore;
+      Option.iter set_linetype linetype;
+      Option.iter set_linewidth linewidth;
+      Option.iter set_linecolorindex coloridx;
+      let x_org, y_org = origin in
+      let major_x, major_y = major in
+      Lowlevel.axeslbl x_tick y_tick x_org y_org major_x major_y tick_size fpx fpy)
 
 
 (** [surface x y z ?option] draws a three-dimensional surface plot for the given data points.
 
-x and y define a grid.
-z is a singly dimensioned array containing at least nx * ny data points.
-z describes the surface height at each point on the grid.
-Data is ordered as shown in the following table:
+        x and y define a grid.
+        z is a singly dimensioned array containing at least nx * ny data points.
+        z describes the surface height at each point on the grid.
+        Data is ordered as shown in the following table:
 
-Parameters
+        Parameters
 
-        nx: The number of points along the X axis
-        ny: The number of points along the Y axis
-        px: A pointer to the X coordinates
-        py: A pointer to the Y coordinates
-        pz: A pointer to the Z coordinates
-        option: Surface display option (see table)
-*)
+            nx: The number of points along the X axis
+            ny: The number of points along the Y axis
+            px: A pointer to the X coordinates
+            py: A pointer to the Y coordinates
+            pz: A pointer to the Z coordinates
+            option: Surface display option (see table)
+    *)
 let surface ?(options = LINES) x y z =
   let nx, x = Lowlevel.get_size_and_pointer x in
   let ny, y = Lowlevel.get_size_and_pointer y in
-  (* TODO: check size of z *)
-  Lowlevel.surface
-    nx
-    ny
-    x
-    y
-    Ctypes.(bigarray_start genarray z)
-    (int_of_surface_options options)
+  let nz, z = Lowlevel.get_size_and_pointer z in
+  if nz <> nx * ny
+  then
+    failwith
+    @@ Printf.sprintf
+         "Expected arrays with dimensions n, n', n*n'. Got %d, %d, %d"
+         nx
+         ny
+         nz;
+  Lowlevel.surface nx ny x y z (int_of_surface_options options)
 
 
 (** [contour ?major_h x y h z] sraw contours of a three-dimensional data set whose values are specified over a rectangular mesh.
-Contour lines may optionally be labeled.
+    Contour lines may optionally be labeled.
 
-Parameters
+    Parameters
 
         nx: The number of points along the X axis
         ny: The number of points along the Y axis
@@ -1020,7 +1052,7 @@ Parameters
         pz: A pointer to the Z coordinates
         major_h: Directs GR to label contour lines. For example, a value of 3 would label every third line. A value of 1 will label every line. A value of 0 produces no labels. To produce colored contour lines, add an offset of 1000 to major_h
 
- *)
+*)
 let contour ?(major_h = 0) x y h z =
   (* TODO: validate z *)
   let nx, x = Lowlevel.get_size_and_pointer x in

@@ -16,7 +16,7 @@ let () =
   let t = tick 0. 1. in
   axes t t;
   get1char () |> ignore;
-  clearws ();
+  Workstation.clear ();
   Owl.Arr.(
     polymarker
       ~markertype:CIRCLE
