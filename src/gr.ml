@@ -576,52 +576,20 @@ let set_segment_transform = Lowlevel.setsegtran
 let close_segment = Lowlevel.closeseg
 let set_space = Lowlevel.setspace
 let set_linetype lt = lt |> int_of_linetype |> Lowlevel.setlinetype
-
-(* let current_linetype () =
-   let open Ctypes in
-   let c = allocate int 0 in
-   Lowlevel.inqlinetype c;
-   linetype_of_int !@c *)
-
 let set_linewidth = Lowlevel.setlinewidth
-
-(* let current_linewidth () =
-   let open Ctypes in
-   let c = allocate double 0.0 in
-   Lowlevel.inqlinewidth c;
-   !@c *)
 
 let set_linecolorindex = function
   | c when c >= 0 && c < 1256 -> Lowlevel.setlinecolorind c
   | c -> failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int c
 
 
-(* let current_linecolorindex () =
-   let open Ctypes in
-   let c = allocate int 0 in
-   Lowlevel.inqlinecolorind c;
-   !@c *)
-
 let set_markertype mt = mt |> int_of_markertype |> Lowlevel.setmarkertype
-
-(* let current_markertype () =
-   let open Ctypes in
-   let c = allocate int 0 in
-   Lowlevel.inqmarkertype c;
-   markertype_of_int !@c *)
-
 let set_markersize = Lowlevel.setmarkersize
 
 let set_markercolorindex = function
   | c when c >= 0 && c < 1256 -> Lowlevel.setmarkercolorind c
   | c -> failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int c
 
-
-(* let current_markercolorindex () =
-   let open Ctypes in
-   let c = allocate int 0 in
-   Lowlevel.inqmarkercolorind c;
-   !@c *)
 
 let set_arrowstyle s =
   if s < 0 || s > 18
@@ -1165,13 +1133,14 @@ let drawarrow ?arrowsize ?arrowstyle (x1, y1) (x2, y2) =
       Option.iter set_arrowstyle arrowstyle;
       Lowlevel.drawarrow x1 y1 x2 y2)
 
-(*
+
+(* TODO:
    let readimage = foreign "gr_readimage" (string @-> ptr int @-> ptr int @-> ptr (ptr int) @-> returning int)
    (** Draw an image into a given rectangular area.
 
       The points (xmin, ymin) and (xmax, ymax) are world coordinates defining diagonally opposite corner points of a rectangle.
       This rectangle is divided into width by height cells. 
-      he two-dimensional array data specifies colors for each cell.
+      The two-dimensional array data specifies colors for each cell.
 
       Parameters
 
@@ -1189,29 +1158,20 @@ let drawarrow ?arrowsize ?arrowstyle (x1, y1) (x2, y2) =
       MODEL_HSV 	1 	AAVVSSHH
    *)
    let drawimage = foreign "gr_drawimage" (double @-> double @-> double @-> double @-> int @-> int @-> ptr int @-> int @-> returning void)
-   
-   let beginselection = foreign "gr_beginselection" (int @-> int @-> returning void)
-   let endselection = foreign "gr_endselection" (void @-> returning void)
-   let moveselection = foreign "gr_moveselection" (double @-> double @-> returning void)
-   let resizeselection = foreign "gr_resizeselection" (int @-> double @-> double @-> returning void)
-   let inqbbox = foreign "gr_inqbbox" (ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
-   let precision = foreign "gr_precision" (void @-> returning double)
-   let setregenflags = foreign "gr_setregenflags" (int @-> returning void)
-   let inqregenflags = foreign "gr_inqregenflags" (void @-> returning int)
-   let selectcontext = foreign "gr_selectcontext" (int @-> returning void)
-   let destroycontext = foreign "gr_destroycontext" (int @-> returning void)
-   let uselinespec = foreign "gr_uselinespec" (string @-> returning int)
-   let delaunay = foreign "gr_delaunay" (int @-> ptr double @-> ptr double @-> ptr int @-> ptr (ptr int) @-> returning void)
-   let reducepoints = foreign "gr_reducepoints" (int @-> ptr double @-> ptr double @-> int @-> ptr double @-> ptr double @-> returning void)
-   let trisurface = foreign "gr_trisurface" (int @-> ptr double @-> ptr double @-> ptr double @-> returning void)
-   let gradient = foreign "gr_gradient" (int @-> int @-> ptr double @-> ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void)
-   let quiver = foreign "gr_quiver" (int @-> int @-> ptr double @-> ptr double @-> ptr double @-> ptr double @-> int @-> returning void)
-   let interp2 = foreign "gr_interp2" (int @-> int @-> ptr double @-> ptr double @-> ptr double @-> int @-> int @-> ptr double @-> ptr double @-> ptr double @-> int @-> double @-> returning void)
-   let version = foreign "gr_version" (void @-> returning (string))
-   let shade = foreign "gr_shade" (int @-> ptr double @-> ptr double @-> int @-> int @-> ptr double @-> int @-> int @-> ptr int @-> returning void)
-   let shadepoints = foreign "gr_shadepoints" (int @-> ptr double @-> ptr double @-> int @-> int @-> int @-> returning void)
-   let shadelines = foreign "gr_shadelines" (int @-> ptr double @-> ptr double @-> int @-> int @-> int @-> returning void)
-   let panzoom = foreign "gr_panzoom" (double @-> double @-> double @-> ptr double @-> ptr double @-> ptr double @-> ptr double @-> returning void) *)
+   *)
+
+module Selection = struct
+  let begins = Lowlevel.beginselection
+  let ends = Lowlevel.endselection
+  let move x y = Lowlevel.moveselection x y
+  let resize kind x y = Lowlevel.resizeselection kind x y
+end
+
+(*
+   TODO:
+   inqbbox &xmin &xmax &ymin &ymax
+   uselinespec linespec
+  *)
 
 (* let with_ws ?(typ = PNG) plot =
   let id = Random.int 1024 in
@@ -1223,4 +1183,5 @@ let drawarrow ?arrowsize ?arrowstyle (x1, y1) (x2, y2) =
   | exn ->
     (try Lowlevel.closews id with
     | _ -> ());
-    raise exn *)
+    raise exn
+*)

@@ -1305,4 +1305,17 @@ val drawarrow
   -> float * float
   -> unit
 
+module Selection : sig
+  (** [beings index kind] *)
+  val begins : int -> int -> unit
+
+  val ends : unit -> unit
+
+  (** [resize x y] *)
+  val move : float -> float -> unit
+
+  (** [resize kind x y] *)
+  val resize : int -> float -> float -> unit
+end
+
 (* val with_ws : ?typ:workstation_type -> (int -> 'a) -> unit *)
