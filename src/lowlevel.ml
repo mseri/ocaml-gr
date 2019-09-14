@@ -7,7 +7,8 @@ open Foreign
 (* See also https://gr-framework.org/about.html - at a certain point it would be nice to also have bindings for GKS and GR3 *)
 
 (** {1} Lowlevel API bindings *)
-let libGR = Dl.dlopen ~flags:[ Dl.RTLD_LAZY ] ~filename:"libGR.so"
+let libGRpath = try Sys.getenv "LIBGRPATH" with Not_found -> "libGR.so"
+let libGR = Dl.dlopen ~flags:[ Dl.RTLD_LAZY ] ~filename:libGRpath
 
 let foreign = foreign ~from:libGR
 
