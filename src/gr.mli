@@ -1,4 +1,4 @@
-(** {0: OCaml Bindings for the GR Framework} 
+(** {1 OCaml Bindings for the GR Framework} 
 
     GR is essentially based on an implementation of a Graphical Kernel System (GKS) and OpenGL. As a self-contained system it can quickly and easily be integrated into existing applications.
 
@@ -11,14 +11,14 @@ module Lowlevel = Lowlevel
 
 exception Unimplemented
 
-(** Available workstation types, see also {{: (** Available line types, see also {{: https://gr-framework.org/workstations.html} GR Workstation Types} *)} GR Line Types} *)
+(** Available workstation types, see also {{: https://gr-framework.org/workstations.html} GR Workstation Types} *)
 type workstation_type =
   | WISS (** Workstation Independent Segment ptr Storage *)
   | WinGDI (** Windows ptr GDI *)
-  | PS_1 (**PostScript (b/w @-> color) *)
-  | PS_2 (**PostScript (b/w @-> color) *)
-  | PS_3 (**PostScript (b/w @-> color) *)
-  | PS_4 (**PostScript (b/w @-> color) *)
+  | PS_1 (**PostScript (b/w \@-> color) *)
+  | PS_2 (**PostScript (b/w \@-> color) *)
+  | PS_3 (**PostScript (b/w \@-> color) *)
+  | PS_4 (**PostScript (b/w \@-> color) *)
   | PDFPlain (** Portable Document Format ptr plain *)
   | PDFCompressed (** Portable Document Format ptr compressed *)
   | X_1 (** X ptr Windows *)
@@ -496,9 +496,10 @@ val set_text_colorindex : int -> unit
 *)
 val set_char_height : float -> unit
 
-(** [set_char_up (x, y)
+(** [set_char_up (x, y)]
     Set the current character text angle up vector.
-    This function defines the vertical rotation of subsequent text output primitives. The text up vector is initially set to (0, 1), horizontal to the baseline.
+    This function defines the vertical rotation of subsequent text output primitives.
+    The text up vector is initially set to (0, 1), horizontal to the baseline.
 
     Parameters
             x: X coordinate of the text up vector
@@ -774,7 +775,8 @@ Parameters
 The character string is interpreted to be a simple mathematical formula.
 The following notations apply:
 
-- Subscripts and superscripts: These are indicated by carets (‘^’) and underscores (‘_’). If the sub/superscript contains more than one character, it must be enclosed in curly braces (‘{}’).
+- Subscripts and superscripts: These are indicated by carets (‘^’) and underscores (‘_’).
+  If the sub/superscript contains more than one character, it must be enclosed in curly braces (‘\{\}’).
 - Fractions are typeset with A ‘/’ B, where A stands for the numerator and B for the denominator.
 
 To include a Greek letter you must specify the corresponding keyword after a backslash (‘') character. The text translator produces uppercase or lowercase Greek letters depending on the case of the keyword. 
