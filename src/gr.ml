@@ -958,13 +958,6 @@ let hsvtorgb = foreign "gr_hsvtorgb" (double @-> double @-> double @-> ptr doubl
 
 let tick = Lowlevel.tick
 
-(*
-(* TODO: postponed *)
-   let validaterange = foreign "gr_validaterange" (double @-> double @-> returning int)
-   let adjustlimits = foreign "gr_adjustlimits" (ptr double @-> ptr double @-> returning void)
-   let adjustrange = foreign "gr_adjustrange" (ptr double @-> ptr double @-> returning void)
-*)
-
 module Print = struct
   let validate path =
     if not
