@@ -9,8 +9,6 @@
 
 module Lowlevel = Lowlevel
 
-exception Unimplemented
-
 (** Available workstation types, see also {{: https://gr-framework.org/workstations.html} GR Workstation Types} *)
 type workstation_type =
   | WISS (** Workstation Independent Segment ptr Storage *)
@@ -576,7 +574,7 @@ val set_transparency : float -> unit
             mat: 2D transformation matrix (3x2)
 *)
 val set_coord_transform
-  :  (float Ctypes_static.ptr, 'a, 'b) Stdcompat.Bigarray.Genarray.t
+  :  (float Ctypes_static.ptr, 'a, 'b) Bigarray.Genarray.t
   -> unit
 
 module Graphics : sig
@@ -749,17 +747,17 @@ val gridit
   -> (float, 'e, 'f) Bigarray.Genarray.t
   -> int * int
   -> ( float
-     , Stdcompat.Bigarray.float64_elt
-     , Stdcompat.Bigarray.c_layout )
-     Stdcompat.Bigarray.Genarray.t
+     , Bigarray.float64_elt
+     , Bigarray.c_layout )
+     Bigarray.Genarray.t
      * ( float
-       , Stdcompat.Bigarray.float64_elt
-       , Stdcompat.Bigarray.c_layout )
-       Stdcompat.Bigarray.Genarray.t
+       , Bigarray.float64_elt
+       , Bigarray.c_layout )
+       Bigarray.Genarray.t
      * ( float
-       , Stdcompat.Bigarray.float64_elt
-       , Stdcompat.Bigarray.c_layout )
-       Stdcompat.Bigarray.Genarray.t
+       , Bigarray.float64_elt
+       , Bigarray.c_layout )
+       Bigarray.Genarray.t
 
 (** [tex_text (x, y) text] draws a text at position x, y using the current text attributes.
 Strings can be defined to create basic mathematical expressions and Greek letters.
@@ -1303,6 +1301,34 @@ val drawarrow
   -> ?arrowstyle:int
   -> float * float
   -> float * float
+  -> unit
+
+(** [drawimage (xmin, ymin) (xmax, ymax) image_data model] draws an image into a given rectangular area.
+
+  The points (xmin, ymin) and (xmax, ymax) are world coordinates defining diagonally opposite corner points of a rectangle.
+  This rectangle is divided into width by height cells. 
+  The two-dimensional array data specifies colors for each cell.
+
+  Parameters
+
+          xmin: X coordinate of the lower left point of the rectangle
+          ymin: Y coordinate of the lower left point of the rectangle
+          xmax: X coordinate of the upper right point of the rectangle
+          ymax: Y coordinate of the upper right point of the rectangle
+          width: X dimension of the color index array
+          height: Y dimension of the color index array
+          data: color array
+          model: color model
+
+  The available color models are:
+    RGB 	0 	AABBGGRR
+    HSV 	1 	AAVVSSHH
+*)
+val drawimage
+  :  float * float
+  -> float * float
+  -> (int, 'a, 'b) Bigarray.Genarray.t
+  -> [< `HSV | `RGB ]
   -> unit
 
 module Selection : sig

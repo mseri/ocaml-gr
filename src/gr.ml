@@ -1,8 +1,6 @@
 open Stdcompat
 module Lowlevel = Lowlevel
 
-exception Unimplemented
-
 (** Available workstation types, see also {{: (** Available line types, see also {{: https://gr-framework.org/workstations.html} GR Workstation Types} *)} GR Line Types} *)
 type workstation_type =
   | WISS (** Workstation Independent Segment ptr Storage *)
@@ -1136,29 +1134,21 @@ let drawarrow ?arrowsize ?arrowstyle (x1, y1) (x2, y2) =
 
 (* TODO:
    let readimage = foreign "gr_readimage" (string @-> ptr int @-> ptr int @-> ptr (ptr int) @-> returning int)
-   (** Draw an image into a given rectangular area.
-
-      The points (xmin, ymin) and (xmax, ymax) are world coordinates defining diagonally opposite corner points of a rectangle.
-      This rectangle is divided into width by height cells. 
-      The two-dimensional array data specifies colors for each cell.
-
-      Parameters
-
-              xmin: X coordinate of the lower left point of the rectangle
-              ymin: Y coordinate of the lower left point of the rectangle
-              xmax: X coordinate of the upper right point of the rectangle
-              ymax: Y coordinate of the upper right point of the rectangle
-              width: X dimension of the color index array
-              height: Y dimension of the color index array
-              data: color array
-              model: color model
-
-      The available color models are:
-      MODEL_RGB 	0 	AABBGGRR
-      MODEL_HSV 	1 	AAVVSSHH
    *)
-   let drawimage = foreign "gr_drawimage" (double @-> double @-> double @-> double @-> int @-> int @-> ptr int @-> int @-> returning void)
-   *)
+
+let drawimage (xmin, ymin) (xmax, ymax) image_data model =
+  let model =
+    match model with
+    | `RGB -> 0
+    | `HSV -> 1
+  in
+  let width, height, image_data =
+    match Bigarray.Genarray.dims image_data with
+    | [| width; height |] -> width, height, Ctypes.(bigarray_start genarray image_data)
+    | _ -> failwith "Expecting a 2D array, but got something else!"
+  in
+  Lowlevel.drawimage xmin ymin xmax ymax width height image_data model
+
 
 module Selection = struct
   let begins = Lowlevel.beginselection

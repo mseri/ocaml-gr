@@ -1,3 +1,11 @@
+(**
+{1 Lowlevel bindings to the GR-framewokr C interface.}
+
+For the documentation refer to the {{: https://gr-framework.org/c-gr.html} GR Reference}.
+
+The lookup of the "libGR.so" library can be overriden providing the full path to the library so file by setting the [LIBGRPATH] env variable.
+*)
+
 type vertex_t
 
 val vertex : vertex_t Ctypes.structure Ctypes.typ

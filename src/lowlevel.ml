@@ -9,7 +9,11 @@ open Foreign
 (** {1} Lowlevel API bindings *)
 let libGRpath =
   try Sys.getenv "LIBGRPATH" with
-  | Not_found -> "libGR.so"
+  | Not_found ->
+    (match Sys.getenv "GRDIR" with
+    | "" -> "libGR.so"
+    | dir -> dir ^ "/libGR.so"
+    | exception Not_found -> "libGR.so")
 
 
 let libGR = Dl.dlopen ~flags:[ Dl.RTLD_LAZY ] ~filename:libGRpath
@@ -675,9 +679,9 @@ let get_size_and_pointers x y =
       @@ Invalid_argument (Printf.sprintf "Arrays of different lenghts: %d, %d" lx ly)
     | _ -> raise @@ Invalid_argument (Printf.sprintf "Incompatible arrays shape")
   in
-  let x' = Ctypes.(bigarray_start genarray x) in
-  let y' = Ctypes.(bigarray_start genarray y) in
-  n, x', y'
+  let x = Ctypes.(bigarray_start genarray x) in
+  let y = Ctypes.(bigarray_start genarray y) in
+  n, x, y
 
 
 let get_size_and_pointer x =
@@ -689,5 +693,5 @@ let get_size_and_pointer x =
     | [| lx; 1 |] -> lx
     | _ -> raise @@ Invalid_argument "Array of invalid dimension"
   in
-  let x' = Ctypes.(bigarray_start genarray x) in
-  n, x'
+  let x = Ctypes.(bigarray_start genarray x) in
+  n, x
