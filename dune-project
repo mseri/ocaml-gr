@@ -14,7 +14,7 @@
  (description "GR is based on an implementation of a Graphical Kernel System (GKS) and OpenGL. As a self-contained system it can quickly and easily be integrated into existing applications.\nGR is characterized by its high interoperability and can be used with modern web technologies and mobile devices.")
  (depends
   (ocaml (>= 4.06))
-  (dune (> 1.11))
+  (dune (>= 1.11))
   (ctypes (>= 0.15))
   (ctypes-foreign (>= 0.15))
   (base-unix :with-test)
