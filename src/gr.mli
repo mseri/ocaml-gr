@@ -1,6 +1,6 @@
 (** {1 OCaml Bindings for the GR Framework} 
 
-    GR is essentially based on an implementation of a Graphical Kernel System (GKS) and OpenGL. As a self-contained system it can quickly and easily be integrated into existing applications.
+    GR is based on an implementation of a Graphical Kernel System (GKS) and OpenGL. As a self-contained system it can quickly and easily be integrated into existing applications.
 
     The GR framework can be used in imperative programming systems or integrated into modern object-oriented systems, in particular those based on GUI toolkits.
     GR is characterized by its high interoperability and can be used with modern web technologies and mobile devices.
