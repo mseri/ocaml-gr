@@ -1,6 +1,6 @@
 (executables
  (names example_simple example_complex example_lowlevel example_dynamic)
- (libraries ctypes gr owl unix))
+ (libraries ctypes gr owl stdcompat unix))
 
 (alias
  (name runtest)

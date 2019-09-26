@@ -1,4 +1,5 @@
 open Owl
+open Stdcompat
 
 let of_array a = Arr.of_array a [| 2 |]
 
