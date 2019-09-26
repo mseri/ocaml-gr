@@ -16,7 +16,7 @@
   (ocaml (>= 4.06))
   (dune (>= 1.11))
   (ctypes (>= 0.15))
-  (ctypes-foreign (>= 0.15))
+  (ctypes-foreign :true)
   (base-unix :with-test)
   (owl (and :with-test (>= 0.6.0)))
   (stdcompat (>= 9))))
