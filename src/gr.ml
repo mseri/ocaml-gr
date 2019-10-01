@@ -534,8 +534,40 @@ let int_of_surface_options = function
 module Workstation = struct
   type id = W of int
 
+  (** Available workstation types, see also {{: https://gr-framework.org/workstations.html} GR Workstation Types} *)
+  type workstation_type =
+    | WISS (** Workstation Independent Segment ptr Storage *)
+    | WinGDI (** Windows ptr GDI *)
+    | PS_1 (**PostScript (b/w \@-> color) *)
+    | PS_2 (**PostScript (b/w \@-> color) *)
+    | PS_3 (**PostScript (b/w \@-> color) *)
+    | PS_4 (**PostScript (b/w \@-> color) *)
+    | PDFPlain (** Portable Document Format ptr plain *)
+    | PDFCompressed (** Portable Document Format ptr compressed *)
+    | X_1 (** X ptr Windows *)
+    | X_2 (** X ptr Windows *)
+    | X_3 (** X ptr Windows *)
+    | X_4 (** X ptr Windows *)
+    | SunRF (** Sun Raster file (RF) *)
+    | GIF87 (** Graphics Interchange Format ptr GIF87 *)
+    | GIF89 (**Graphics Interchange Format ptr GIF89 *)
+    | MotifUIL (** Motif User Interface Language (UIL) *)
+    | BMP (** Windows Bitmap (BMP) *)
+    | JPEG (** JPEG image ptr file *)
+    | PNG (** Portable Network Graphics file (PNG) *)
+    | TIFF (** Tagged Image File Format (TIFF) *)
+    | Gtk (** ptr Gtk *)
+    | Wx (** ptr wxWidgets *)
+    | Qt4 (** ptr Qt4 *)
+    | SVG (** Scaleable Vector Graphics (SVG) *)
+    | WMF (** Windows ptr Metafile *)
+    | Quartz (** ptr Quartz *)
+    | Sock (** Socket ptr driver *)
+    | ZMQ (** 0MQ ptr driver *)
+    | OGL (** ptr OpenGL *)
+
   let wid id = W id
-  let open_ (W id) conn typ = Lowlevel.openws id conn (int_of_workstation_type typ)
+  let open' (W id) conn typ = Lowlevel.openws id conn (int_of_workstation_type typ)
   let close (W id) = Lowlevel.closews id
   let activate (W id) = Lowlevel.activatews id
   let deactivate (W id) = Lowlevel.deactivatews id
