@@ -1,70 +1,6 @@
 open Stdcompat
 module Lowlevel = Lowlevel
 
-(** Available workstation types, see also {{: (** Available line types, see also {{: https://gr-framework.org/workstations.html} GR Workstation Types} *)} GR Line Types} *)
-type workstation_type =
-  | WISS (** Workstation Independent Segment ptr Storage *)
-  | WinGDI (** Windows ptr GDI *)
-  | PS_1 (**PostScript (b/w @-> color) *)
-  | PS_2 (**PostScript (b/w @-> color) *)
-  | PS_3 (**PostScript (b/w @-> color) *)
-  | PS_4 (**PostScript (b/w @-> color) *)
-  | PDFPlain (** Portable Document Format ptr plain *)
-  | PDFCompressed (** Portable Document Format ptr compressed *)
-  | X_1 (** X ptr Windows *)
-  | X_2 (** X ptr Windows *)
-  | X_3 (** X ptr Windows *)
-  | X_4 (** X ptr Windows *)
-  | SunRF (** Sun Raster file (RF) *)
-  | GIF87 (** Graphics Interchange Format ptr GIF87 *)
-  | GIF89 (**Graphics Interchange Format ptr GIF89 *)
-  | MotifUIL (** Motif User Interface Language (UIL) *)
-  | BMP (** Windows Bitmap (BMP) *)
-  | JPEG (** JPEG image ptr file *)
-  | PNG (** Portable Network Graphics file (PNG) *)
-  | TIFF (** Tagged Image File Format (TIFF) *)
-  | Gtk (** ptr Gtk *)
-  | Wx (** ptr wxWidgets *)
-  | Qt4 (** ptr Qt4 *)
-  | SVG (** Scaleable Vector Graphics (SVG) *)
-  | WMF (** Windows ptr Metafile *)
-  | Quartz (** ptr Quartz *)
-  | Sock (** Socket ptr driver *)
-  | ZMQ (** 0MQ ptr driver *)
-  | OGL (** ptr OpenGL *)
-
-let int_of_workstation_type = function
-  | WISS -> 5
-  | WinGDI -> 41
-  | PS_1 -> 61
-  | PS_2 -> 62
-  | PS_3 -> 63
-  | PS_4 -> 64
-  | PDFPlain -> 101
-  | PDFCompressed -> 102
-  | X_1 -> 210
-  | X_2 -> 211
-  | X_3 -> 213
-  | X_4 -> 212
-  | SunRF -> 214
-  | GIF87 -> 215
-  | GIF89 -> 218
-  | MotifUIL -> 216
-  | BMP -> 320
-  | JPEG -> 321
-  | PNG -> 322
-  | TIFF -> 323
-  | Gtk -> 371
-  | Wx -> 380
-  | Qt4 -> 381
-  | SVG -> 382
-  | WMF -> 390
-  | Quartz -> 400
-  | Sock -> 410
-  | ZMQ -> 415
-  | OGL -> 420
-
-
 (** Available line types, see also {{: https://gr-framework.org/linetypes.html} GR Line Types} *)
 type linetype =
   | SOLID (** Solid line *)
@@ -565,6 +501,38 @@ module Workstation = struct
     | Sock (** Socket ptr driver *)
     | ZMQ (** 0MQ ptr driver *)
     | OGL (** ptr OpenGL *)
+
+  let int_of_workstation_type = function
+    | WISS -> 5
+    | WinGDI -> 41
+    | PS_1 -> 61
+    | PS_2 -> 62
+    | PS_3 -> 63
+    | PS_4 -> 64
+    | PDFPlain -> 101
+    | PDFCompressed -> 102
+    | X_1 -> 210
+    | X_2 -> 211
+    | X_3 -> 213
+    | X_4 -> 212
+    | SunRF -> 214
+    | GIF87 -> 215
+    | GIF89 -> 218
+    | MotifUIL -> 216
+    | BMP -> 320
+    | JPEG -> 321
+    | PNG -> 322
+    | TIFF -> 323
+    | Gtk -> 371
+    | Wx -> 380
+    | Qt4 -> 381
+    | SVG -> 382
+    | WMF -> 390
+    | Quartz -> 400
+    | Sock -> 410
+    | ZMQ -> 415
+    | OGL -> 420
+
 
   let wid id = W id
   let open' (W id) conn typ = Lowlevel.openws id conn (int_of_workstation_type typ)
