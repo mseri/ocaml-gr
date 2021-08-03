@@ -5,6 +5,11 @@
     The GR framework can be used in imperative programming systems or integrated into modern object-oriented systems, in particular those based on GUI toolkits.
     GR is characterized by its high interoperability and can be used with modern web technologies and mobile devices.
     The GR framework is especially suitable for real-time environments.
+
+    The bindings aree based on version 0.37.0, but should work in any successive version.
+
+    Make sure libgr is installed. Currently the library is only looked through the default library paths of your system or using [GRDIR].
+    You can customise this further by specifying the path to [libGR.so] or [libGR.dylib] via the environment variable [LIBGRPATH].
 *)
 
 module Lowlevel = Lowlevel

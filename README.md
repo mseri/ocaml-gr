@@ -6,8 +6,8 @@ To install, first install `libGR` and set the `GRDIR` env variable, then run `op
 
 The documentation is published here: [online documentation](http://www.mseri.me/ocaml-gr/gr/index.html).
 
-Currently `libGr` is only looked through the default library paths of your system.
-You can customise this by specifying the path to `libGR.so` or `libGR.dylib` with the environment variable `LIBGRPATH`.
+Currently `libGr` is only looked via `GRDIR` or through the default library paths of your system.
+You can customise this by unsetting `GRDIR` and specifying the path to `libGR.so` (or `libGR.dylib`) with the environment variable `LIBGRPATH`.
 
 The tests are only compiling the examples.
 You can run them as follows:
