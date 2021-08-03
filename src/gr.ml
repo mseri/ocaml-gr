@@ -773,7 +773,7 @@ let tex_text (x, y) text = Lowlevel.textext x y text
 let math_tex (x, y) tex = Lowlevel.mathtex x y tex
 
 let axes ?(scale = []) ?linetype ?linewidth ?coloridx ?(origin = (0.0, 0.0))
-    ?(major = (0, 0)) ?(tick_size = -0.01) x_tick y_tick =
+    ?(major = (1, 1)) ?(tick_size = -0.01) x_tick y_tick =
   State.with_sandbox (fun () ->
       if scale <> [] then set_scale scale |> ignore;
       Option.iter set_linetype linetype;
@@ -784,7 +784,7 @@ let axes ?(scale = []) ?linetype ?linewidth ?coloridx ?(origin = (0.0, 0.0))
       Lowlevel.axes x_tick y_tick x_org y_org major_x major_y tick_size)
 
 let axes_labels ?(scale = []) ?linetype ?linewidth ?coloridx
-    ?(origin = (0.0, 0.0)) ?(major = (0, 0)) ?(tick_size = -0.01)
+    ?(origin = (0.0, 0.0)) ?(major = (1, 1)) ?(tick_size = -0.01)
     (fpx : float -> float -> string -> float -> unit)
     (fpy : float -> float -> string -> float -> unit) x_tick y_tick =
   State.with_sandbox (fun () ->
@@ -799,7 +799,7 @@ let axes_labels ?(scale = []) ?linetype ?linewidth ?coloridx
         fpy)
 
 let axes3d ?(scale = []) ?linetype ?linewidth ?coloridx
-    ?(origin = (0.0, 0.0, 0.0)) ?(major = (0, 0, 0)) ?(tick_size = -0.01) x_tick
+    ?(origin = (0.0, 0.0, 0.0)) ?(major = (1, 1, 1)) ?(tick_size = -0.01) x_tick
     y_tick z_tick =
   State.with_sandbox (fun () ->
       if scale <> [] then set_scale scale |> ignore;
@@ -838,7 +838,7 @@ let contourf ?(major_h = 0) x y h z =
   Lowlevel.contourf nx ny nh x y h z major_h
 
 let grid ?(scale = []) ?linetype ?linewidth ?coloridx ?(origin = (0.0, 0.0))
-    ?(major = (0, 0)) x_tick y_tick =
+    ?(major = (1, 1)) x_tick y_tick =
   State.with_sandbox (fun () ->
       if scale <> [] then set_scale scale |> ignore;
       Option.iter set_linetype linetype;
@@ -849,7 +849,7 @@ let grid ?(scale = []) ?linetype ?linewidth ?coloridx ?(origin = (0.0, 0.0))
       Lowlevel.grid x_tick y_tick x_org y_org major_x major_y)
 
 let grid3d ?(scale = []) ?linetype ?linewidth ?coloridx
-    ?(origin = (0.0, 0.0, 0.0)) ?(major = (0, 0, 0)) x_tick y_tick z_tick =
+    ?(origin = (0.0, 0.0, 0.0)) ?(major = (1, 1, 1)) x_tick y_tick z_tick =
   State.with_sandbox (fun () ->
       if scale <> [] then set_scale scale |> ignore;
       Option.iter set_linetype linetype;

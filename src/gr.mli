@@ -839,7 +839,7 @@ val axes :
   float ->
   float ->
   unit
-(** [axes ?scale ?linetype ?linewidth ?origin:(0,0) ?major:(0,0) ?size:1 x_tick y_tick] draws X and Y coordinate axes with linearly and/or logarithmically spaced tick marks.
+(** [axes ?scale ?linetype ?linewidth ?origin:(0,0) ?major:(1,1) ?size:1 x_tick y_tick] draws X and Y coordinate axes with linearly and/or logarithmically spaced tick marks.
     Tick marks are positioned along each axis so that major tick marks fall on the axes origin (whether visible or not).
     Major tick marks are labeled with the corresponding data values.
     Axes are drawn according to the scale of the window.
@@ -868,7 +868,7 @@ val axes_labels :
   float ->
   float ->
   unit
-(** [axes_labels ?(scale = []) ?linetype ?linewidth ?coloridx ?(origin = 0.0, 0.0) ?(major = 0, 0) ?(tick_size = -0.01) (fpx : float -> float -> string -> float -> unit) (fpy : float -> float -> string -> float -> unit) x_tick y_tick] creates axes in the current workspace and supply a custom function for changing the behaviour of the tick labels.
+(** [axes_labels ?(scale = []) ?linetype ?linewidth ?coloridx ?(origin = 0.0, 0.0) ?(major = 1, 1) ?(tick_size = -0.01) (fpx : float -> float -> string -> float -> unit) (fpy : float -> float -> string -> float -> unit) x_tick y_tick] creates axes in the current workspace and supply a custom function for changing the behaviour of the tick labels.
 
     Similar to [axes] but allows more fine-grained control over tick labels and text positioning by supplying callback functions.
     Within the callback function you can use normal GR text primitives for performing any manipulations on the label text.
@@ -905,7 +905,7 @@ val axes3d :
   float ->
   float ->
   unit
-(** [axes3d ?scale ?linetype ?linewidth ?origin:(0,0) ?major:(0,0) ?size:1 x_tick y_tick] draws X, Y and Z coordinate axes with linearly and/or logarithmically spaced tick marks.
+(** [axes3d ?scale ?linetype ?linewidth ?origin:(0,0,0) ?major:(1,1,1) ?size:1 x_tick y_tick z_tick] draws X, Y and Z coordinate axes with linearly and/or logarithmically spaced tick marks.
     Tick marks are positioned along each axis so that major tick marks fall on the axes origin (whether visible or not).
     Major tick marks are labeled with the corresponding data values.
     Axes are drawn according to the scale of the window.
@@ -999,7 +999,7 @@ val grid :
   float ->
   float ->
   unit
-(** [grid ?scale ?linetype ?linewidth ?origin:(0,0) ?major:(0,0) x_tick y_tick] draws a linear and/or logarithmic grid.
+(** [grid ?scale ?linetype ?linewidth ?origin:(0,0) ?major:(1,1) x_tick y_tick] draws a linear and/or logarithmic grid.
 
     Major grid lines correspond to the axes origin and major tick marks whether visible or not.
     Minor grid lines are drawn at points equal to minor tick marks.
@@ -1027,7 +1027,7 @@ val grid3d :
   float ->
   float ->
   unit
-(** [grid3d ?scale ?linetype ?linewidth ?origin:(0,0,0) ?major:(0,0,0) x_tick y_tick z_tick] draws a linear and/or logarithmic grid.
+(** [grid3d ?scale ?linetype ?linewidth ?origin:(0,0,0) ?major:(1,1,1) x_tick y_tick z_tick] draws a linear and/or logarithmic grid.
 
     Major grid lines correspond to the axes origin and major tick marks whether visible or not.
     Minor grid lines are drawn at points equal to minor tick marks.
