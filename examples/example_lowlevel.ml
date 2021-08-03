@@ -1,4 +1,5 @@
-let get1char () =
+let wait_until_keypressed () =
+  print_string "Press any key to exit";
   let termio = Unix.tcgetattr Unix.stdin in
   let () =
     Unix.tcsetattr Unix.stdin Unix.TCSADRAIN
@@ -42,4 +43,4 @@ let () =
   polymarker 100 (captr xs) (captr ys);
   axes 0.25 0.25 (-2.0) (-2.0) 2 2 0.01;
   mathtex 0.5 0.9 {|\mbox{Attempt to plot tex stuff, e.g. } \int_0^1\sin(x)|};
-  get1char ()
+  wait_until_keypressed ()

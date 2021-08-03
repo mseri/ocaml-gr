@@ -1,4 +1,5 @@
 let wait_until_keypressed () =
+  print_string "Press any key to exit";
   let termio = Unix.tcgetattr Unix.stdin in
   let () =
     Unix.tcsetattr Unix.stdin Unix.TCSADRAIN
