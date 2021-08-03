@@ -1,19 +1,23 @@
 open Ctypes
 open Foreign
 
-(* version 0.37.0 *)
+(* version >= 0.37.0 *)
 
 (* The API is documented here: https://gr-framework.org/c-gr.html *)
 (* See also https://gr-framework.org/about.html - at a certain point it would be nice to also have bindings for GKS and GR3 *)
 
 (** {1} Lowlevel API bindings *)
 let libGRpath =
-  try Sys.getenv "LIBGRPATH" with
-  | Not_found ->
-    (match Sys.getenv "GRDIR" with
-    | "" -> "libGR.so"
-    | dir -> dir ^ "/libGR.so"
-    | exception Not_found -> "libGR.so")
+  let path =
+    try Sys.getenv "LIBGRPATH" with
+    | Not_found ->
+      (try Sys.getenv "GRDIR" ^ "/lib/" with
+      | Not_found -> "")
+  in
+  let lib = path ^ "libGR." in
+  (* brittle, temporary until we move to use generated stubs *)
+  let ext = if Sys.file_exists (lib ^ "dylib") then "dylib" else "so" in
+  lib ^ ext
 
 
 let libGR = Dl.dlopen ~flags:[ Dl.RTLD_LAZY ] ~filename:libGRpath
