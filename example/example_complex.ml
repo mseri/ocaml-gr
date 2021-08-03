@@ -1,11 +1,11 @@
 let wait_until_keypressed () =
   let termio = Unix.tcgetattr Unix.stdin in
   let () =
-    Unix.tcsetattr Unix.stdin Unix.TCSADRAIN { termio with Unix.c_icanon = false }
+    Unix.tcsetattr Unix.stdin Unix.TCSADRAIN
+      { termio with Unix.c_icanon = false }
   in
   let _ = input_char stdin in
   Unix.tcsetattr Unix.stdin Unix.TCSADRAIN termio
-
 
 let () =
   let open Owl in
@@ -35,6 +35,7 @@ let () =
   axes ~origin:(-2.0, -2.0) ~major:(2, 2) ~tick_size:0.01 0.25 0.25;
   (* Add the title *)
   set_char_height 0.025;
-  math_tex (0.5, 0.9) {|\mbox{Attempt to plot tex stuff, e.g. } \int_0^1\sin(x)|};
+  math_tex (0.5, 0.9)
+    {|\mbox{Attempt to plot tex stuff, e.g. } \int_0^1\sin(x)|};
   (* Wait until keypressed... *)
   wait_until_keypressed ()

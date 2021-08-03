@@ -7,71 +7,71 @@
     The GR framework is especially suitable for real-time environments.
 *)
 
-(** This module contains the bindings to the lowlevel C interface. *)
 module Lowlevel = Lowlevel
+(** This module contains the bindings to the lowlevel C interface. *)
 
 (** Available line types, see also {{: https://gr-framework.org/linetypes.html} GR Line Types} *)
 type linetype =
-  | SOLID (** Solid line *)
-  | DASHED (** Dashed line *)
-  | DOTTED (** Dotted line *)
-  | DASHED_DOTTED (** Dashed-dotted line *)
-  | DASH_2_DOT (** Sequence of one dash followed by two dots *)
-  | DASH_3_DOT (** Sequence of one dash followed by three dots *)
-  | LONG_DASH (** Sequence of long dashes *)
-  | LONG_SHORT_DASH (** Sequence of a long dash followed by a short dash *)
-  | SPACED_DASH (** Sequence of dashes double spaced *)
-  | SPACED_DOT (** Sequence of dots double spaced *)
-  | DOUBLE_DOT (** Sequence of pairs of dots *)
-  | TRIPLE_DOT (** Sequence of groups of three dots *)
+  | SOLID  (** Solid line *)
+  | DASHED  (** Dashed line *)
+  | DOTTED  (** Dotted line *)
+  | DASHED_DOTTED  (** Dashed-dotted line *)
+  | DASH_2_DOT  (** Sequence of one dash followed by two dots *)
+  | DASH_3_DOT  (** Sequence of one dash followed by three dots *)
+  | LONG_DASH  (** Sequence of long dashes *)
+  | LONG_SHORT_DASH  (** Sequence of a long dash followed by a short dash *)
+  | SPACED_DASH  (** Sequence of dashes double spaced *)
+  | SPACED_DOT  (** Sequence of dots double spaced *)
+  | DOUBLE_DOT  (** Sequence of pairs of dots *)
+  | TRIPLE_DOT  (** Sequence of groups of three dots *)
 
 (** Available marker types, see also {{: https://gr-framework.org/markertypes.html} GR Marker Types} *)
 type markertype =
-  | DOT (** Smallest displayable dot *)
-  | PLUS (** Plus sign *)
-  | ASTERISK (** Asterisk *)
-  | CIRCLE (** Hollow circle *)
-  | DIAGONAL_CROSS (** Diagonal cross *)
-  | SOLID_CIRCLE (** Filled circle *)
-  | TRIANGLE_UP (** Hollow triangle pointing upward *)
-  | SOLID_TRI_UP (** Filled triangle pointing upward *)
-  | TRIANGLE_DOWN (** Hollow triangle pointing downward *)
-  | SOLID_TRI_DOWN (** Filled triangle pointing downward *)
-  | SQUARE (** Hollow square *)
-  | SOLID_SQUARE (** Filled square *)
-  | BOWTIE (** Hollow bowtie *)
-  | SOLID_BOWTIE (** Filled bowtie *)
-  | HGLASS (** Hollow hourglass *)
-  | SOLID_HGLASS (** Filled hourglass *)
-  | DIAMOND (** Hollow diamond *)
-  | SOLID_DIAMOND (** Filled Diamond *)
-  | STAR (** Hollow star *)
-  | SOLID_STAR (** Filled Star *)
-  | TRI_UP_DOWN (** Hollow triangles pointing up and down overlaid *)
-  | SOLID_TRI_RIGHT (** Filled triangle point right *)
-  | SOLID_TRI_LEFT (** Filled triangle pointing left *)
-  | HOLLOW_PLUS (** Hollow plus sign *)
-  | SOLID_PLUS (** Solid plus sign *)
-  | PENTAGON (** Pentagon *)
-  | HEXAGON (** Hexagon *)
-  | HEPTAGON (** Heptagon *)
-  | OCTAGON (** Octagon *)
-  | STAR_4 (** 4-pointed star *)
-  | STAR_5 (** 5-pointed star (pentagram) *)
-  | STAR_6 (** 6-pointed star (hexagram) *)
-  | STAR_7 (** 7-pointed star (heptagram) *)
-  | STAR_8 (** 8-pointed star (octagram) *)
-  | VLINE (** verical line *)
-  | HLINE (** horizontal line *)
-  | OMARK (** o-mark *)
+  | DOT  (** Smallest displayable dot *)
+  | PLUS  (** Plus sign *)
+  | ASTERISK  (** Asterisk *)
+  | CIRCLE  (** Hollow circle *)
+  | DIAGONAL_CROSS  (** Diagonal cross *)
+  | SOLID_CIRCLE  (** Filled circle *)
+  | TRIANGLE_UP  (** Hollow triangle pointing upward *)
+  | SOLID_TRI_UP  (** Filled triangle pointing upward *)
+  | TRIANGLE_DOWN  (** Hollow triangle pointing downward *)
+  | SOLID_TRI_DOWN  (** Filled triangle pointing downward *)
+  | SQUARE  (** Hollow square *)
+  | SOLID_SQUARE  (** Filled square *)
+  | BOWTIE  (** Hollow bowtie *)
+  | SOLID_BOWTIE  (** Filled bowtie *)
+  | HGLASS  (** Hollow hourglass *)
+  | SOLID_HGLASS  (** Filled hourglass *)
+  | DIAMOND  (** Hollow diamond *)
+  | SOLID_DIAMOND  (** Filled Diamond *)
+  | STAR  (** Hollow star *)
+  | SOLID_STAR  (** Filled Star *)
+  | TRI_UP_DOWN  (** Hollow triangles pointing up and down overlaid *)
+  | SOLID_TRI_RIGHT  (** Filled triangle point right *)
+  | SOLID_TRI_LEFT  (** Filled triangle pointing left *)
+  | HOLLOW_PLUS  (** Hollow plus sign *)
+  | SOLID_PLUS  (** Solid plus sign *)
+  | PENTAGON  (** Pentagon *)
+  | HEXAGON  (** Hexagon *)
+  | HEPTAGON  (** Heptagon *)
+  | OCTAGON  (** Octagon *)
+  | STAR_4  (** 4-pointed star *)
+  | STAR_5  (** 5-pointed star (pentagram) *)
+  | STAR_6  (** 6-pointed star (hexagram) *)
+  | STAR_7  (** 7-pointed star (heptagram) *)
+  | STAR_8  (** 8-pointed star (octagram) *)
+  | VLINE  (** verical line *)
+  | HLINE  (** horizontal line *)
+  | OMARK  (** o-mark *)
 
 type scale_options =
-  | OPTION_X_LOG (** Logarithmic X-axis *)
-  | OPTION_Y_LOG (** Logarithmic Y-axis *)
-  | OPTION_Z_LOG (** Logarithmic Z-axis *)
-  | OPTION_FLIP_X (** Flip X-axis *)
-  | OPTION_FLIP_Y (** Flip Y-axis *)
-  | OPTION_FLIP_Z (** Flip Z-axis *)
+  | OPTION_X_LOG  (** Logarithmic X-axis *)
+  | OPTION_Y_LOG  (** Logarithmic Y-axis *)
+  | OPTION_Z_LOG  (** Logarithmic Z-axis *)
+  | OPTION_FLIP_X  (** Flip X-axis *)
+  | OPTION_FLIP_Y  (** Flip Y-axis *)
+  | OPTION_FLIP_Z  (** Flip Z-axis *)
 
 type spline_algo =
   | GeneralizedCrossValidatedSmoothing
@@ -112,43 +112,43 @@ type font =
   | ZAPFDINGBATS
 
 type text_precision =
-  | STRING (** String precision (higher quality) *)
-  | CHAR (** Character precision (medium quality) *)
-  | STROKE (** Stroke precision (lower quality) *)
+  | STRING  (** String precision (higher quality) *)
+  | CHAR  (** Character precision (medium quality) *)
+  | STROKE  (** Stroke precision (lower quality) *)
 
 type text_path_direction =
-  | RIGHT (** left-to-right *)
-  | LEFT (** right-to-left *)
-  | UP (** downside-up *)
-  | DOWN (** upside-down *)
+  | RIGHT  (** left-to-right *)
+  | LEFT  (** right-to-left *)
+  | UP  (** downside-up *)
+  | DOWN  (** upside-down *)
 
 type text_halign =
   | NORMAL
-  | LEFT (** Left justify *)
-  | CENTER (** Center justify *)
-  | RIGHT (** Right justify *)
+  | LEFT  (** Left justify *)
+  | CENTER  (** Center justify *)
+  | RIGHT  (** Right justify *)
 
 type text_valign =
   | NORMAL
-  | TOP (** Align with the top of the characters *)
-  | CAP (** Aligned with the cap of the characters *)
-  | HALF (** Aligned with the half line of the characters *)
-  | BASE (** Aligned with the base line of the characters *)
-  | BOTTOM (** Aligned with the bottom line of the characters *)
+  | TOP  (** Align with the top of the characters *)
+  | CAP  (** Aligned with the cap of the characters *)
+  | HALF  (** Aligned with the half line of the characters *)
+  | BASE  (** Aligned with the base line of the characters *)
+  | BOTTOM  (** Aligned with the bottom line of the characters *)
 
-(** Pattern style, see also {{: https://gr-framework.org/patterns.html} GR Fill Patterns and Hatches}  *)
 type pattern_style
+(** Pattern style, see also {{: https://gr-framework.org/patterns.html} GR Fill Patterns and Hatches}  *)
 
 val pattern_style : int -> pattern_style
 
-(** Hatch style, see also {{: https://gr-framework.org/patterns.html} GR Fill Patterns and Hatches}  *)
 type hatch_style
+(** Hatch style, see also {{: https://gr-framework.org/patterns.html} GR Fill Patterns and Hatches}  *)
 
 val hatch_style : int -> hatch_style
 
 type fill_style =
-  | HOLLOW (** No filling. Just draw the bounding polyline *)
-  | SOLID (** Fill the interior of the polygon using the fill color index *)
+  | HOLLOW  (** No filling. Just draw the bounding polyline *)
+  | SOLID  (** Fill the interior of the polygon using the fill color index *)
   | PATTERN of pattern_style
       (** Fill the interior of the polygon using the style index as a pattern index *)
   | HATCH of hatch_style
@@ -206,13 +206,14 @@ type color_map =
   | Magma
 
 type surface_options =
-  | LINES (** Use X Y polylines to denote the surface *)
-  | MESH (** Use a wire grid to denote the surface *)
-  | FILLED_MESH (** Applies an opaque grid to the surface *)
-  | Z_SHADED_MESH (** Applies Z-value shading to the surface *)
-  | COLORED_MESH (** Applies a colored grid to the surface *)
-  | CELL_ARRAY (** Applies a grid of individually-colored cells to the surface *)
-  | SHADED_MESH (** Applies light source shading to the 3-D surface *)
+  | LINES  (** Use X Y polylines to denote the surface *)
+  | MESH  (** Use a wire grid to denote the surface *)
+  | FILLED_MESH  (** Applies an opaque grid to the surface *)
+  | Z_SHADED_MESH  (** Applies Z-value shading to the surface *)
+  | COLORED_MESH  (** Applies a colored grid to the surface *)
+  | CELL_ARRAY
+      (** Applies a grid of individually-colored cells to the surface *)
+  | SHADED_MESH  (** Applies light source shading to the 3-D surface *)
 
 type segment
 
@@ -222,38 +223,39 @@ module Workstation : sig
 
   (** Available workstation types, see also {{: https://gr-framework.org/workstations.html} GR Workstation Types} *)
   type workstation_type =
-    | WISS (** Workstation Independent Segment ptr Storage *)
-    | WinGDI (** Windows ptr GDI *)
-    | PS_1 (**PostScript (b/w \@-> color) *)
-    | PS_2 (**PostScript (b/w \@-> color) *)
-    | PS_3 (**PostScript (b/w \@-> color) *)
-    | PS_4 (**PostScript (b/w \@-> color) *)
-    | PDFPlain (** Portable Document Format ptr plain *)
-    | PDFCompressed (** Portable Document Format ptr compressed *)
-    | X_1 (** X ptr Windows *)
-    | X_2 (** X ptr Windows *)
-    | X_3 (** X ptr Windows *)
-    | X_4 (** X ptr Windows *)
-    | SunRF (** Sun Raster file (RF) *)
-    | GIF87 (** Graphics Interchange Format ptr GIF87 *)
-    | GIF89 (**Graphics Interchange Format ptr GIF89 *)
-    | MotifUIL (** Motif User Interface Language (UIL) *)
-    | BMP (** Windows Bitmap (BMP) *)
-    | JPEG (** JPEG image ptr file *)
-    | PNG (** Portable Network Graphics file (PNG) *)
-    | TIFF (** Tagged Image File Format (TIFF) *)
-    | Gtk (** ptr Gtk *)
-    | Wx (** ptr wxWidgets *)
-    | Qt4 (** ptr Qt4 *)
-    | SVG (** Scaleable Vector Graphics (SVG) *)
-    | WMF (** Windows ptr Metafile *)
-    | Quartz (** ptr Quartz *)
-    | Sock (** Socket ptr driver *)
-    | ZMQ (** 0MQ ptr driver *)
-    | OGL (** ptr OpenGL *)
+    | WISS  (** Workstation Independent Segment ptr Storage *)
+    | WinGDI  (** Windows ptr GDI *)
+    | PS_1  (**PostScript (b/w \@-> color) *)
+    | PS_2  (**PostScript (b/w \@-> color) *)
+    | PS_3  (**PostScript (b/w \@-> color) *)
+    | PS_4  (**PostScript (b/w \@-> color) *)
+    | PDFPlain  (** Portable Document Format ptr plain *)
+    | PDFCompressed  (** Portable Document Format ptr compressed *)
+    | X_1  (** X ptr Windows *)
+    | X_2  (** X ptr Windows *)
+    | X_3  (** X ptr Windows *)
+    | X_4  (** X ptr Windows *)
+    | SunRF  (** Sun Raster file (RF) *)
+    | GIF87  (** Graphics Interchange Format ptr GIF87 *)
+    | GIF89  (**Graphics Interchange Format ptr GIF89 *)
+    | MotifUIL  (** Motif User Interface Language (UIL) *)
+    | BMP  (** Windows Bitmap (BMP) *)
+    | JPEG  (** JPEG image ptr file *)
+    | PNG  (** Portable Network Graphics file (PNG) *)
+    | TIFF  (** Tagged Image File Format (TIFF) *)
+    | Gtk  (** ptr Gtk *)
+    | Wx  (** ptr wxWidgets *)
+    | Qt4  (** ptr Qt4 *)
+    | SVG  (** Scaleable Vector Graphics (SVG) *)
+    | WMF  (** Windows ptr Metafile *)
+    | Quartz  (** ptr Quartz *)
+    | Sock  (** Socket ptr driver *)
+    | ZMQ  (** 0MQ ptr driver *)
+    | OGL  (** ptr OpenGL *)
 
   val wid : int -> id
 
+  val open' : id -> string -> workstation_type -> unit
   (** [open' workstation_id connection type] opens a graphical workstation.
 
       Parameters
@@ -262,14 +264,18 @@ module Workstation : sig
     - [connection]: a connection identifier
     - [type]: the desired workstation type
   *)
-  val open' : id -> string -> workstation_type -> unit
 
   val close : id -> unit
+
   val activate : id -> unit
+
   val deactivate : id -> unit
+
   val clear : unit -> unit
+
   val update : unit -> unit
 
+  val set_window : float -> float -> float -> float -> unit
   (** [set_window xmin xmax ymin ymax] sets the area of the NDC viewport that is to be drawn in the workstation window.
 
       This function defines the rectangular area of the Normalized Device Coordinate space to be output to the device.
@@ -283,8 +289,8 @@ module Workstation : sig
     - [ymin]: The bottom vertical coordinate of the workstation window (0 <= [ymin] < [ymax]).
     - [ymax]: The top vertical coordinate of the workstation window ([ymin] < [ymax] <= 1).
     *)
-  val set_window : float -> float -> float -> float -> unit
 
+  val set_viewport : float -> float -> float -> float -> unit
   (** [set_viewport xmin xmax ymin ymax] defines the size of the workstation graphics window in meters.
 
       This function places a workstation window on the display of the specified size in meters.
@@ -297,23 +303,27 @@ module Workstation : sig
     - [ymin]: The bottom vertical coordinate of the workstation window.
     - [ymax]: The top vertical coordinate of the workstation window.
     *)
-  val set_viewport : float -> float -> float -> float -> unit
 
   val copy_segment : segment -> unit
+
   val redraw_segment : unit -> unit
 end
 
 module Gks : sig
   val emergency_close : unit -> unit
+
   val update : unit -> unit
 end
 
 module State : sig
   val save : unit -> unit
+
   val restore : unit -> unit
+
   val with_sandbox : (unit -> 'a) -> 'a
 end
 
+val set_window : float -> float -> float -> float -> unit
 (** [set_window xmin xmax ymin ymax] establishes a window, or rectangular subspace, of world coordinates to be plotted. If you desire log scaling or mirror-imaging of axes, use the gr_setscale function.
 
     This function defines the rectangular portion of the World Coordinate space (WC) to be associated with the specified normalization transformation.
@@ -329,8 +339,8 @@ end
     - [ymax]: The top vertical coordinate of the window ([ymin] < [ymax]).
 
 *)
-val set_window : float -> float -> float -> float -> unit
 
+val set_viewport : float -> float -> float -> float -> unit
 (** [set_viewport xmin xmax ymin ymax] establishes a rectangular subspace of normalized device coordinates.
 
     This function defines the rectangular portion of the Normalized Device Coordinate (NDC) space to be associated with the specified normalization transformation.
@@ -345,8 +355,8 @@ val set_window : float -> float -> float -> float -> unit
     - [ymax]: The top vertical coordinate of the viewport ([ymin] < [ymax] <= 1).
 
  *)
-val set_viewport : float -> float -> float -> float -> unit
 
+val select_transformation : int -> unit
 (** [select_transformation transform] selects a predefined transformation from world coordinates to normalized device coordinates.
 
     Parameters
@@ -357,8 +367,8 @@ val set_viewport : float -> float -> float -> float -> unit
     {- [>= 1] selects a normalization transformation as defined by [set_window] and [set_viewport].}
     }
 *)
-val select_transformation : int -> unit
 
+val clip : bool -> unit
 (** [clip indicator] sets the clipping indicator.
     This function enables or disables clipping of the image drawn in the current window.
     Clipping is defined as the removal of those portions of the graph that lie outside of the defined viewport. If clipping is on, GR does not draw generated output primitives past the viewport boundaries. If clipping is off, primitives may exceed the viewport boundaries, and they will be drawn to the edge of the workstation window.
@@ -372,24 +382,17 @@ val select_transformation : int -> unit
     {- [true] clipping is on. Data outside of the window will not be drawn.}
     }
 *)
-val clip : bool -> unit
 
 val segment : int -> segment
+
 val create_segment : segment -> unit
 
-val set_segment_transform
-  :  segment
-  -> float
-  -> float
-  -> float
-  -> float
-  -> float
-  -> float
-  -> float
-  -> unit
+val set_segment_transform :
+  segment -> float -> float -> float -> float -> float -> float -> float -> unit
 
 val close_segment : unit -> unit
 
+val set_space : float -> float -> int -> int -> int
 (** [set_space zmin zmax rotation tilt] sets the abstract Z-space used for mapping three-dimensional output primitives into the current world coordinate space.
 
     This function establishes the limits of an abstract Z-axis and defines the angles for rotation and for the viewing angle (tilt) of a simulated three-dimensional graph, used for mapping corresponding output primitives into the current window.
@@ -403,35 +406,34 @@ val close_segment : unit -> unit
     - [rotation]: Angle for the rotation of the X axis, in degrees.
     - [tilt]: Viewing angle of the Z axis, in degrees.
 *)
-val set_space : float -> float -> int -> int -> int
 
 val set_linetype : linetype -> unit
 
+val set_linewidth : float -> unit
 (** [set_linewidth lw] defines the line width of subsequent polyline output primitives.
 
     The line width is calculated as the nominal line width generated on the workstation multiplied by the line width scale factor.
     This value is mapped by the workstation to the nearest available line width.
     The default line width is 1.0, or 1 times the line width generated on the graphics device.
 *)
-val set_linewidth : float -> unit
 
+val set_linecolorindex : int -> unit
 (** [set_linecolorindex c] defines the color of subsequent polyline output primitives.
     Note: c < 1256
 *)
-val set_linecolorindex : int -> unit
 
 val set_markertype : markertype -> unit
 
+val set_markersize : float -> unit
 (** [set_markersize ms] specify the marker size for polymarkers.
 
     The polymarker size is calculated as the nominal size generated on the graphics device multiplied by the marker size scale factor. 
 *)
-val set_markersize : float -> unit
 
+val set_markercolorindex : int -> unit
 (** [set_markercolorindex c] define the color of subsequent markers output primitives.
     Note: c < 1256
 *)
-val set_markercolorindex : int -> unit
 
 (** [set_arrowstyle style] sets the arrow style to be used for subsequent arrow commands.
 
@@ -467,6 +469,7 @@ val set_markercolorindex : int -> unit
 
 val set_arrowstyle : int -> unit
 
+val set_arrowsize : float -> unit
 (** [set_arrowsize size] sets the arrow size to be used for subsequent arrow commands.
 
     This function defines the arrow size for subsequent arrow primitives.
@@ -477,8 +480,8 @@ val set_arrowstyle : int -> unit
     - [size]: The arrow size to be used
 
 *)
-val set_arrowsize : float -> unit
 
+val set_text_font_prec : ?precision:text_precision -> font -> unit
 (** [set_text_font_prec ?precision font] specifies the text font and precision for subsequent text output primitives.
 
     The appearance of a font depends on the text precision value specified.
@@ -487,8 +490,8 @@ val set_arrowsize : float -> unit
 
     XXX: CHARACTER and STROKE precision seem to be broken (and to break the [axes] command with it...)!
 *)
-val set_text_font_prec : ?precision:text_precision -> font -> unit
 
+val set_char_expand_factor : float -> unit
 (** [set_char_expand_factor factor] sets the current character expansion factor (width to height ratio).
 
     This function defines the width of subsequent text output primitives.
@@ -499,8 +502,8 @@ val set_text_font_prec : ?precision:text_precision -> font -> unit
 
     - [factor]: Text expansion factor applied to the nominal text width-to-height ratio
 *)
-val set_char_expand_factor : float -> unit
 
+val set_text_colorindex : int -> unit
 (** [set_text_colorindex color] sets the current text color index.
 
     This function defines the color of subsequent text output primitives.
@@ -510,16 +513,16 @@ val set_char_expand_factor : float -> unit
 
     - [color]: The text color index (COLOR < 1256)
 *)
-val set_text_colorindex : int -> unit
 
+val set_char_height : float -> unit
 (** [set_char_height height] sets the current character height.
 
     This function defines the height of subsequent text output primitives.
     Text height is defined as a percentage of the default window.
     GR uses the default text height of 0.027 (2.7% of the height of the default window).
 *)
-val set_char_height : float -> unit
 
+val set_char_up : float * float -> unit
 (** [set_char_up (x, y)]
     Set the current character text angle up vector.
     This function defines the vertical rotation of subsequent text output primitives.
@@ -530,25 +533,25 @@ val set_char_height : float -> unit
     - [x]: X coordinate of the text up vector
     - [y]: Y coordinate of the text up vector
 *)
-val set_char_up : float * float -> unit
 
 val set_char_space : float -> unit
 
-(** [set_text_path direction] defines the current direction in which subsequent text will be drawn. *)
 val set_text_path : text_path_direction -> unit
+(** [set_text_path direction] defines the current direction in which subsequent text will be drawn. *)
 
+val set_text_align : text_halign option -> text_valign option -> unit
 (** [set_text_align horizontal vertical] specifies how the characters in a text primitive will be aligned in horizontal and vertical space.
     The default text alignment indicates horizontal left alignment and vertical baseline alignment.
 *)
-val set_text_align : text_halign option -> text_valign option -> unit
 
+val set_fill_interior_style : fill_style -> unit
 (** [set_fill_interior_style style] sets the fill area interior style to be used for fill areas.
 
     This function defines the interior style for subsequent fill area output primitives.
     The default interior style is HOLLOW. 
 *)
-val set_fill_interior_style : fill_style -> unit
 
+val set_fill_colorindex : int -> unit
 (** [set_fill_colorindex color] sets the current fill area color index.
 
     This function defines the color of subsequent fill area output primitives.
@@ -558,8 +561,8 @@ val set_fill_interior_style : fill_style -> unit
 
     - [color]: The fill area color index (COLOR < 1256)
 *)
-val set_fill_colorindex : int -> unit
 
+val set_color_representation : int -> float * float * float -> unit
 (** [set_color_representation index (red, green, blue)] redefines an existing color index representation by specifying an RGB color triplet.
 
     Parameters
@@ -570,16 +573,16 @@ val set_fill_colorindex : int -> unit
     - [blue]: Blue intensity in the range 0.0 to 1.0
 
 *)
-val set_color_representation : int -> float * float * float -> unit
 
+val set_colormap : color_map -> unit
 (** [set_colormap cmap] sets the currently used colormap.
 
     A list of colormaps can be found at: {{: https://gr-framework.org/colormaps.html} GR Colormaps}.
 *)
-val set_colormap : color_map -> unit
 
 val set_scale : scale_options list -> int
 
+val set_shadow : float * float -> float -> unit
 (** [set_shadow (offsetx, offsety) blur]
     Allows drawing of shadows, realized by images painted underneath, and offset from, graphics objects such that the shadow mimics the effect of a light source cast on the graphics objects.
 
@@ -589,27 +592,28 @@ val set_scale : scale_options list -> int
     - [offsety]: A y-offset, which specifies how far in the vertical direction the shadow is offset from the object
     - [blur]: A blur value, which specifies whether the object has a hard or a diffuse edge
 *)
-val set_shadow : float * float -> float -> unit
 
+val set_transparency : float -> unit
 (** [set_transparency alpha] sets the value of the alpha component associated with GR colors.
 
     Parameters
 
     - [alpha]: An alpha value (0.0 - 1.0)
 *)
-val set_transparency : float -> unit
 
+val set_coord_transform :
+  (float Ctypes_static.ptr, 'a, 'b) Bigarray.Genarray.t -> unit
 (** [set_coord_transform transform]
     Change the coordinate transformation according to the given matrix.
     Parameters
 
     - [mat]: 2D transformation matrix (3x2)
 *)
-val set_coord_transform : (float Ctypes_static.ptr, 'a, 'b) Bigarray.Genarray.t -> unit
 
 module Graphics : sig
   type t
 
+  val beging : t -> unit
   (** [beging path]
     Open a file for graphics output.
 
@@ -620,72 +624,75 @@ module Graphics : sig
 
     - [path]: Filename for the graphics file.
 *)
-  val beging : t -> unit
 
   val endg : unit -> unit
+
   val get : unit -> t
+
   val draw : t -> int
+
   val import : string -> int
 end
 
+val polyline :
+  ?linetype:linetype ->
+  ?linewidth:float ->
+  ?coloridx:int ->
+  (float, 'a, 'b) Bigarray.Genarray.t ->
+  (float, 'c, 'd) Bigarray.Genarray.t ->
+  unit
 (**
    [polyline ?linetype ?linewidth ?coloridx x y] draws a polyline using the current line attributes, starting from the first data point and ending at the last data point.
 
    The values for [x] and [y] are in world coordinates.
    The attributes that control the appearance of a polyline are [linetype], [linewidth] and [color index].
 *)
-val polyline
-  :  ?linetype:linetype
-  -> ?linewidth:float
-  -> ?coloridx:int
-  -> (float, 'a, 'b) Bigarray.Genarray.t
-  -> (float, 'c, 'd) Bigarray.Genarray.t
-  -> unit
 
+val polyline3d :
+  ?linetype:linetype ->
+  ?linewidth:float ->
+  ?coloridx:int ->
+  (float, 'a, 'b) Bigarray.Genarray.t ->
+  (float, 'c, 'd) Bigarray.Genarray.t ->
+  (float, 'e, 'f) Bigarray.Genarray.t ->
+  unit
 (**
    [polyline3d ?linetype ?linewidth ?coloridx x y z] draws a polyline using the current line attributes, starting from the first data point and ending at the last data point.
 
    The values for [x], [y] and [z] are in world coordinates.
    The attributes that control the appearance of a polyline are [linetype], [linewidth] and [color index].
 *)
-val polyline3d
-  :  ?linetype:linetype
-  -> ?linewidth:float
-  -> ?coloridx:int
-  -> (float, 'a, 'b) Bigarray.Genarray.t
-  -> (float, 'c, 'd) Bigarray.Genarray.t
-  -> (float, 'e, 'f) Bigarray.Genarray.t
-  -> unit
 
+val polymarker :
+  ?markertype:markertype ->
+  ?markersize:float ->
+  ?coloridx:int ->
+  (float, 'a, 'b) Bigarray.Genarray.t ->
+  (float, 'c, 'd) Bigarray.Genarray.t ->
+  unit
 (**
      [polymarker ?markertype ?markersize ?coloridx x y] draws marker symbols centered at the given data points.
 
      The values for [x] and [y] are in world coordinates.
      The attributes that control the appearance of a polyline are [markertype], [markersize] and [color index].
   *)
-val polymarker
-  :  ?markertype:markertype
-  -> ?markersize:float
-  -> ?coloridx:int
-  -> (float, 'a, 'b) Bigarray.Genarray.t
-  -> (float, 'c, 'd) Bigarray.Genarray.t
-  -> unit
 
+val polymarker3d :
+  ?markertype:markertype ->
+  ?markersize:float ->
+  ?coloridx:int ->
+  (float, 'a, 'b) Bigarray.Genarray.t ->
+  (float, 'c, 'd) Bigarray.Genarray.t ->
+  (float, 'e, 'f) Bigarray.Genarray.t ->
+  unit
 (**
      [polymarker3d ?markertype ?markersize ?coloridx x y z] draws marker symbols centered at the given data points.
 
      The values for [x], [y] and [z] are in world coordinates.
      The attributes that control the appearance of a polyline are [markertype], [markersize] and [color index].
   *)
-val polymarker3d
-  :  ?markertype:markertype
-  -> ?markersize:float
-  -> ?coloridx:int
-  -> (float, 'a, 'b) Bigarray.Genarray.t
-  -> (float, 'c, 'd) Bigarray.Genarray.t
-  -> (float, 'e, 'f) Bigarray.Genarray.t
-  -> unit
 
+val text : float -> float -> string -> unit
 (** [text x y content] draws a text at position [x], [y] using the current text attributes.
 
         The values for [x] and [y] are in normalized device coordinates.
@@ -693,8 +700,11 @@ val polymarker3d
 
 (* TODO: add styling options *)
 *)
-val text : float -> float -> string -> unit
 
+val fillarea :
+  (float, 'a, 'b) Bigarray.Genarray.t ->
+  (float, 'c, 'd) Bigarray.Genarray.t ->
+  unit
 (** 
    [fillarea x y] allows you to specify a polygonal shape of an area to be filled.
    The vectors [x] and [y] specify the coordinates of the polygonal shape corners.
@@ -702,11 +712,15 @@ val text : float -> float -> string -> unit
    The attributes that control the appearance of fill areas are fill area [interior style], fill area [style index] and fill area [color index]. 
 (* TODO: add styling options *)
 *)
-val fillarea
-  :  (float, 'a, 'b) Bigarray.Genarray.t
-  -> (float, 'c, 'd) Bigarray.Genarray.t
-  -> unit
 
+val cellarray :
+  float * float ->
+  float * float ->
+  int * int ->
+  int * int ->
+  int * int ->
+  (int, 'a, 'b) Bigarray.Genarray.t ->
+  unit
 (** [cellarray (xmin, xmax) (ymin, ymax) (dimx, dimy) (scol, srow) (ncol, nrow) color] displays rasterlike images in a device-independent manner.
     The cell array function partitions a rectangle given by two corner points into DIMX X DIMY cells, each of them colored individually by the corresponding color index of the given cell array.
 
@@ -728,15 +742,16 @@ val fillarea
 
     Note: [nonuniformcellarray] and [polycellarray] have been introduced in newer versions of gr.
 *)
-val cellarray
-  :  float * float
-  -> float * float
-  -> int * int
-  -> int * int
-  -> int * int
-  -> (int, 'a, 'b) Bigarray.Genarray.t
-  -> unit
 
+val spline :
+  ?linetype:linetype ->
+  ?linewidth:float ->
+  ?coloridx:int ->
+  (float, 'a, 'b) Bigarray.Genarray.t ->
+  (float, 'c, 'd) Bigarray.Genarray.t ->
+  int ->
+  spline_algo ->
+  unit
 (** [spline ?linetype ?linewidth ?coloridx x y m method_t] generates a cubic spline-fit, starting from the first data point and ending at the last data point.
 
     The values for [x] and [y] are in world coordinates.
@@ -750,16 +765,15 @@ val cellarray
     - [method]: The smoothing method
 
 *)
-val spline
-  :  ?linetype:linetype
-  -> ?linewidth:float
-  -> ?coloridx:int
-  -> (float, 'a, 'b) Bigarray.Genarray.t
-  -> (float, 'c, 'd) Bigarray.Genarray.t
-  -> int
-  -> spline_algo
-  -> unit
 
+val gridit :
+  (float, 'a, 'b) Bigarray.Genarray.t ->
+  (float, 'c, 'd) Bigarray.Genarray.t ->
+  (float, 'e, 'f) Bigarray.Genarray.t ->
+  int * int ->
+  (float, Bigarray.float64_elt, Bigarray.c_layout) Bigarray.Genarray.t
+  * (float, Bigarray.float64_elt, Bigarray.c_layout) Bigarray.Genarray.t
+  * (float, Bigarray.float64_elt, Bigarray.c_layout) Bigarray.Genarray.t
 (** [gridit x y z (nx, ny)] interpolates data from arbitrary points at points on a rectangular grid.
 
     Parameters
@@ -776,15 +790,8 @@ val spline
     - [y']: The points in Y direction for the output grid
     - [z']: The interpolated values on the [nx] x [ny] grid points
   *)
-val gridit
-  :  (float, 'a, 'b) Bigarray.Genarray.t
-  -> (float, 'c, 'd) Bigarray.Genarray.t
-  -> (float, 'e, 'f) Bigarray.Genarray.t
-  -> int * int
-  -> (float, Bigarray.float64_elt, Bigarray.c_layout) Bigarray.Genarray.t
-     * (float, Bigarray.float64_elt, Bigarray.c_layout) Bigarray.Genarray.t
-     * (float, Bigarray.float64_elt, Bigarray.c_layout) Bigarray.Genarray.t
 
+val tex_text : float * float -> string -> int
 (** [tex_text (x, y) text] draws a text at position [x], [y] using the current text attributes.
     Strings can be defined to create basic mathematical expressions and Greek letters.
 
@@ -809,8 +816,8 @@ val gridit
 
     See the full documentation at {{: https://gr-framework.org/c-gr.html#_CPPv410gr_textextddPc} GR Documentation for gr_textext}.
 *)
-val tex_text : float * float -> string -> int
 
+val math_tex : float * float -> string -> unit
 (** [math_tex (x, y) tex] generates a character string starting at the given location.
     Strings can be defined to create mathematical symbols and Greek letters using LaTeX syntax.
 
@@ -820,8 +827,18 @@ val tex_text : float * float -> string -> int
     - [y]: The Y coordinate of the starting position of the text string
     - [tex]: The TeX text string to be drawn
  *)
-val math_tex : float * float -> string -> unit
 
+val axes :
+  ?scale:scale_options list ->
+  ?linetype:linetype ->
+  ?linewidth:float ->
+  ?coloridx:int ->
+  ?origin:float * float ->
+  ?major:int * int ->
+  ?tick_size:float ->
+  float ->
+  float ->
+  unit
 (** [axes ?scale ?linetype ?linewidth ?origin:(0,0) ?major:(0,0) ?size:1 x_tick y_tick] draws X and Y coordinate axes with linearly and/or logarithmically spaced tick marks.
     Tick marks are positioned along each axis so that major tick marks fall on the axes origin (whether visible or not).
     Major tick marks are labeled with the corresponding data values.
@@ -837,18 +854,20 @@ val math_tex : float * float -> string -> unit
     - [major_y]: Unitless integer value specifying the number of minor tick intervals between major tick marks on the Y axis. Values of 0 or 1 imply no minor ticks. Negative values specify no labels will be drawn for the associated axis.
     - [tick_size]: The length of minor tick marks specified in a normalized device coordinate unit. Major tick marks are twice as long as minor tick marks. A negative value reverses the tick marks on the axes from inward facing to outward facing (or vice versa)
 *)
-val axes
-  :  ?scale:scale_options list
-  -> ?linetype:linetype
-  -> ?linewidth:float
-  -> ?coloridx:int
-  -> ?origin:float * float
-  -> ?major:int * int
-  -> ?tick_size:float
-  -> float
-  -> float
-  -> unit
 
+val axes_labels :
+  ?scale:scale_options list ->
+  ?linetype:linetype ->
+  ?linewidth:float ->
+  ?coloridx:int ->
+  ?origin:float * float ->
+  ?major:int * int ->
+  ?tick_size:float ->
+  (float -> float -> string -> float -> unit) ->
+  (float -> float -> string -> float -> unit) ->
+  float ->
+  float ->
+  unit
 (** [axes_labels ?(scale = []) ?linetype ?linewidth ?coloridx ?(origin = 0.0, 0.0) ?(major = 0, 0) ?(tick_size = -0.01) (fpx : float -> float -> string -> float -> unit) (fpy : float -> float -> string -> float -> unit) x_tick y_tick] creates axes in the current workspace and supply a custom function for changing the behaviour of the tick labels.
 
     Similar to [axes] but allows more fine-grained control over tick labels and text positioning by supplying callback functions.
@@ -873,20 +892,19 @@ val axes
     - [fpy]: Exactly same as the fpx above, but for the the Y axis.
 
   *)
-val axes_labels
-  :  ?scale:scale_options list
-  -> ?linetype:linetype
-  -> ?linewidth:float
-  -> ?coloridx:int
-  -> ?origin:float * float
-  -> ?major:int * int
-  -> ?tick_size:float
-  -> (float -> float -> string -> float -> unit)
-  -> (float -> float -> string -> float -> unit)
-  -> float
-  -> float
-  -> unit
 
+val axes3d :
+  ?scale:scale_options list ->
+  ?linetype:linetype ->
+  ?linewidth:float ->
+  ?coloridx:int ->
+  ?origin:float * float * float ->
+  ?major:int * int * int ->
+  ?tick_size:float ->
+  float ->
+  float ->
+  float ->
+  unit
 (** [axes3d ?scale ?linetype ?linewidth ?origin:(0,0) ?major:(0,0) ?size:1 x_tick y_tick] draws X, Y and Z coordinate axes with linearly and/or logarithmically spaced tick marks.
     Tick marks are positioned along each axis so that major tick marks fall on the axes origin (whether visible or not).
     Major tick marks are labeled with the corresponding data values.
@@ -906,19 +924,13 @@ val axes_labels
     - [tick_size]: The length of minor tick marks specified in a normalized device coordinate unit. Major tick marks are twice as long as minor tick marks. A negative value reverses the tick marks on the axes from inward facing to outward facing (or vice versa)
 
 *)
-val axes3d
-  :  ?scale:scale_options list
-  -> ?linetype:linetype
-  -> ?linewidth:float
-  -> ?coloridx:int
-  -> ?origin:float * float * float
-  -> ?major:int * int * int
-  -> ?tick_size:float
-  -> float
-  -> float
-  -> float
-  -> unit
 
+val surface :
+  ?options:surface_options ->
+  (float, 'a, 'b) Bigarray.Genarray.t ->
+  (float, 'c, 'd) Bigarray.Genarray.t ->
+  (float, 'e, 'f) Bigarray.Genarray.t ->
+  unit
 (** [surface x y z ?option] draws a three-dimensional surface plot for the given data points.
 
     Here, [x] and [y] define a grid, [z] is a singly dimensioned array containing at least nx * ny data points.
@@ -931,13 +943,14 @@ val axes3d
     - [z]: Z coordinates
     - [option]: Surface display option
     *)
-val surface
-  :  ?options:surface_options
-  -> (float, 'a, 'b) Bigarray.Genarray.t
-  -> (float, 'c, 'd) Bigarray.Genarray.t
-  -> (float, 'e, 'f) Bigarray.Genarray.t
-  -> unit
 
+val contour :
+  ?major_h:int ->
+  (float, 'a, 'b) Bigarray.Genarray.t ->
+  (float, 'c, 'd) Bigarray.Genarray.t ->
+  (float, 'e, 'f) Bigarray.Genarray.t ->
+  (float, 'g, 'h) Bigarray.Genarray.t ->
+  unit
 (** [contour ?major_h x y h z] sraw contours of a three-dimensional data set whose values are specified over a rectangular mesh.
     Contour lines may optionally be labeled.
 
@@ -954,14 +967,14 @@ val surface
       To produce colored contour lines, add an offset of 1000 to [major_h].
 
 *)
-val contour
-  :  ?major_h:int
-  -> (float, 'a, 'b) Bigarray.Genarray.t
-  -> (float, 'c, 'd) Bigarray.Genarray.t
-  -> (float, 'e, 'f) Bigarray.Genarray.t
-  -> (float, 'g, 'h) Bigarray.Genarray.t
-  -> unit
 
+val contourf :
+  ?major_h:int ->
+  (float, 'a, 'b) Bigarray.Genarray.t ->
+  (float, 'c, 'd) Bigarray.Genarray.t ->
+  (float, 'e, 'f) Bigarray.Genarray.t ->
+  (float, 'g, 'h) Bigarray.Genarray.t ->
+  unit
 (** [contourf ?(major_h = 0) x y h z] draws filled contour plot of a three-dimensional data set whose values are specified over a rectangular mesh.
 
 Parameters
@@ -975,14 +988,17 @@ Parameters
       To produce colored contour lines, add an offset of 1000 to [major_h]
 
  *)
-val contourf
-  :  ?major_h:int
-  -> (float, 'a, 'b) Bigarray.Genarray.t
-  -> (float, 'c, 'd) Bigarray.Genarray.t
-  -> (float, 'e, 'f) Bigarray.Genarray.t
-  -> (float, 'g, 'h) Bigarray.Genarray.t
-  -> unit
 
+val grid :
+  ?scale:scale_options list ->
+  ?linetype:linetype ->
+  ?linewidth:float ->
+  ?coloridx:int ->
+  ?origin:float * float ->
+  ?major:int * int ->
+  float ->
+  float ->
+  unit
 (** [grid ?scale ?linetype ?linewidth ?origin:(0,0) ?major:(0,0) x_tick y_tick] draws a linear and/or logarithmic grid.
 
     Major grid lines correspond to the axes origin and major tick marks whether visible or not.
@@ -999,17 +1015,18 @@ val contourf
     - [major_y]: Unitless integer value specifying the number of minor grid lines between major grid lines on the Y axis. Values of 0 or 1 imply no grid lines.
 
 *)
-val grid
-  :  ?scale:scale_options list
-  -> ?linetype:linetype
-  -> ?linewidth:float
-  -> ?coloridx:int
-  -> ?origin:float * float
-  -> ?major:int * int
-  -> float
-  -> float
-  -> unit
 
+val grid3d :
+  ?scale:scale_options list ->
+  ?linetype:linetype ->
+  ?linewidth:float ->
+  ?coloridx:int ->
+  ?origin:float * float * float ->
+  ?major:int * int * int ->
+  float ->
+  float ->
+  float ->
+  unit
 (** [grid3d ?scale ?linetype ?linewidth ?origin:(0,0,0) ?major:(0,0,0) x_tick y_tick z_tick] draws a linear and/or logarithmic grid.
 
     Major grid lines correspond to the axes origin and major tick marks whether visible or not.
@@ -1029,18 +1046,13 @@ val grid
     - [major_z]: Unitless integer value specifying the number of minor grid lines between major grid lines on the Z axis. Values of 0 or 1 imply no grid lines.
 
 *)
-val grid3d
-  :  ?scale:scale_options list
-  -> ?linetype:linetype
-  -> ?linewidth:float
-  -> ?coloridx:int
-  -> ?origin:float * float * float
-  -> ?major:int * int * int
-  -> float
-  -> float
-  -> float
-  -> unit
 
+val vertical_errorbars :
+  (float, 'a, 'b) Bigarray.Genarray.t ->
+  (float, 'c, 'd) Bigarray.Genarray.t ->
+  (float, 'e, 'f) Bigarray.Genarray.t ->
+  (float, 'g, 'h) Bigarray.Genarray.t ->
+  unit
 (** [vertical_errorbars x y el eu] draws a standard vertical error bar graph.
 
     Parameters
@@ -1050,13 +1062,13 @@ val grid3d
     - [el]: absolute values of the lower error bar data
     - [eu]: absolute values of the upper error bar data
 *)
-val vertical_errorbars
-  :  (float, 'a, 'b) Bigarray.Genarray.t
-  -> (float, 'c, 'd) Bigarray.Genarray.t
-  -> (float, 'e, 'f) Bigarray.Genarray.t
-  -> (float, 'g, 'h) Bigarray.Genarray.t
-  -> unit
 
+val horizontal_errorbars :
+  (float, 'a, 'b) Bigarray.Genarray.t ->
+  (float, 'c, 'd) Bigarray.Genarray.t ->
+  (float, 'e, 'f) Bigarray.Genarray.t ->
+  (float, 'g, 'h) Bigarray.Genarray.t ->
+  unit
 (** [horizontal_errorbars x y el eu] draws a standard horizontal error bar graph.
 
     Parameters
@@ -1066,13 +1078,8 @@ val vertical_errorbars
     - [el]: absolute values of the lower error bar data
     - [eu]: absolute values of the upper error bar data
 *)
-val horizontal_errorbars
-  :  (float, 'a, 'b) Bigarray.Genarray.t
-  -> (float, 'c, 'd) Bigarray.Genarray.t
-  -> (float, 'e, 'f) Bigarray.Genarray.t
-  -> (float, 'g, 'h) Bigarray.Genarray.t
-  -> unit
 
+val titles3d : string -> string -> string -> unit
 (** [titles3d x_title y_title z_title] displays axis titles just outside of their respective axes.
 
     Parameters
@@ -1081,8 +1088,13 @@ val horizontal_errorbars
     - [y_title]: The text to be displayed on the Y axis
     - [z_title]: The text to be displayed on the Z axis
 *)
-val titles3d : string -> string -> string -> unit
 
+val tricontour :
+  (float, 'a, 'b) Bigarray.Genarray.t ->
+  (float, 'c, 'd) Bigarray.Genarray.t ->
+  (float, 'e, 'f) Bigarray.Genarray.t ->
+  (float, 'g, 'h) Bigarray.Genarray.t ->
+  unit
 (** [tricontour x y z levels] draws a contour plot for the given triangle mesh.
 
     Parameters
@@ -1092,19 +1104,14 @@ val titles3d : string -> string -> string -> unit
     - [z]: Z coordinates
     - [levels]: contour levels
  *)
-val tricontour
-  :  (float, 'a, 'b) Bigarray.Genarray.t
-  -> (float, 'c, 'd) Bigarray.Genarray.t
-  -> (float, 'e, 'f) Bigarray.Genarray.t
-  -> (float, 'g, 'h) Bigarray.Genarray.t
-  -> unit
 
-(** [colorbar ()]  plots a colorbar. *)
 val colorbar : unit -> unit
+(** [colorbar ()]  plots a colorbar. *)
 
 val tick : float -> float -> float
 
 module Print : sig
+  val beginp : string -> unit
   (** [beginp path] opens and activates a print device.
 
     This function opens an additional graphics output device.
@@ -1128,10 +1135,44 @@ module Print : sig
     - .webm 	WebM video file
     - .ogg 	Ogg video file
 *)
-  val beginp : string -> unit
 
   val endp : unit -> unit
 
+  val beginp_extended :
+    string ->
+    [< `Color | `GreyScale ] ->
+    [< `A0
+    | `A1
+    | `A2
+    | `A3
+    | `A4
+    | `A5
+    | `A6
+    | `A7
+    | `A8
+    | `A9
+    | `B0
+    | `B1
+    | `B10
+    | `B2
+    | `B3
+    | `B4
+    | `B5
+    | `B6
+    | `B7
+    | `B8
+    | `B9
+    | `C5E
+    | `Comm10E
+    | `DLE
+    | `Executive
+    | `Folio
+    | `Ledger
+    | `Legal
+    | `Letter
+    | `Tabloid ] ->
+    [< `Landscape | `Portrait ] ->
+    unit
   (** [beginprint_ext path mode format orientation] opens and activates a print device with the given layout attributes.
 
     The available formats are:
@@ -1174,44 +1215,17 @@ module Print : sig
     - [format]: Output format (see table)
     - [orientation]: Page orientation (Landscape, Portait)
 *)
-  val beginp_extended
-    :  string
-    -> [< `Color | `GreyScale ]
-    -> [< `A0
-       | `A1
-       | `A2
-       | `A3
-       | `A4
-       | `A5
-       | `A6
-       | `A7
-       | `A8
-       | `A9
-       | `B0
-       | `B1
-       | `B10
-       | `B2
-       | `B3
-       | `B4
-       | `B5
-       | `B6
-       | `B7
-       | `B8
-       | `B9
-       | `C5E
-       | `Comm10E
-       | `DLE
-       | `Executive
-       | `Folio
-       | `Ledger
-       | `Legal
-       | `Letter
-       | `Tabloid
-       ]
-    -> [< `Landscape | `Portrait ]
-    -> unit
 end
 
+val drawrect :
+  ?linetype:linetype ->
+  ?linewidth:float ->
+  ?coloridx:int ->
+  float ->
+  float ->
+  float ->
+  float ->
+  unit
 (** [drawrect ?linetype ?linewidth ?coloridx left right bottom up] draws a rectangle.
 
     Parameters
@@ -1221,16 +1235,18 @@ end
     - [bottom]: Bottom edge of the rectangle
     - [up]: Upper edge of the rectangle
  *)
-val drawrect
-  :  ?linetype:linetype
-  -> ?linewidth:float
-  -> ?coloridx:int
-  -> float
-  -> float
-  -> float
-  -> float
-  -> unit
 
+val fillrect :
+  ?fillstyle:fill_style ->
+  ?fillcoloridx:int ->
+  ?linetype:linetype ->
+  ?linewidth:float ->
+  ?coloridx:int ->
+  float ->
+  float ->
+  float ->
+  float ->
+  unit
 (** [fillrect ?fillstyle ?fillcoloridx ?linetype ?linewidth ?coloridx left right bottom up] draws a filled rectangle.
 
     Parameters
@@ -1240,18 +1256,18 @@ val drawrect
     - [bottom]: Bottom edge of the rectangle
     - [up]: Upper edge of the rectangle
  *)
-val fillrect
-  :  ?fillstyle:fill_style
-  -> ?fillcoloridx:int
-  -> ?linetype:linetype
-  -> ?linewidth:float
-  -> ?coloridx:int
-  -> float
-  -> float
-  -> float
-  -> float
-  -> unit
 
+val drawarc :
+  ?linetype:linetype ->
+  ?linewidth:float ->
+  ?coloridx:int ->
+  float ->
+  float ->
+  float ->
+  float ->
+  int ->
+  int ->
+  unit
 (** [drawarc ?linetype ?linewidth ?coloridx left right bottom up a1 a2] draws a circular or elliptical arc covering the specified rectangle.
 
     The resulting arc begins at a1 and ends at a2 degrees.
@@ -1267,18 +1283,20 @@ val fillrect
     - [a1]: The start angle
     - [a2]: The end angle
  *)
-val drawarc
-  :  ?linetype:linetype
-  -> ?linewidth:float
-  -> ?coloridx:int
-  -> float
-  -> float
-  -> float
-  -> float
-  -> int
-  -> int
-  -> unit
 
+val fillarc :
+  ?fillstyle:fill_style ->
+  ?fillcoloridx:int ->
+  ?linetype:linetype ->
+  ?linewidth:float ->
+  ?coloridx:int ->
+  float ->
+  float ->
+  float ->
+  float ->
+  int ->
+  int ->
+  unit
 (** [fillarc ?fillstyle ?fillcoloridx ?linetype ?linewidth ?coloridx left right bottom up] draws a filled circular or elliptical arc covering the specified rectangle.
 
     The resulting arc begins at a1 and ends at a2 degrees.
@@ -1294,20 +1312,12 @@ val drawarc
     - [a1]: The start angle
     - [a2]: The end angle
  *)
-val fillarc
-  :  ?fillstyle:fill_style
-  -> ?fillcoloridx:int
-  -> ?linetype:linetype
-  -> ?linewidth:float
-  -> ?coloridx:int
-  -> float
-  -> float
-  -> float
-  -> float
-  -> int
-  -> int
-  -> unit
 
+val drawpath :
+  (float * float) array ->
+  [< `CLOSEPOLY | `CURVE3 | `CURVE4 | `LINETO | `MOVETO | `STOP ] array ->
+  bool ->
+  unit
 (** [drawpath vertices codes fill] draws simple and compound outlines consisting of line segments and bezier curves.
 
     The following path codes are recognized:
@@ -1325,12 +1335,9 @@ val fillarc
     - [codes]: path codes
     - [fill]: A flag indication whether resulting path is to be filled or not
 *)
-val drawpath
-  :  (float * float) array
-  -> [< `CLOSEPOLY | `CURVE3 | `CURVE4 | `LINETO | `MOVETO | `STOP ] array
-  -> bool
-  -> unit
 
+val drawarrow :
+  ?arrowsize:float -> ?arrowstyle:int -> float * float -> float * float -> unit
 (** [drawarrow ?arrowsize ?arrowstyle (x1, y1) (x2, y2)] draws an arrow between two points.
 
     Different arrow styles (angles between arrow tail and wing, optionally filled heads, double headed arrows) are available.
@@ -1343,13 +1350,13 @@ val drawpath
     - [x2]: The X coordinate of the arrow end point (head)
     - [y2]: The Y coordinate of the arrow end point (head)
  *)
-val drawarrow
-  :  ?arrowsize:float
-  -> ?arrowstyle:int
-  -> float * float
-  -> float * float
-  -> unit
 
+val drawimage :
+  float * float ->
+  float * float ->
+  (int, 'a, 'b) Bigarray.Genarray.t ->
+  [< `HSV | `RGB ] ->
+  unit
 (** [drawimage (xmin, ymin) (xmax, ymax) image_data model] draws an image into a given rectangular area.
 
     The points (xmin, ymin) and (xmax, ymax) are world coordinates defining diagonally opposite corner points of a rectangle.
@@ -1372,24 +1379,18 @@ val drawarrow
     - RGB 	0 	AABBGGRR
     - HSV 	1 	AAVVSSHH
 *)
-val drawimage
-  :  float * float
-  -> float * float
-  -> (int, 'a, 'b) Bigarray.Genarray.t
-  -> [< `HSV | `RGB ]
-  -> unit
 
 module Selection : sig
-  (** [beings index kind] *)
   val begins : int -> int -> unit
+  (** [beings index kind] *)
 
   val ends : unit -> unit
 
-  (** [resize x y] *)
   val move : float -> float -> unit
+  (** [resize x y] *)
 
-  (** [resize kind x y] *)
   val resize : int -> float -> float -> unit
+  (** [resize kind x y] *)
 end
 
 (* val with_ws : ?typ:workstation_type -> (int -> 'a) -> unit *)

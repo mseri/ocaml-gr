@@ -1,11 +1,11 @@
 let get1char () =
   let termio = Unix.tcgetattr Unix.stdin in
   let () =
-    Unix.tcsetattr Unix.stdin Unix.TCSADRAIN { termio with Unix.c_icanon = false }
+    Unix.tcsetattr Unix.stdin Unix.TCSADRAIN
+      { termio with Unix.c_icanon = false }
   in
   let _ = input_char stdin in
   Unix.tcsetattr Unix.stdin Unix.TCSADRAIN termio
-
 
 let () =
   let to_carray = Ctypes.(CArray.of_list double) in
@@ -15,11 +15,8 @@ let () =
   let zs =
     List.fold_left2
       (fun acc x y -> (x *. exp (-.((x ** 2.) +. (y ** 2.)))) :: acc)
-      []
-      xs
-      ys
-    |> List.rev
-    |> to_carray
+      [] xs ys
+    |> List.rev |> to_carray
   in
   let xs = to_carray xs in
   let ys = to_carray ys in
@@ -35,8 +32,11 @@ let () =
   setcharheight 0.024;
   settextalign 2 0;
   settextfontprec 101 0;
-  gridit 100 (captr xs) (captr ys) (captr zs) 200 200 (captr xa) (captr ya) (captr za);
-  let h = List.init 20 (fun i -> -0.5 +. (float_of_int i /. 19.0)) |> to_carray in
+  gridit 100 (captr xs) (captr ys) (captr zs) 200 200 (captr xa) (captr ya)
+    (captr za);
+  let h =
+    List.init 20 (fun i -> -0.5 +. (float_of_int i /. 19.0)) |> to_carray
+  in
   surface 200 200 (captr xa) (captr ya) (captr za) 5;
   contour 200 200 20 (captr xa) (captr ya) (captr h) (captr za) 0;
   polymarker 100 (captr xs) (captr ys);

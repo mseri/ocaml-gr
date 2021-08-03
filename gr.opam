@@ -10,13 +10,12 @@ license: "ISC"
 homepage: "https://github.com/mseri/ocaml-gr"
 bug-reports: "https://github.com/mseri/ocaml-gr/issues"
 depends: [
-  "ocaml" {>= "4.06"}
+  "ocaml" {>= "4.10"}
   "dune" {>= "1.11"}
   "ctypes" {>= "0.15"}
   "ctypes-foreign" {true}
   "base-unix" {with-test}
   "owl" {with-test & >= "0.6.0"}
-  "stdcompat" {>= "9"}
 ]
 build: [
   ["dune" "subst"] {pinned}

@@ -1,20 +1,19 @@
-open Stdcompat
 module Lowlevel = Lowlevel
 
 (** Available line types, see also {{: https://gr-framework.org/linetypes.html} GR Line Types} *)
 type linetype =
-  | SOLID (** Solid line *)
-  | DASHED (** Dashed line *)
-  | DOTTED (** Dotted line *)
-  | DASHED_DOTTED (** Dashed-dotted line *)
-  | DASH_2_DOT (** Sequence of one dash followed by two dots *)
-  | DASH_3_DOT (** Sequence of one dash followed by three dots *)
-  | LONG_DASH (** Sequence of long dashes *)
-  | LONG_SHORT_DASH (** Sequence of a long dash followed by a short dash *)
-  | SPACED_DASH (** Sequence of dashes double spaced *)
-  | SPACED_DOT (** Sequence of dots double spaced *)
-  | DOUBLE_DOT (** Sequence of pairs of dots *)
-  | TRIPLE_DOT (** Sequence of groups of three dots *)
+  | SOLID  (** Solid line *)
+  | DASHED  (** Dashed line *)
+  | DOTTED  (** Dotted line *)
+  | DASHED_DOTTED  (** Dashed-dotted line *)
+  | DASH_2_DOT  (** Sequence of one dash followed by two dots *)
+  | DASH_3_DOT  (** Sequence of one dash followed by three dots *)
+  | LONG_DASH  (** Sequence of long dashes *)
+  | LONG_SHORT_DASH  (** Sequence of a long dash followed by a short dash *)
+  | SPACED_DASH  (** Sequence of dashes double spaced *)
+  | SPACED_DOT  (** Sequence of dots double spaced *)
+  | DOUBLE_DOT  (** Sequence of pairs of dots *)
+  | TRIPLE_DOT  (** Sequence of groups of three dots *)
 
 let int_of_linetype = function
   | SOLID -> 1
@@ -29,7 +28,6 @@ let int_of_linetype = function
   | SPACED_DOT -> -6
   | DOUBLE_DOT -> -7
   | TRIPLE_DOT -> -8
-
 
 (* let linetype_of_int = function
    | 1 -> SOLID
@@ -48,43 +46,43 @@ let int_of_linetype = function
 
 (** Available marker types, see also {{: https://gr-framework.org/markertypes.html} GR Marker Types} *)
 type markertype =
-  | DOT (** Smallest displayable dot *)
-  | PLUS (** Plus sign *)
-  | ASTERISK (** Asterisk *)
-  | CIRCLE (** Hollow circle *)
-  | DIAGONAL_CROSS (** Diagonal cross *)
-  | SOLID_CIRCLE (** Filled circle *)
-  | TRIANGLE_UP (** Hollow triangle pointing upward *)
-  | SOLID_TRI_UP (** Filled triangle pointing upward *)
-  | TRIANGLE_DOWN (** Hollow triangle pointing downward *)
-  | SOLID_TRI_DOWN (** Filled triangle pointing downward *)
-  | SQUARE (** Hollow square *)
-  | SOLID_SQUARE (** Filled square *)
-  | BOWTIE (** Hollow bowtie *)
-  | SOLID_BOWTIE (** Filled bowtie *)
-  | HGLASS (** Hollow hourglass *)
-  | SOLID_HGLASS (** Filled hourglass *)
-  | DIAMOND (** Hollow diamond *)
-  | SOLID_DIAMOND (** Filled Diamond *)
-  | STAR (** Hollow star *)
-  | SOLID_STAR (** Filled Star *)
-  | TRI_UP_DOWN (** Hollow triangles pointing up and down overlaid *)
-  | SOLID_TRI_RIGHT (** Filled triangle point right *)
-  | SOLID_TRI_LEFT (** Filled triangle pointing left *)
-  | HOLLOW_PLUS (** Hollow plus sign *)
-  | SOLID_PLUS (** Solid plus sign *)
-  | PENTAGON (** Pentagon *)
-  | HEXAGON (** Hexagon *)
-  | HEPTAGON (** Heptagon *)
-  | OCTAGON (** Octagon *)
-  | STAR_4 (** 4-pointed star *)
-  | STAR_5 (** 5-pointed star (pentagram) *)
-  | STAR_6 (** 6-pointed star (hexagram) *)
-  | STAR_7 (** 7-pointed star (heptagram) *)
-  | STAR_8 (** 8-pointed star (octagram) *)
-  | VLINE (** verical line *)
-  | HLINE (** horizontal line *)
-  | OMARK (** o-mark *)
+  | DOT  (** Smallest displayable dot *)
+  | PLUS  (** Plus sign *)
+  | ASTERISK  (** Asterisk *)
+  | CIRCLE  (** Hollow circle *)
+  | DIAGONAL_CROSS  (** Diagonal cross *)
+  | SOLID_CIRCLE  (** Filled circle *)
+  | TRIANGLE_UP  (** Hollow triangle pointing upward *)
+  | SOLID_TRI_UP  (** Filled triangle pointing upward *)
+  | TRIANGLE_DOWN  (** Hollow triangle pointing downward *)
+  | SOLID_TRI_DOWN  (** Filled triangle pointing downward *)
+  | SQUARE  (** Hollow square *)
+  | SOLID_SQUARE  (** Filled square *)
+  | BOWTIE  (** Hollow bowtie *)
+  | SOLID_BOWTIE  (** Filled bowtie *)
+  | HGLASS  (** Hollow hourglass *)
+  | SOLID_HGLASS  (** Filled hourglass *)
+  | DIAMOND  (** Hollow diamond *)
+  | SOLID_DIAMOND  (** Filled Diamond *)
+  | STAR  (** Hollow star *)
+  | SOLID_STAR  (** Filled Star *)
+  | TRI_UP_DOWN  (** Hollow triangles pointing up and down overlaid *)
+  | SOLID_TRI_RIGHT  (** Filled triangle point right *)
+  | SOLID_TRI_LEFT  (** Filled triangle pointing left *)
+  | HOLLOW_PLUS  (** Hollow plus sign *)
+  | SOLID_PLUS  (** Solid plus sign *)
+  | PENTAGON  (** Pentagon *)
+  | HEXAGON  (** Hexagon *)
+  | HEPTAGON  (** Heptagon *)
+  | OCTAGON  (** Octagon *)
+  | STAR_4  (** 4-pointed star *)
+  | STAR_5  (** 5-pointed star (pentagram) *)
+  | STAR_6  (** 6-pointed star (hexagram) *)
+  | STAR_7  (** 7-pointed star (heptagram) *)
+  | STAR_8  (** 8-pointed star (octagram) *)
+  | VLINE  (** verical line *)
+  | HLINE  (** horizontal line *)
+  | OMARK  (** o-mark *)
 
 let int_of_markertype = function
   | DOT -> 1
@@ -124,7 +122,6 @@ let int_of_markertype = function
   | VLINE -> -30
   | HLINE -> -31
   | OMARK -> -32
-
 
 (* let markertype_of_int = function
    | 1 -> DOT
@@ -167,12 +164,12 @@ let int_of_markertype = function
    | d -> failwith @@ "Error when inferring marker type. Got " ^ string_of_int d *)
 
 type scale_options =
-  | OPTION_X_LOG (** Logarithmic X-axis *)
-  | OPTION_Y_LOG (** Logarithmic Y-axis *)
-  | OPTION_Z_LOG (** Logarithmic Z-axis *)
-  | OPTION_FLIP_X (** Flip X-axis *)
-  | OPTION_FLIP_Y (** Flip Y-axis *)
-  | OPTION_FLIP_Z (** Flip Z-axis *)
+  | OPTION_X_LOG  (** Logarithmic X-axis *)
+  | OPTION_Y_LOG  (** Logarithmic Y-axis *)
+  | OPTION_Z_LOG  (** Logarithmic Z-axis *)
+  | OPTION_FLIP_X  (** Flip X-axis *)
+  | OPTION_FLIP_Y  (** Flip Y-axis *)
+  | OPTION_FLIP_Z  (** Flip Z-axis *)
 
 let int_of_scale_options opts =
   let int_of = function
@@ -185,7 +182,6 @@ let int_of_scale_options opts =
   in
   List.fold_left (fun acc s -> acc + int_of s) 0 opts
 
-
 type spline_algo =
   | GeneralizedCrossValidatedSmoothing
   | InterpolatingNaturalCubic
@@ -195,7 +191,6 @@ let int_of_spline_algo = function
   | GeneralizedCrossValidatedSmoothing -> 1
   | InterpolatingNaturalCubic -> 0
   | CubicBSpline -> -1
-
 
 (** Available fonts, see also {{: https://gr-framework.org/fonts.html} GR Font list} *)
 type font =
@@ -264,23 +259,18 @@ let int_of_font = function
   | ZAPFCHANCERY_MEDIUMITALIC -> 130
   | ZAPFDINGBATS -> 131
 
-
 type text_precision =
-  | STRING (** String precision (higher quality) *)
-  | CHAR (** Character precision (medium quality) *)
-  | STROKE (** Stroke precision (lower quality) *)
+  | STRING  (** String precision (higher quality) *)
+  | CHAR  (** Character precision (medium quality) *)
+  | STROKE  (** Stroke precision (lower quality) *)
 
-let int_of_text_precision = function
-  | STRING -> 0
-  | CHAR -> 1
-  | STROKE -> 2
-
+let int_of_text_precision = function STRING -> 0 | CHAR -> 1 | STROKE -> 2
 
 type text_path_direction =
-  | RIGHT (** left-to-right *)
-  | LEFT (** right-to-left *)
-  | UP (** downside-up *)
-  | DOWN (** upside-down *)
+  | RIGHT  (** left-to-right *)
+  | LEFT  (** right-to-left *)
+  | UP  (** downside-up *)
+  | DOWN  (** upside-down *)
 
 let int_of_text_path_direction = function
   | RIGHT -> 0
@@ -288,12 +278,11 @@ let int_of_text_path_direction = function
   | UP -> 2
   | DOWN -> 3
 
-
 type text_halign =
   | NORMAL
-  | LEFT (** Left justify *)
-  | CENTER (** Center justify *)
-  | RIGHT (** Right justify *)
+  | LEFT  (** Left justify *)
+  | CENTER  (** Center justify *)
+  | RIGHT  (** Right justify *)
 
 let int_of_text_halign = function
   | NORMAL -> 0
@@ -301,14 +290,13 @@ let int_of_text_halign = function
   | CENTER -> 2
   | RIGHT -> 3
 
-
 type text_valign =
   | NORMAL
-  | TOP (** Align with the top of the characters *)
-  | CAP (** Aligned with the cap of the characters *)
-  | HALF (** Aligned with the half line of the characters *)
-  | BASE (** Aligned with the base line of the characters *)
-  | BOTTOM (** Aligned with the bottom line of the characters *)
+  | TOP  (** Align with the top of the characters *)
+  | CAP  (** Aligned with the cap of the characters *)
+  | HALF  (** Aligned with the half line of the characters *)
+  | BASE  (** Aligned with the base line of the characters *)
+  | BOTTOM  (** Aligned with the bottom line of the characters *)
 
 let int_of_text_valign = function
   | NORMAL -> 0
@@ -318,22 +306,21 @@ let int_of_text_valign = function
   | BASE -> 4
   | BOTTOM -> 5
 
-
-(** Pattern style, see also {{: https://gr-framework.org/patterns.html} GR Fill Patterns and Hatches}  *)
 type pattern_style = int
+(** Pattern style, see also {{: https://gr-framework.org/patterns.html} GR Fill Patterns and Hatches}  *)
 
 let pattern_style n =
   if n > 0 && n < 109 then n else failwith "pattern_style out of range"
 
-
-(** Hatch style, see also {{: https://gr-framework.org/patterns.html} GR Fill Patterns and Hatches}  *)
 type hatch_style = int
+(** Hatch style, see also {{: https://gr-framework.org/patterns.html} GR Fill Patterns and Hatches}  *)
 
-let hatch_style n = if n > 1 && n < 11 then n else failwith "hatch_style out of range"
+let hatch_style n =
+  if n > 1 && n < 11 then n else failwith "hatch_style out of range"
 
 type fill_style =
-  | HOLLOW (** No filling. Just draw the bounding polyline *)
-  | SOLID (** Fill the interior of the polygon using the fill color index *)
+  | HOLLOW  (** No filling. Just draw the bounding polyline *)
+  | SOLID  (** Fill the interior of the polygon using the fill color index *)
   | PATTERN of pattern_style
       (** Fill the interior of the polygon using the style index as a pattern index *)
   | HATCH of hatch_style
@@ -344,7 +331,6 @@ let int_of_fill_style = function
   | SOLID -> 1
   | PATTERN _ -> 2
   | HATCH _ -> 3
-
 
 (** Color Maps, see also {{: https://gr-framework.org/colormaps.html} GR Color Maps} *)
 type color_map =
@@ -447,15 +433,15 @@ let int_of_color_map = function
   | Plasma -> 46
   | Magma -> 47
 
-
 type surface_options =
-  | LINES (** Use X Y polylines to denote the surface *)
-  | MESH (** Use a wire grid to denote the surface *)
-  | FILLED_MESH (** Applies an opaque grid to the surface *)
-  | Z_SHADED_MESH (** Applies Z-value shading to the surface *)
-  | COLORED_MESH (** Applies a colored grid to the surface *)
-  | CELL_ARRAY (** Applies a grid of individually-colored cells to the surface *)
-  | SHADED_MESH (** Applies light source shading to the 3-D surface *)
+  | LINES  (** Use X Y polylines to denote the surface *)
+  | MESH  (** Use a wire grid to denote the surface *)
+  | FILLED_MESH  (** Applies an opaque grid to the surface *)
+  | Z_SHADED_MESH  (** Applies Z-value shading to the surface *)
+  | COLORED_MESH  (** Applies a colored grid to the surface *)
+  | CELL_ARRAY
+      (** Applies a grid of individually-colored cells to the surface *)
+  | SHADED_MESH  (** Applies light source shading to the 3-D surface *)
 
 let int_of_surface_options = function
   | LINES -> 0
@@ -466,41 +452,40 @@ let int_of_surface_options = function
   | CELL_ARRAY -> 5
   | SHADED_MESH -> 6
 
-
 module Workstation = struct
   type id = W of int
 
   (** Available workstation types, see also {{: https://gr-framework.org/workstations.html} GR Workstation Types} *)
   type workstation_type =
-    | WISS (** Workstation Independent Segment ptr Storage *)
-    | WinGDI (** Windows ptr GDI *)
-    | PS_1 (**PostScript (b/w \@-> color) *)
-    | PS_2 (**PostScript (b/w \@-> color) *)
-    | PS_3 (**PostScript (b/w \@-> color) *)
-    | PS_4 (**PostScript (b/w \@-> color) *)
-    | PDFPlain (** Portable Document Format ptr plain *)
-    | PDFCompressed (** Portable Document Format ptr compressed *)
-    | X_1 (** X ptr Windows *)
-    | X_2 (** X ptr Windows *)
-    | X_3 (** X ptr Windows *)
-    | X_4 (** X ptr Windows *)
-    | SunRF (** Sun Raster file (RF) *)
-    | GIF87 (** Graphics Interchange Format ptr GIF87 *)
-    | GIF89 (**Graphics Interchange Format ptr GIF89 *)
-    | MotifUIL (** Motif User Interface Language (UIL) *)
-    | BMP (** Windows Bitmap (BMP) *)
-    | JPEG (** JPEG image ptr file *)
-    | PNG (** Portable Network Graphics file (PNG) *)
-    | TIFF (** Tagged Image File Format (TIFF) *)
-    | Gtk (** ptr Gtk *)
-    | Wx (** ptr wxWidgets *)
-    | Qt4 (** ptr Qt4 *)
-    | SVG (** Scaleable Vector Graphics (SVG) *)
-    | WMF (** Windows ptr Metafile *)
-    | Quartz (** ptr Quartz *)
-    | Sock (** Socket ptr driver *)
-    | ZMQ (** 0MQ ptr driver *)
-    | OGL (** ptr OpenGL *)
+    | WISS  (** Workstation Independent Segment ptr Storage *)
+    | WinGDI  (** Windows ptr GDI *)
+    | PS_1  (**PostScript (b/w \@-> color) *)
+    | PS_2  (**PostScript (b/w \@-> color) *)
+    | PS_3  (**PostScript (b/w \@-> color) *)
+    | PS_4  (**PostScript (b/w \@-> color) *)
+    | PDFPlain  (** Portable Document Format ptr plain *)
+    | PDFCompressed  (** Portable Document Format ptr compressed *)
+    | X_1  (** X ptr Windows *)
+    | X_2  (** X ptr Windows *)
+    | X_3  (** X ptr Windows *)
+    | X_4  (** X ptr Windows *)
+    | SunRF  (** Sun Raster file (RF) *)
+    | GIF87  (** Graphics Interchange Format ptr GIF87 *)
+    | GIF89  (**Graphics Interchange Format ptr GIF89 *)
+    | MotifUIL  (** Motif User Interface Language (UIL) *)
+    | BMP  (** Windows Bitmap (BMP) *)
+    | JPEG  (** JPEG image ptr file *)
+    | PNG  (** Portable Network Graphics file (PNG) *)
+    | TIFF  (** Tagged Image File Format (TIFF) *)
+    | Gtk  (** ptr Gtk *)
+    | Wx  (** ptr wxWidgets *)
+    | Qt4  (** ptr Qt4 *)
+    | SVG  (** Scaleable Vector Graphics (SVG) *)
+    | WMF  (** Windows ptr Metafile *)
+    | Quartz  (** ptr Quartz *)
+    | Sock  (** Socket ptr driver *)
+    | ZMQ  (** 0MQ ptr driver *)
+    | OGL  (** ptr OpenGL *)
 
   let int_of_workstation_type = function
     | WISS -> 5
@@ -533,27 +518,39 @@ module Workstation = struct
     | ZMQ -> 415
     | OGL -> 420
 
-
   let wid id = W id
-  let open' (W id) conn typ = Lowlevel.openws id conn (int_of_workstation_type typ)
+
+  let open' (W id) conn typ =
+    Lowlevel.openws id conn (int_of_workstation_type typ)
+
   let close (W id) = Lowlevel.closews id
+
   let activate (W id) = Lowlevel.activatews id
+
   let deactivate (W id) = Lowlevel.deactivatews id
+
   let clear = Lowlevel.clearws
+
   let update = Lowlevel.updatews
+
   let set_window = Lowlevel.setwswindow
+
   let set_viewport = Lowlevel.setwsviewport
+
   let copy_segment = Lowlevel.copysegws
+
   let redraw_segment = Lowlevel.redrawsegws
 end
 
 module Gks = struct
   let emergency_close = Lowlevel.emergencyclosegks
+
   let update = Lowlevel.updategks
 end
 
 module State = struct
   let save () = Lowlevel.savestate ()
+
   let restore () = Lowlevel.restorestate ()
 
   let with_sandbox f =
@@ -562,63 +559,79 @@ module State = struct
 end
 
 let set_window = Lowlevel.setwindow
+
 let set_viewport = Lowlevel.setviewport
+
 let select_transformation = Lowlevel.selntran
+
 let clip c = Lowlevel.setclip (if c then 1 else 2)
 
 type segment = int
 
 let segment i = i
+
 let create_segment = Lowlevel.createseg
+
 let set_segment_transform = Lowlevel.setsegtran
+
 let close_segment = Lowlevel.closeseg
+
 let set_space = Lowlevel.setspace
+
 let set_linetype lt = lt |> int_of_linetype |> Lowlevel.setlinetype
+
 let set_linewidth = Lowlevel.setlinewidth
 
 let set_linecolorindex = function
   | c when c >= 0 && c < 1256 -> Lowlevel.setlinecolorind c
-  | c -> failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int c
-
+  | c ->
+      failwith @@ "Color index must be in the range [0, 1256]. Got "
+      ^ string_of_int c
 
 let set_markertype mt = mt |> int_of_markertype |> Lowlevel.setmarkertype
+
 let set_markersize = Lowlevel.setmarkersize
 
 let set_markercolorindex = function
   | c when c >= 0 && c < 1256 -> Lowlevel.setmarkercolorind c
-  | c -> failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int c
-
+  | c ->
+      failwith @@ "Color index must be in the range [0, 1256]. Got "
+      ^ string_of_int c
 
 let set_arrowstyle s =
-  if s < 0 || s > 18
-  then failwith @@ Printf.sprintf "Only styles 1..18 are supported. Got %d" s;
+  if s < 0 || s > 18 then
+    failwith @@ Printf.sprintf "Only styles 1..18 are supported. Got %d" s;
   Lowlevel.setarrowstyle s
-
 
 let set_arrowsize = Lowlevel.setarrowsize
 
 let set_text_font_prec ?(precision = STRING) font =
   Lowlevel.settextfontprec (int_of_font font) (int_of_text_precision precision)
 
-
 let set_char_expand_factor = Lowlevel.setcharexpan
 
 let set_text_colorindex = function
   | c when c >= 0 && c < 1256 -> Lowlevel.settextcolorind c
-  | c -> failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int c
-
+  | c ->
+      failwith @@ "Color index must be in the range [0, 1256]. Got "
+      ^ string_of_int c
 
 let set_char_height = Lowlevel.setcharheight
+
 let set_char_up (x, y) = Lowlevel.setcharup x y
+
 let set_char_space = Lowlevel.setcharspace
-let set_text_path direction = Lowlevel.settextpath (int_of_text_path_direction direction)
+
+let set_text_path direction =
+  Lowlevel.settextpath (int_of_text_path_direction direction)
 
 let set_text_align : text_halign option -> text_valign option -> unit =
  fun horizontal vertical ->
   let horizontal = Option.value ~default:NORMAL horizontal in
   let vertical = Option.value ~default:NORMAL vertical in
-  Lowlevel.settextalign (int_of_text_halign horizontal) (int_of_text_valign vertical)
-
+  Lowlevel.settextalign
+    (int_of_text_halign horizontal)
+    (int_of_text_valign vertical)
 
 let set_fill_interior_style style =
   Lowlevel.setfillintstyle (int_of_fill_style style);
@@ -627,36 +640,37 @@ let set_fill_interior_style style =
   | HATCH hat -> Lowlevel.setfillstyle hat
   | _ -> ()
 
-
 let set_fill_colorindex = function
   | c when c >= 0 && c < 1256 -> Lowlevel.setfillcolorind c
-  | c -> failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int c
-
+  | c ->
+      failwith @@ "Color index must be in the range [0, 1256]. Got "
+      ^ string_of_int c
 
 let set_color_representation index (red, green, blue) =
-  if index < 0 || index >= 1256
-  then
-    failwith @@ "Color index must be in the range [0, 1256]. Got " ^ string_of_int index;
-  if (red < 0.0 || red > 1.0) || (green < 0.0 || green > 1.0) || blue < 0.0 || blue > 1.0
+  if index < 0 || index >= 1256 then
+    failwith @@ "Color index must be in the range [0, 1256]. Got "
+    ^ string_of_int index;
+  if
+    (red < 0.0 || red > 1.0)
+    || (green < 0.0 || green > 1.0)
+    || blue < 0.0 || blue > 1.0
   then
     failwith
     @@ Printf.sprintf
-         "Color values must be in the range [0.0, 1.0]. Got: (%f, %f, %f)"
-         red
-         green
-         blue;
+         "Color values must be in the range [0.0, 1.0]. Got: (%f, %f, %f)" red
+         green blue;
   Lowlevel.setcolorrep index red green blue
 
-
 let set_colormap cmap = Lowlevel.setcolormap (int_of_color_map cmap)
+
 let set_scale scale = Lowlevel.setscale (int_of_scale_options scale)
+
 let set_shadow (offsetx, offsety) blur = Lowlevel.setshadow offsetx offsety blur
 
 let set_transparency alpha =
-  if alpha < 0.0 && alpha > 1.0
-  then failwith @@ "Alpha index must be between 0.0 and 1.0";
+  if alpha < 0.0 && alpha > 1.0 then
+    failwith @@ "Alpha index must be between 0.0 and 1.0";
   Lowlevel.settransparency alpha
-
 
 let set_coord_transform transform =
   let transform =
@@ -667,14 +681,17 @@ let set_coord_transform transform =
   in
   Lowlevel.setcoordxform Ctypes.(bigarray_start genarray transform)
 
-
 module Graphics = struct
   type t = string
 
   let beging = Lowlevel.begingraphics
+
   let endg = Lowlevel.endgraphics
+
   let get : unit -> t = Lowlevel.getgraphics
+
   let draw = Lowlevel.drawgraphics
+
   let import = Lowlevel.importgraphics
 end
 
@@ -686,7 +703,6 @@ let polyline ?linetype ?linewidth ?coloridx x y =
       let n, x, y = Lowlevel.get_size_and_pointers x y in
       Lowlevel.polyline n x y)
 
-
 let polyline3d ?linetype ?linewidth ?coloridx x y z =
   State.with_sandbox (fun () ->
       Option.iter set_linetype linetype;
@@ -697,7 +713,6 @@ let polyline3d ?linetype ?linewidth ?coloridx x y z =
       (* TODO: Check z dimension *)
       Lowlevel.polyline3d n x y z)
 
-
 let polymarker ?markertype ?markersize ?coloridx x y =
   State.with_sandbox (fun () ->
       Option.iter set_markertype markertype;
@@ -705,7 +720,6 @@ let polymarker ?markertype ?markersize ?coloridx x y =
       Option.iter set_markercolorindex coloridx;
       let n, x, y = Lowlevel.get_size_and_pointers x y in
       Lowlevel.polymarker n x y)
-
 
 let polymarker3d ?markertype ?markersize ?coloridx x y z =
   State.with_sandbox (fun () ->
@@ -717,18 +731,16 @@ let polymarker3d ?markertype ?markersize ?coloridx x y z =
       (* TODO: Check z dimension *)
       Lowlevel.polymarker3d n x y z)
 
-
 let text = Lowlevel.text
 
 let fillarea x y =
   let n, x', y' = Lowlevel.get_size_and_pointers x y in
   Lowlevel.fillarea n x' y'
 
-
-let cellarray (xmin, xmax) (ymin, ymax) (dimx, dimy) (scol, srow) (ncol, nrow) colors =
+let cellarray (xmin, xmax) (ymin, ymax) (dimx, dimy) (scol, srow) (ncol, nrow)
+    colors =
   let color' = Ctypes.(bigarray_start genarray colors) in
   Lowlevel.cellarray xmin xmax ymin ymax dimx dimy scol srow ncol nrow color'
-
 
 (* let gdp = ... (* No idea what this does... *) *)
 
@@ -740,44 +752,28 @@ let spline ?linetype ?linewidth ?coloridx x y m algo =
       let n, x', y' = Lowlevel.get_size_and_pointers x y in
       Lowlevel.spline n x' y' m (int_of_spline_algo algo))
 
-
 let gridit x y z (nx, ny) =
   let x' = Bigarray.(Genarray.create float64 c_layout [| nx |]) in
   let y' = Bigarray.(Genarray.create float64 c_layout [| ny |]) in
   let z' = Bigarray.(Genarray.create float64 c_layout [| nx * ny |]) in
   let n, x, y = Lowlevel.get_size_and_pointers x y in
   let nz, z = Lowlevel.get_size_and_pointer z in
-  if nz <> n
-  then
+  if nz <> n then
     failwith
-    @@ Printf.sprintf "Expected arrays with dimensions n, n, n. Got %d, %d, %d" n n nz;
-  Lowlevel.gridit
-    n
-    x
-    y
-    z
-    nx
-    ny
+    @@ Printf.sprintf "Expected arrays with dimensions n, n, n. Got %d, %d, %d"
+         n n nz;
+  Lowlevel.gridit n x y z nx ny
     Ctypes.(bigarray_start genarray x')
     Ctypes.(bigarray_start genarray y')
     Ctypes.(bigarray_start genarray z');
-  x', y', z'
-
+  (x', y', z')
 
 let tex_text (x, y) text = Lowlevel.textext x y text
+
 let math_tex (x, y) tex = Lowlevel.mathtex x y tex
 
-let axes
-    ?(scale = [])
-    ?linetype
-    ?linewidth
-    ?coloridx
-    ?(origin = 0.0, 0.0)
-    ?(major = 0, 0)
-    ?(tick_size = -0.01)
-    x_tick
-    y_tick
-  =
+let axes ?(scale = []) ?linetype ?linewidth ?coloridx ?(origin = (0.0, 0.0))
+    ?(major = (0, 0)) ?(tick_size = -0.01) x_tick y_tick =
   State.with_sandbox (fun () ->
       if scale <> [] then set_scale scale |> ignore;
       Option.iter set_linetype linetype;
@@ -787,42 +783,24 @@ let axes
       let major_x, major_y = major in
       Lowlevel.axes x_tick y_tick x_org y_org major_x major_y tick_size)
 
-
-let axes_labels
-    ?(scale = [])
-    ?linetype
-    ?linewidth
-    ?coloridx
-    ?(origin = 0.0, 0.0)
-    ?(major = 0, 0)
-    ?(tick_size = -0.01)
+let axes_labels ?(scale = []) ?linetype ?linewidth ?coloridx
+    ?(origin = (0.0, 0.0)) ?(major = (0, 0)) ?(tick_size = -0.01)
     (fpx : float -> float -> string -> float -> unit)
-    (fpy : float -> float -> string -> float -> unit)
-    x_tick
-    y_tick
-  =
+    (fpy : float -> float -> string -> float -> unit) x_tick y_tick =
   State.with_sandbox (fun () ->
-      if scale <> [] then Lowlevel.setscale (int_of_scale_options scale) |> ignore;
+      if scale <> [] then
+        Lowlevel.setscale (int_of_scale_options scale) |> ignore;
       Option.iter set_linetype linetype;
       Option.iter set_linewidth linewidth;
       Option.iter set_linecolorindex coloridx;
       let x_org, y_org = origin in
       let major_x, major_y = major in
-      Lowlevel.axeslbl x_tick y_tick x_org y_org major_x major_y tick_size fpx fpy)
+      Lowlevel.axeslbl x_tick y_tick x_org y_org major_x major_y tick_size fpx
+        fpy)
 
-
-let axes3d
-    ?(scale = [])
-    ?linetype
-    ?linewidth
-    ?coloridx
-    ?(origin = 0.0, 0.0, 0.0)
-    ?(major = 0, 0, 0)
-    ?(tick_size = -0.01)
-    x_tick
-    y_tick
-    z_tick
-  =
+let axes3d ?(scale = []) ?linetype ?linewidth ?coloridx
+    ?(origin = (0.0, 0.0, 0.0)) ?(major = (0, 0, 0)) ?(tick_size = -0.01) x_tick
+    y_tick z_tick =
   State.with_sandbox (fun () ->
       if scale <> [] then set_scale scale |> ignore;
       Option.iter set_linetype linetype;
@@ -830,33 +808,18 @@ let axes3d
       Option.iter set_linecolorindex coloridx;
       let x_org, y_org, z_org = origin in
       let major_x, major_y, major_z = major in
-      Lowlevel.axes3d
-        x_tick
-        y_tick
-        z_tick
-        x_org
-        y_org
-        z_org
-        major_x
-        major_y
-        major_z
-        tick_size)
-
+      Lowlevel.axes3d x_tick y_tick z_tick x_org y_org z_org major_x major_y
+        major_z tick_size)
 
 let surface ?(options = LINES) x y z =
   let nx, x = Lowlevel.get_size_and_pointer x in
   let ny, y = Lowlevel.get_size_and_pointer y in
   let nz, z = Lowlevel.get_size_and_pointer z in
-  if nz <> nx * ny
-  then
+  if nz <> nx * ny then
     failwith
     @@ Printf.sprintf
-         "Expected arrays with dimensions n, n', n*n'. Got %d, %d, %d"
-         nx
-         ny
-         nz;
+         "Expected arrays with dimensions n, n', n*n'. Got %d, %d, %d" nx ny nz;
   Lowlevel.surface nx ny x y z (int_of_surface_options options)
-
 
 let contour ?(major_h = 0) x y h z =
   (* TODO: validate z *)
@@ -866,7 +829,6 @@ let contour ?(major_h = 0) x y h z =
   let _nz, z = Lowlevel.get_size_and_pointer z in
   Lowlevel.contour nx ny nh x y h z major_h
 
-
 let contourf ?(major_h = 0) x y h z =
   (* TODO: validate z *)
   let nx, x = Lowlevel.get_size_and_pointer x in
@@ -875,17 +837,8 @@ let contourf ?(major_h = 0) x y h z =
   let _nz, z = Lowlevel.get_size_and_pointer z in
   Lowlevel.contourf nx ny nh x y h z major_h
 
-
-let grid
-    ?(scale = [])
-    ?linetype
-    ?linewidth
-    ?coloridx
-    ?(origin = 0.0, 0.0)
-    ?(major = 0, 0)
-    x_tick
-    y_tick
-  =
+let grid ?(scale = []) ?linetype ?linewidth ?coloridx ?(origin = (0.0, 0.0))
+    ?(major = (0, 0)) x_tick y_tick =
   State.with_sandbox (fun () ->
       if scale <> [] then set_scale scale |> ignore;
       Option.iter set_linetype linetype;
@@ -895,18 +848,8 @@ let grid
       let major_x, major_y = major in
       Lowlevel.grid x_tick y_tick x_org y_org major_x major_y)
 
-
-let grid3d
-    ?(scale = [])
-    ?linetype
-    ?linewidth
-    ?coloridx
-    ?(origin = 0.0, 0.0, 0.0)
-    ?(major = 0, 0, 0)
-    x_tick
-    y_tick
-    z_tick
-  =
+let grid3d ?(scale = []) ?linetype ?linewidth ?coloridx
+    ?(origin = (0.0, 0.0, 0.0)) ?(major = (0, 0, 0)) x_tick y_tick z_tick =
   State.with_sandbox (fun () ->
       if scale <> [] then set_scale scale |> ignore;
       Option.iter set_linetype linetype;
@@ -914,26 +857,24 @@ let grid3d
       Option.iter set_linecolorindex coloridx;
       let x_org, y_org, z_org = origin in
       let major_x, major_y, major_z = major in
-      Lowlevel.grid3d x_tick y_tick z_tick x_org y_org z_org major_x major_y major_z)
-
+      Lowlevel.grid3d x_tick y_tick z_tick x_org y_org z_org major_x major_y
+        major_z)
 
 let vertical_errorbars x y el eu =
   let n, x, y = Lowlevel.get_size_and_pointers x y in
   let ne, el, eu = Lowlevel.get_size_and_pointers el eu in
-  if n <> ne
-  then
-    failwith @@ Printf.sprintf "Expected arrays of the same dimensions. Got: %d, %d" n ne;
+  if n <> ne then
+    failwith
+    @@ Printf.sprintf "Expected arrays of the same dimensions. Got: %d, %d" n ne;
   Lowlevel.verrorbars n x y el eu
-
 
 let horizontal_errorbars x y el eu =
   let n, x, y = Lowlevel.get_size_and_pointers x y in
   let ne, el, eu = Lowlevel.get_size_and_pointers el eu in
-  if n <> ne
-  then
-    failwith @@ Printf.sprintf "Expected arrays of the same dimensions. Got: %d, %d" n ne;
+  if n <> ne then
+    failwith
+    @@ Printf.sprintf "Expected arrays of the same dimensions. Got: %d, %d" n ne;
   Lowlevel.herrorbars n x y el eu
-
 
 let titles3d = Lowlevel.titles3d
 
@@ -943,7 +884,6 @@ let tricontour x y z levels =
   let _nz, z = Lowlevel.get_size_and_pointer z in
   let nlevels, levels = Lowlevel.get_size_and_pointer levels in
   Lowlevel.tricontour nx x y z nlevels levels
-
 
 (* (* TODO: I don't know what this function does... *)
    let hexbin = foreign "gr_hexbin" (int @-> ptr double @-> ptr double @-> int @-> returning int)
@@ -960,41 +900,39 @@ let tick = Lowlevel.tick
 
 module Print = struct
   let validate path =
-    if not
-       @@ List.fold_left
-            (fun acc suffix -> acc || Filename.check_suffix path suffix)
-            false
-            [ ".ps"
-            ; ".eps"
-            ; ".pdf"
-            ; ".bmp"
-            ; ".jpeg"
-            ; ".jpg"
-            ; ".png"
-            ; ".tiff"
-            ; ".tif"
-            ; ".svg"
-            ; ".wmf"
-            ; ".mp4"
-            ; ".webm"
-            ; ".ogg"
-            ]
+    if
+      not
+      @@ List.fold_left
+           (fun acc suffix -> acc || Filename.check_suffix path suffix)
+           false
+           [
+             ".ps";
+             ".eps";
+             ".pdf";
+             ".bmp";
+             ".jpeg";
+             ".jpg";
+             ".png";
+             ".tiff";
+             ".tif";
+             ".svg";
+             ".wmf";
+             ".mp4";
+             ".webm";
+             ".ogg";
+           ]
     then failwith @@ Printf.sprintf "Unsupported file type: %s" path
-
 
   let beginp path =
     validate path;
     Lowlevel.beginprint path
-
 
   let endp = Lowlevel.endprint
 
   let beginp_extended path mode format orientation =
     validate path;
     let mode =
-      match mode with
-      | `Color -> "Color"
-      | `GreyScale -> "GreyScale"
+      match mode with `Color -> "Color" | `GreyScale -> "GreyScale"
     in
     let orientation =
       match orientation with
@@ -1051,9 +989,8 @@ let drawrect ?linetype ?linewidth ?coloridx left right bottom up =
       Option.iter set_linecolorindex coloridx;
       Lowlevel.drawrect left right bottom up)
 
-
-let fillrect ?fillstyle ?fillcoloridx ?linetype ?linewidth ?coloridx left right bottom up
-  =
+let fillrect ?fillstyle ?fillcoloridx ?linetype ?linewidth ?coloridx left right
+    bottom up =
   State.with_sandbox (fun () ->
       Option.iter set_linetype linetype;
       Option.iter set_linewidth linewidth;
@@ -1062,7 +999,6 @@ let fillrect ?fillstyle ?fillcoloridx ?linetype ?linewidth ?coloridx left right 
       Option.iter set_fill_colorindex fillcoloridx;
       Lowlevel.fillrect left right bottom up)
 
-
 let drawarc ?linetype ?linewidth ?coloridx left right bottom up a1 a2 =
   State.with_sandbox (fun () ->
       Option.iter set_linetype linetype;
@@ -1070,20 +1006,8 @@ let drawarc ?linetype ?linewidth ?coloridx left right bottom up a1 a2 =
       Option.iter set_linecolorindex coloridx;
       Lowlevel.drawarc left right bottom up a1 a2)
 
-
-let fillarc
-    ?fillstyle
-    ?fillcoloridx
-    ?linetype
-    ?linewidth
-    ?coloridx
-    left
-    right
-    bottom
-    up
-    a1
-    a2
-  =
+let fillarc ?fillstyle ?fillcoloridx ?linetype ?linewidth ?coloridx left right
+    bottom up a1 a2 =
   State.with_sandbox (fun () ->
       Option.iter set_linetype linetype;
       Option.iter set_linewidth linewidth;
@@ -1091,7 +1015,6 @@ let fillarc
       Option.iter set_fill_interior_style fillstyle;
       Option.iter set_fill_colorindex fillcoloridx;
       Lowlevel.fillarc left right bottom up a1 a2)
-
 
 let drawpath vertices codes fill =
   let code_to_uchar = function
@@ -1117,36 +1040,33 @@ let drawpath vertices codes fill =
   done;
   Lowlevel.drawpath n CArray.(start cvertices) CArray.(start ccodes) fill
 
-
 let drawarrow ?arrowsize ?arrowstyle (x1, y1) (x2, y2) =
   State.with_sandbox (fun () ->
       Option.iter set_arrowsize arrowsize;
       Option.iter set_arrowstyle arrowstyle;
       Lowlevel.drawarrow x1 y1 x2 y2)
 
-
 (* TODO:
    let readimage = foreign "gr_readimage" (string @-> ptr int @-> ptr int @-> ptr (ptr int) @-> returning int)
    *)
 
 let drawimage (xmin, ymin) (xmax, ymax) image_data model =
-  let model =
-    match model with
-    | `RGB -> 0
-    | `HSV -> 1
-  in
+  let model = match model with `RGB -> 0 | `HSV -> 1 in
   let width, height, image_data =
     match Bigarray.Genarray.dims image_data with
-    | [| width; height |] -> width, height, Ctypes.(bigarray_start genarray image_data)
+    | [| width; height |] ->
+        (width, height, Ctypes.(bigarray_start genarray image_data))
     | _ -> failwith "Expecting a 2D array, but got something else!"
   in
   Lowlevel.drawimage xmin ymin xmax ymax width height image_data model
 
-
 module Selection = struct
   let begins = Lowlevel.beginselection
+
   let ends = Lowlevel.endselection
+
   let move x y = Lowlevel.moveselection x y
+
   let resize kind x y = Lowlevel.resizeselection kind x y
 end
 
