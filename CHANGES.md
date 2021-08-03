@@ -1,4 +1,4 @@
-# dev
+# 0.0.2 (3-8-2021)
 
 - Makes more sense to show the ticks labels by default (Chris00 #9 5261354) 
 - Use default ocamlformat output
